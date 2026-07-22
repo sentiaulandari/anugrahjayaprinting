@@ -1,0 +1,91 @@
+<mxfile host="Electron" version="29.3.6">
+  <diagram id="seq_reg" name="Sequence Diagram Registrasi">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" page="1" pageWidth="1200" pageHeight="880">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="Sequence Diagram Registrasi Akun&#xa;Sistem Informasi Anugrah Jaya Digital Printing" style="text;html=1;align=center;fontSize=13;fontStyle=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="100" y="10" width="1000" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="ll_p" value="Pelanggan" style="shape=umlLifeline;whiteSpace=wrap;html=1;container=1;collapsible=0;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="60" y="55" width="100" height="780" as="geometry"/>
+        </mxCell>
+        <mxCell id="ll_v" value="View Register" style="shape=umlLifeline;whiteSpace=wrap;html=1;container=1;collapsible=0;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="220" y="55" width="110" height="780" as="geometry"/>
+        </mxCell>
+        <mxCell id="ll_c" value="AuthController" style="shape=umlLifeline;whiteSpace=wrap;html=1;container=1;collapsible=0;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="390" y="55" width="110" height="780" as="geometry"/>
+        </mxCell>
+        <mxCell id="ll_um" value="UserModel" style="shape=umlLifeline;whiteSpace=wrap;html=1;container=1;collapsible=0;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="560" y="55" width="100" height="780" as="geometry"/>
+        </mxCell>
+        <mxCell id="ll_pm" value="PelangganModel" style="shape=umlLifeline;whiteSpace=wrap;html=1;container=1;collapsible=0;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="720" y="55" width="120" height="780" as="geometry"/>
+        </mxCell>
+        <mxCell id="ll_db" value="Database" style="shape=umlLifeline;whiteSpace=wrap;html=1;container=1;collapsible=0;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="900" y="55" width="100" height="780" as="geometry"/>
+        </mxCell>
+        <mxCell id="m1" value="1: Buka Halaman Register()" style="endArrow=open;endFill=0;endSize=8;html=1;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="110" y="140" as="sourcePoint"/><mxPoint x="275" y="140" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m2" value="2: Tampilkan Form Registrasi()" style="endArrow=open;endFill=0;endSize=8;html=1;fontSize=10;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="275" y="165" as="sourcePoint"/><mxPoint x="110" y="165" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m3" value="3: Input Nama, Username, Email, HP, Password, Konfirmasi" style="endArrow=open;endFill=0;endSize=8;html=1;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="110" y="200" as="sourcePoint"/><mxPoint x="275" y="200" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m4" value="4: Klik Daftar - POST registerProcess()" style="endArrow=open;endFill=0;endSize=8;html=1;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="275" y="235" as="sourcePoint"/><mxPoint x="445" y="235" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m5" value="5: validate(nama, username, email, no_hp, password, konfirmasi)" style="endArrow=open;endFill=0;endSize=8;html=1;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="445" y="265" as="sourcePoint"/><mxPoint x="450" y="265" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="alt1_bg" value="alt [Validasi Gagal - field kosong / format tidak valid / password tidak cocok]" style="shape=mxgraph.uml.compositeState;fontStyle=1;fontSize=10;align=left;verticalAlign=top;spacingLeft=5;fillColor=none;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="170" y="285" width="660" height="65" as="geometry"/>
+        </mxCell>
+        <mxCell id="m6" value="6: redirect back + withInput + errors" style="endArrow=open;endFill=0;endSize=8;html=1;fontSize=10;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="445" y="318" as="sourcePoint"/><mxPoint x="110" y="318" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m7" value="7: cek is_unique username di tabel users" style="endArrow=open;endFill=0;endSize=8;html=1;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="445" y="375" as="sourcePoint"/><mxPoint x="610" y="375" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m8" value="8: SELECT username, email FROM users" style="endArrow=open;endFill=0;endSize=8;html=1;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="610" y="400" as="sourcePoint"/><mxPoint x="950" y="400" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m9" value="9: return result" style="endArrow=open;endFill=0;endSize=8;html=1;fontSize=10;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="950" y="425" as="sourcePoint"/><mxPoint x="610" y="425" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="alt2_bg" value="alt [Username / Email sudah digunakan]" style="shape=mxgraph.uml.compositeState;fontStyle=1;fontSize=10;align=left;verticalAlign=top;spacingLeft=5;fillColor=none;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="170" y="445" width="500" height="65" as="geometry"/>
+        </mxCell>
+        <mxCell id="m10" value="10: redirect back + error sudah digunakan" style="endArrow=open;endFill=0;endSize=8;html=1;fontSize=10;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="445" y="478" as="sourcePoint"/><mxPoint x="110" y="478" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="alt3_bg" value="else [Data Valid - Simpan]" style="shape=mxgraph.uml.compositeState;fontStyle=1;fontSize=10;align=left;verticalAlign=top;spacingLeft=5;fillColor=none;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="170" y="525" width="820" height="195" as="geometry"/>
+        </mxCell>
+        <mxCell id="m11" value="11: insert users (password di-hash, level=pelanggan)" style="endArrow=open;endFill=0;endSize=8;html=1;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="445" y="555" as="sourcePoint"/><mxPoint x="610" y="555" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m12" value="12: INSERT INTO users ..." style="endArrow=open;endFill=0;endSize=8;html=1;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="610" y="580" as="sourcePoint"/><mxPoint x="950" y="580" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m13" value="13: return id_user (getInsertID)" style="endArrow=open;endFill=0;endSize=8;html=1;fontSize=10;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="950" y="605" as="sourcePoint"/><mxPoint x="445" y="605" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m14" value="14: insert pelanggan (id_user, nama, email, no_hp)" style="endArrow=open;endFill=0;endSize=8;html=1;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="445" y="635" as="sourcePoint"/><mxPoint x="780" y="635" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m15" value="15: INSERT INTO pelanggan ..." style="endArrow=open;endFill=0;endSize=8;html=1;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="780" y="660" as="sourcePoint"/><mxPoint x="950" y="660" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m16" value="16: return OK" style="endArrow=open;endFill=0;endSize=8;html=1;fontSize=10;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="950" y="685" as="sourcePoint"/><mxPoint x="445" y="685" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m17" value="17: redirect(/auth/login) + Registrasi berhasil. Silakan login." style="endArrow=open;endFill=0;endSize=8;html=1;fontSize=10;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="445" y="715" as="sourcePoint"/><mxPoint x="110" y="715" as="targetPoint"/></mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

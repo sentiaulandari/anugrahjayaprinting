@@ -1,0 +1,255 @@
+<?php
+
+namespace App\Database\Seeds;
+
+use CodeIgniter\Database\Seeder;
+
+class LayananSeeder extends Seeder
+{
+    public function run(): void
+    {
+        $kategori = [];
+        $rows = $this->db->table('kategori')->get()->getResultArray();
+        foreach ($rows as $k) {
+            $kategori[$k['nama_kategori']] = $k['id_kategori'];
+        }
+
+        $bahan = [];
+        $rows = $this->db->table('bahan')->get()->getResultArray();
+        foreach ($rows as $b) {
+            $bahan[$b['nama_bahan']] = $b['id_bahan'];
+        }
+
+        $layanan = [
+            [
+                'kode_layanan' => 'LY-001',
+                'nama_layanan' => 'Spanduk',
+                'id_kategori'  => $kategori['Outdoor'] ?? null,
+                'id_bahan'     => $bahan['Flexi China 280gr'] ?? null,
+                'harga_satuan' => 15000,
+                'deskripsi'    => 'Cetak spanduk outdoor bahan flexi china 280gr, harga per meter persegi',
+                'gambar'       => null,
+                'status'       => 'aktif',
+            ],
+            [
+                'kode_layanan' => 'LY-002',
+                'nama_layanan' => 'Baliho',
+                'id_kategori'  => $kategori['Outdoor'] ?? null,
+                'id_bahan'     => $bahan['Albatros'] ?? null,
+                'harga_satuan' => 20000,
+                'deskripsi'    => 'Cetak baliho ukuran besar bahan albatros, harga per meter persegi',
+                'gambar'       => null,
+                'status'       => 'aktif',
+            ],
+            [
+                'kode_layanan' => 'LY-003',
+                'nama_layanan' => 'Umbul-Umbul',
+                'id_kategori'  => $kategori['Outdoor'] ?? null,
+                'id_bahan'     => $bahan['Kain Parasut'] ?? null,
+                'harga_satuan' => 35000,
+                'deskripsi'    => 'Cetak umbul-umbul bahan kain parasut, harga per pcs',
+                'gambar'       => null,
+                'status'       => 'aktif',
+            ],
+            [
+                'kode_layanan' => 'LY-004',
+                'nama_layanan' => 'Stiker',
+                'id_kategori'  => $kategori['Indoor'] ?? null,
+                'id_bahan'     => $bahan['Stiker Vinyl'] ?? null,
+                'harga_satuan' => 10000,
+                'deskripsi'    => 'Cetak stiker vinyl berbagai ukuran, harga per lembar A4',
+                'gambar'       => null,
+                'status'       => 'aktif',
+            ],
+            [
+                'kode_layanan' => 'LY-005',
+                'nama_layanan' => 'One Way',
+                'id_kategori'  => $kategori['Indoor'] ?? null,
+                'id_bahan'     => $bahan['One Way Vision'] ?? null,
+                'harga_satuan' => 45000,
+                'deskripsi'    => 'Cetak stiker one way vision untuk kaca, harga per meter persegi',
+                'gambar'       => null,
+                'status'       => 'aktif',
+            ],
+            [
+                'kode_layanan' => 'LY-006',
+                'nama_layanan' => 'Kartu Nama',
+                'id_kategori'  => $kategori['Cetak Offset'] ?? null,
+                'id_bahan'     => $bahan['Art Carton 260gr'] ?? null,
+                'harga_satuan' => 25000,
+                'deskripsi'    => 'Cetak kartu nama art carton 260gr, harga per 100 lembar',
+                'gambar'       => null,
+                'status'       => 'aktif',
+            ],
+            [
+                'kode_layanan' => 'LY-007',
+                'nama_layanan' => 'Y Banner',
+                'id_kategori'  => $kategori['Indoor'] ?? null,
+                'id_bahan'     => $bahan['Kain Parasut'] ?? null,
+                'harga_satuan' => 45000,
+                'deskripsi'    => 'Cetak Y banner ukuran 60x160cm termasuk rangka, harga per pcs',
+                'gambar'       => null,
+                'status'       => 'aktif',
+            ],
+            [
+                'kode_layanan' => 'LY-008',
+                'nama_layanan' => 'Roll Up Banner',
+                'id_kategori'  => $kategori['Indoor'] ?? null,
+                'id_bahan'     => $bahan['Kain Parasut'] ?? null,
+                'harga_satuan' => 150000,
+                'deskripsi'    => 'Cetak roll up banner ukuran 85x200cm termasuk stand, harga per pcs',
+                'gambar'       => null,
+                'status'       => 'aktif',
+            ],
+            [
+                'kode_layanan' => 'LY-009',
+                'nama_layanan' => 'Brosur',
+                'id_kategori'  => $kategori['Cetak Offset'] ?? null,
+                'id_bahan'     => $bahan['Art Paper 100gr'] ?? null,
+                'harga_satuan' => 500,
+                'deskripsi'    => 'Cetak brosur art paper 100gr full color, harga per lembar',
+                'gambar'       => null,
+                'status'       => 'aktif',
+            ],
+            [
+                'kode_layanan' => 'LY-010',
+                'nama_layanan' => 'PIN',
+                'id_kategori'  => $kategori['Promosi'] ?? null,
+                'id_bahan'     => $bahan['PIN Polos'] ?? null,
+                'harga_satuan' => 5000,
+                'deskripsi'    => 'Cetak PIN custom berbagai ukuran, harga per pcs',
+                'gambar'       => null,
+                'status'       => 'aktif',
+            ],
+            [
+                'kode_layanan' => 'LY-011',
+                'nama_layanan' => 'Mug',
+                'id_kategori'  => $kategori['Promosi'] ?? null,
+                'id_bahan'     => $bahan['Mug Polos Putih'] ?? null,
+                'harga_satuan' => 35000,
+                'deskripsi'    => 'Cetak mug sublimasi custom, harga per pcs',
+                'gambar'       => null,
+                'status'       => 'aktif',
+            ],
+            [
+                'kode_layanan' => 'LY-012',
+                'nama_layanan' => 'Stempel',
+                'id_kategori'  => $kategori['Promosi'] ?? null,
+                'id_bahan'     => null,
+                'harga_satuan' => 50000,
+                'deskripsi'    => 'Pembuatan stempel flash berbagai ukuran, harga per pcs',
+                'gambar'       => null,
+                'status'       => 'aktif',
+            ],
+            [
+                'kode_layanan' => 'LY-013',
+                'nama_layanan' => 'Gantungan Kunci',
+                'id_kategori'  => $kategori['Promosi'] ?? null,
+                'id_bahan'     => $bahan['Gantungan Kunci Akrilik'] ?? null,
+                'harga_satuan' => 8000,
+                'deskripsi'    => 'Cetak gantungan kunci akrilik custom, harga per pcs',
+                'gambar'       => null,
+                'status'       => 'aktif',
+            ],
+            [
+                'kode_layanan' => 'LY-014',
+                'nama_layanan' => 'ID Card',
+                'id_kategori'  => $kategori['Cetak Offset'] ?? null,
+                'id_bahan'     => $bahan['Art Carton 260gr'] ?? null,
+                'harga_satuan' => 10000,
+                'deskripsi'    => 'Cetak ID card full color laminasi, harga per pcs',
+                'gambar'       => null,
+                'status'       => 'aktif',
+            ],
+            [
+                'kode_layanan' => 'LY-015',
+                'nama_layanan' => 'Plakat',
+                'id_kategori'  => $kategori['Promosi'] ?? null,
+                'id_bahan'     => $bahan['Akrilik 3mm'] ?? null,
+                'harga_satuan' => 75000,
+                'deskripsi'    => 'Pembuatan plakat akrilik custom, harga per pcs',
+                'gambar'       => null,
+                'status'       => 'aktif',
+            ],
+            [
+                'kode_layanan' => 'LY-016',
+                'nama_layanan' => 'Plank Merk',
+                'id_kategori'  => $kategori['Outdoor'] ?? null,
+                'id_bahan'     => $bahan['Flexi Korea 340gr'] ?? null,
+                'harga_satuan' => 50000,
+                'deskripsi'    => 'Cetak plank merk toko atau usaha, harga per meter persegi',
+                'gambar'       => null,
+                'status'       => 'aktif',
+            ],
+            [
+                'kode_layanan' => 'LY-017',
+                'nama_layanan' => 'Neon Box',
+                'id_kategori'  => $kategori['Outdoor'] ?? null,
+                'id_bahan'     => $bahan['Akrilik 3mm'] ?? null,
+                'harga_satuan' => 200000,
+                'deskripsi'    => 'Pembuatan neon box akrilik dengan lampu LED, harga per meter persegi',
+                'gambar'       => null,
+                'status'       => 'aktif',
+            ],
+            [
+                'kode_layanan' => 'LY-018',
+                'nama_layanan' => 'Huruf Timbul',
+                'id_kategori'  => $kategori['Outdoor'] ?? null,
+                'id_bahan'     => $bahan['Akrilik 3mm'] ?? null,
+                'harga_satuan' => 25000,
+                'deskripsi'    => 'Pembuatan huruf timbul akrilik, harga per huruf',
+                'gambar'       => null,
+                'status'       => 'aktif',
+            ],
+            [
+                'kode_layanan' => 'LY-019',
+                'nama_layanan' => 'Label',
+                'id_kategori'  => $kategori['Cetak Offset'] ?? null,
+                'id_bahan'     => $bahan['Stiker Vinyl'] ?? null,
+                'harga_satuan' => 300,
+                'deskripsi'    => 'Cetak label produk stiker vinyl, harga per lembar',
+                'gambar'       => null,
+                'status'       => 'aktif',
+            ],
+            [
+                'kode_layanan' => 'LY-020',
+                'nama_layanan' => 'Faktur',
+                'id_kategori'  => $kategori['Cetak Offset'] ?? null,
+                'id_bahan'     => $bahan['Kertas HVS 80gr'] ?? null,
+                'harga_satuan' => 150000,
+                'deskripsi'    => 'Cetak faktur nota rangkap 2 atau 3, harga per buku (50 lembar)',
+                'gambar'       => null,
+                'status'       => 'aktif',
+            ],
+            [
+                'kode_layanan' => 'LY-021',
+                'nama_layanan' => 'Piagam',
+                'id_kategori'  => $kategori['Cetak Offset'] ?? null,
+                'id_bahan'     => $bahan['Kertas Foto Glossy'] ?? null,
+                'harga_satuan' => 15000,
+                'deskripsi'    => 'Cetak piagam penghargaan kertas foto glossy, harga per lembar',
+                'gambar'       => null,
+                'status'       => 'aktif',
+            ],
+            [
+                'kode_layanan' => 'LY-022',
+                'nama_layanan' => 'Cutting Stiker',
+                'id_kategori'  => $kategori['Indoor'] ?? null,
+                'id_bahan'     => $bahan['Stiker Vinyl'] ?? null,
+                'harga_satuan' => 15000,
+                'deskripsi'    => 'Cutting stiker vinyl berbagai bentuk custom, harga per lembar A4',
+                'gambar'       => null,
+                'status'       => 'aktif',
+            ],
+        ];
+
+        foreach ($layanan as $item) {
+            $exists = $this->db->table('layanan')
+                ->where('kode_layanan', $item['kode_layanan'])
+                ->get()->getRow();
+            if (!$exists) {
+                $this->db->table('layanan')->insert($item);
+            }
+        }
+    }
+}

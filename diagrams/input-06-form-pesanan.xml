@@ -1,0 +1,118 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.3.6 Chrome/140.0.7339.249 Electron/38.8.0 Safari/537.36" version="29.3.6">
+  <diagram id="input_pesanan" name="Form Transaksi Pesanan">
+    <mxGraphModel dx="1048" dy="688" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="card_info" parent="1" style="swimlane;startSize=30;fontSize=11;fontStyle=1;" value="Informasi Pesanan" vertex="1">
+          <mxGeometry height="220" width="780" x="60" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="l_no" parent="card_info" style="text;html=1;align=left;fontSize=10;fontStyle=1;" value="No. Pesanan" vertex="1">
+          <mxGeometry height="18" width="220" x="20" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="f_no" parent="card_info" style="rounded=1;fontSize=10;align=left;spacingLeft=8;" value="PS-20260602-001  (Otomatis)" vertex="1">
+          <mxGeometry height="34" width="220" x="20" y="65" as="geometry" />
+        </mxCell>
+        <mxCell id="l_tgl" parent="card_info" style="text;html=1;align=left;fontSize=10;fontStyle=1;" value="Tanggal Pesanan" vertex="1">
+          <mxGeometry height="18" width="220" x="260" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="f_tgl" parent="card_info" style="rounded=1;fontSize=10;align=left;spacingLeft=8;" value="02 Juni 2026  (Otomatis)" vertex="1">
+          <mxGeometry height="34" width="220" x="260" y="65" as="geometry" />
+        </mxCell>
+        <mxCell id="l_selesai" parent="card_info" style="text;html=1;align=left;fontSize=10;fontStyle=1;" value="Estimasi Selesai *" vertex="1">
+          <mxGeometry height="18" width="220" x="500" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="f_selesai" parent="card_info" style="rounded=1;fontSize=10;align=left;spacingLeft=8;" value="📅  Pilih Tanggal" vertex="1">
+          <mxGeometry height="34" width="220" x="500" y="65" as="geometry" />
+        </mxCell>
+        <mxCell id="l_plg" parent="card_info" style="text;html=1;align=left;fontSize=10;fontStyle=1;" value="Pelanggan *" vertex="1">
+          <mxGeometry height="18" width="460" x="20" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="f_plg" parent="card_info" style="rounded=1;fontSize=10;align=left;spacingLeft=8;" value="-- Pilih Pelanggan --  ▼" vertex="1">
+          <mxGeometry height="34" width="460" x="20" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="l_cat" parent="card_info" style="text;html=1;align=left;fontSize=10;fontStyle=1;" value="Catatan" vertex="1">
+          <mxGeometry height="18" width="700" x="20" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="card_item" parent="1" style="swimlane;startSize=30;fontSize=11;fontStyle=1;" value="Item Layanan" vertex="1">
+          <mxGeometry height="290" width="780" x="60" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="thead_row" parent="card_item" style="" value="" vertex="1">
+          <mxGeometry height="30" width="740" x="20" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="th1" parent="card_item" style="text;html=1;align=left;fontSize=9;fontStyle=1;spacingLeft=5;" value="Layanan" vertex="1">
+          <mxGeometry height="26" width="240" x="20" y="42" as="geometry" />
+        </mxCell>
+        <mxCell id="th2" parent="card_item" style="text;html=1;align=center;fontSize=9;fontStyle=1;" value="Qty" vertex="1">
+          <mxGeometry height="26" width="80" x="265" y="42" as="geometry" />
+        </mxCell>
+        <mxCell id="th3" parent="card_item" style="text;html=1;align=center;fontSize=9;fontStyle=1;" value="Ukuran" vertex="1">
+          <mxGeometry height="26" width="130" x="350" y="42" as="geometry" />
+        </mxCell>
+        <mxCell id="th4" parent="card_item" style="text;html=1;align=right;fontSize=9;fontStyle=1;" value="Harga" vertex="1">
+          <mxGeometry height="26" width="110" x="485" y="42" as="geometry" />
+        </mxCell>
+        <mxCell id="th5" parent="card_item" style="text;html=1;align=right;fontSize=9;fontStyle=1;" value="Subtotal" vertex="1">
+          <mxGeometry height="26" width="110" x="600" y="42" as="geometry" />
+        </mxCell>
+        <mxCell id="row1" parent="card_item" style="" value="" vertex="1">
+          <mxGeometry height="40" width="740" x="20" y="75" as="geometry" />
+        </mxCell>
+        <mxCell id="sel1" parent="card_item" style="rounded=0;fontSize=9;align=left;spacingLeft=6;" value="-- Pilih Layanan --  ▼" vertex="1">
+          <mxGeometry height="36" width="240" x="22" y="77" as="geometry" />
+        </mxCell>
+        <mxCell id="qty1" parent="card_item" style="rounded=0;fontSize=9;align=center;" value="1" vertex="1">
+          <mxGeometry height="36" width="76" x="267" y="77" as="geometry" />
+        </mxCell>
+        <mxCell id="uk1" parent="card_item" style="rounded=0;fontSize=9;align=left;spacingLeft=6;" value="mis: 3x1 m" vertex="1">
+          <mxGeometry height="36" width="126" x="352" y="77" as="geometry" />
+        </mxCell>
+        <mxCell id="hr1" parent="card_item" style="rounded=0;fontSize=9;align=right;spacingRight=6;" value="Rp 0" vertex="1">
+          <mxGeometry height="36" width="106" x="487" y="77" as="geometry" />
+        </mxCell>
+        <mxCell id="sub1" parent="card_item" style="rounded=0;fontSize=9;fontStyle=1;align=right;spacingRight=6;" value="Rp 0" vertex="1">
+          <mxGeometry height="36" width="106" x="602" y="77" as="geometry" />
+        </mxCell>
+        <mxCell id="del1" parent="card_item" style="rounded=1;fontSize=11;" value="🗑" vertex="1">
+          <mxGeometry height="30" width="30" x="715" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="row2" parent="card_item" style="" value="" vertex="1">
+          <mxGeometry height="40" width="740" x="20" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="sel2" parent="card_item" style="rounded=0;fontSize=9;align=left;spacingLeft=6;" value="-- Pilih Layanan --  ▼" vertex="1">
+          <mxGeometry height="36" width="240" x="22" y="122" as="geometry" />
+        </mxCell>
+        <mxCell id="qty2" parent="card_item" style="rounded=0;fontSize=9;align=center;" value="1" vertex="1">
+          <mxGeometry height="36" width="76" x="267" y="122" as="geometry" />
+        </mxCell>
+        <mxCell id="uk2" parent="card_item" style="rounded=0;fontSize=9;align=left;spacingLeft=6;" value="mis: 3x1 m" vertex="1">
+          <mxGeometry height="36" width="126" x="352" y="122" as="geometry" />
+        </mxCell>
+        <mxCell id="hr2" parent="card_item" style="rounded=0;fontSize=9;align=right;spacingRight=6;" value="Rp 0" vertex="1">
+          <mxGeometry height="36" width="106" x="487" y="122" as="geometry" />
+        </mxCell>
+        <mxCell id="sub2" parent="card_item" style="rounded=0;fontSize=9;fontStyle=1;align=right;spacingRight=6;" value="Rp 0" vertex="1">
+          <mxGeometry height="36" width="106" x="602" y="122" as="geometry" />
+        </mxCell>
+        <mxCell id="del2" parent="card_item" style="rounded=1;fontSize=11;" value="🗑" vertex="1">
+          <mxGeometry height="30" width="30" x="715" y="125" as="geometry" />
+        </mxCell>
+        <mxCell id="btnadd" parent="card_item" style="rounded=1;fontSize=10;" value="＋ Tambah Item" vertex="1">
+          <mxGeometry height="30" width="140" x="20" y="175" as="geometry" />
+        </mxCell>
+        <mxCell id="total_lbl" parent="card_item" style="text;html=1;align=right;fontSize=11;fontStyle=1;" value="Total Estimasi:" vertex="1">
+          <mxGeometry height="24" width="150" x="480" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="total_val" parent="card_item" style="text;html=1;align=right;fontSize=15;fontStyle=1;" value="Rp 0" vertex="1">
+          <mxGeometry height="30" width="120" x="630" y="226" as="geometry" />
+        </mxCell>
+        <mxCell id="btnsave" parent="1" style="rounded=1;fontSize=11;fontStyle=1;" value=" Kirim Pesanan" vertex="1">
+          <mxGeometry height="40" width="180" x="70" y="610" as="geometry" />
+        </mxCell>
+        <mxCell id="btncancel" parent="1" style="rounded=1;fontSize=11;" value="Batal" vertex="1">
+          <mxGeometry height="40" width="120" x="270" y="610" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,53 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Desain Notifikasi WhatsApp">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1"
+      tooltips="1" connect="1" arrows="1" fold="1" page="1"
+      pageScale="1" pageWidth="827" pageHeight="1169">
+
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- Frame Utama -->
+        <mxCell id="2" value=""
+          style="rounded=0;whiteSpace=wrap;html=1;"
+          vertex="1" parent="1">
+          <mxGeometry x="100" y="50" width="500" height="500" as="geometry"/>
+        </mxCell>
+
+        <!-- Judul -->
+        <mxCell id="3"
+          value="NOTIFIKASI WHATSAPP OTOMATIS"
+          style="text;html=1;align=center;fontStyle=1;fontSize=16;"
+          vertex="1" parent="1">
+          <mxGeometry x="170" y="70" width="350" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- Data Pelanggan -->
+        <mxCell id="4"
+          value="Nama Pelanggan : .......................&#10;No WhatsApp : 08xxxxxxxxxx"
+          style="rounded=1;whiteSpace=wrap;html=1;"
+          vertex="1" parent="1">
+          <mxGeometry x="140" y="120" width="420" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- Isi Pesan -->
+        <mxCell id="5"
+          value="Halo [Nama Pelanggan],&#10;&#10;Laundry Anda dengan kode transaksi [TRX001] telah selesai diproses.&#10;&#10;Detail :&#10;- Berat Cucian : xx Kg&#10;- Total Bayar : Rp xxx.xxx&#10;- Status : Selesai&#10;&#10;Silakan datang ke Laundry Sofia untuk mengambil cucian Anda.&#10;&#10;Terima Kasih."
+          style="rounded=1;whiteSpace=wrap;html=1;"
+          vertex="1" parent="1">
+          <mxGeometry x="140" y="210" width="420" height="220" as="geometry"/>
+        </mxCell>
+
+        <!-- Status -->
+        <mxCell id="6"
+          value="Status Pengiriman : Berhasil Terkirim"
+          style="rounded=1;whiteSpace=wrap;html=1;"
+          vertex="1" parent="1">
+          <mxGeometry x="140" y="450" width="420" height="50" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,76 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.3.6 Chrome/140.0.7339.249 Electron/38.8.0 Safari/537.36" version="29.3.6">
+  <diagram id="input_layanan" name="Form Input Layanan">
+    <mxGraphModel dx="786" dy="516" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="700" pageHeight="800" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="header" parent="1" style="rounded=1;fontSize=13;fontStyle=1;align=left;spacingLeft=15;labelBackgroundColor=none;" value="Tambah Layanan" vertex="1">
+          <mxGeometry height="40" width="540" x="80" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="body" parent="1" style="rounded=0;labelBackgroundColor=none;" value="" vertex="1">
+          <mxGeometry height="560" width="540" x="80" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="r1" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=10;fontStyle=1;labelBackgroundColor=none;" value="Kode Layanan *" vertex="1">
+          <mxGeometry height="18" width="160" x="100" y="115" as="geometry" />
+        </mxCell>
+        <mxCell id="fi1" parent="1" style="rounded=1;fontSize=10;align=left;spacingLeft=8;labelBackgroundColor=none;" value="LY-001" vertex="1">
+          <mxGeometry height="34" width="160" x="100" y="135" as="geometry" />
+        </mxCell>
+        <mxCell id="hint1" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=9;labelBackgroundColor=none;" value="Format: LY-001 (otomatis)" vertex="1">
+          <mxGeometry height="14" width="200" x="100" y="172" as="geometry" />
+        </mxCell>
+        <mxCell id="r2" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=10;fontStyle=1;labelBackgroundColor=none;" value="Nama Layanan *" vertex="1">
+          <mxGeometry height="18" width="300" x="300" y="115" as="geometry" />
+        </mxCell>
+        <mxCell id="fi2" parent="1" style="rounded=1;fontSize=10;align=left;spacingLeft=8;labelBackgroundColor=none;" value="Nama layanan percetakan" vertex="1">
+          <mxGeometry height="34" width="300" x="300" y="135" as="geometry" />
+        </mxCell>
+        <mxCell id="r3" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=10;fontStyle=1;labelBackgroundColor=none;" value="Kategori" vertex="1">
+          <mxGeometry height="18" width="200" x="100" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="fi3" parent="1" style="rounded=1;fontSize=10;align=left;spacingLeft=8;labelBackgroundColor=none;" value="-- Pilih Kategori --  ▼" vertex="1">
+          <mxGeometry height="34" width="220" x="100" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="r4" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=10;fontStyle=1;labelBackgroundColor=none;" value="Bahan / Material" vertex="1">
+          <mxGeometry height="18" width="200" x="360" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="fi4" parent="1" style="rounded=1;fontSize=10;align=left;spacingLeft=8;labelBackgroundColor=none;" value="-- Pilih Bahan --  ▼" vertex="1">
+          <mxGeometry height="34" width="220" x="360" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="r5" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=10;fontStyle=1;labelBackgroundColor=none;" value="Harga Satuan (Rp) *" vertex="1">
+          <mxGeometry height="18" width="200" x="100" y="275" as="geometry" />
+        </mxCell>
+        <mxCell id="fi5" parent="1" style="rounded=1;fontSize=10;align=left;spacingLeft=8;labelBackgroundColor=none;" value="0" vertex="1">
+          <mxGeometry height="34" width="160" x="100" y="295" as="geometry" />
+        </mxCell>
+        <mxCell id="r6" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=10;fontStyle=1;labelBackgroundColor=none;" value="Status *" vertex="1">
+          <mxGeometry height="18" width="200" x="300" y="275" as="geometry" />
+        </mxCell>
+        <mxCell id="fi6" parent="1" style="rounded=1;fontSize=10;align=left;spacingLeft=8;labelBackgroundColor=none;" value="Aktif  ▼" vertex="1">
+          <mxGeometry height="34" width="150" x="300" y="295" as="geometry" />
+        </mxCell>
+        <mxCell id="r7" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=10;fontStyle=1;labelBackgroundColor=none;" value="Gambar (Opsional)" vertex="1">
+          <mxGeometry height="18" width="200" x="100" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="fi7" parent="1" style="rounded=1;fontSize=10;align=left;spacingLeft=8;labelBackgroundColor=none;" value="Pilih file gambar (JPG/PNG)" vertex="1">
+          <mxGeometry height="34" width="500" x="100" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="r8" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=10;fontStyle=1;labelBackgroundColor=none;" value="Deskripsi" vertex="1">
+          <mxGeometry height="18" width="200" x="100" y="420" as="geometry" />
+        </mxCell>
+        <mxCell id="fi8" parent="1" style="rounded=1;fontSize=10;align=left;spacingLeft=8;verticalAlign=top;labelBackgroundColor=none;" value="Keterangan detail layanan..." vertex="1">
+          <mxGeometry height="80" width="500" x="100" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="sep" parent="1" style="line;labelBackgroundColor=none;" value="" vertex="1">
+          <mxGeometry height="10" width="540" x="80" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="btnsave" parent="1" style="rounded=1;fontSize=11;fontStyle=1;labelBackgroundColor=none;" value="💾  Simpan Layanan" vertex="1">
+          <mxGeometry height="38" width="180" x="100" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="btncancel" parent="1" style="rounded=1;fontSize=11;labelBackgroundColor=none;" value="Batal" vertex="1">
+          <mxGeometry height="38" width="120" x="300" y="560" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

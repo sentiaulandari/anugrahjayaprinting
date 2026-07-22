@@ -1,0 +1,48 @@
+<mxfile host="Electron" version="29.3.6">
+  <diagram id="output_layanan" name="Laporan Data Layanan">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" page="1" pageWidth="900" pageHeight="650">
+      <root>
+        <mxCell id="0"/><mxCell id="1" parent="0"/>
+        <mxCell id="title" value="Gambar 4.13 Laporan Data Layanan" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=13;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="100" y="20" width="700" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="page" value="" style="fillColor=#ffffff;strokeColor=#cccccc;shadow=1;" vertex="1" parent="1"><mxGeometry x="60" y="60" width="780" height="560" as="geometry"/></mxCell>
+        <mxCell id="kop" value="ANUGRAH JAYA DIGITAL PRINTING" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=14;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="60" y="75" width="780" height="22" as="geometry"/></mxCell>
+        <mxCell id="sub_kop" value="Laporan Data Layanan Percetakan" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=11;" vertex="1" parent="1"><mxGeometry x="60" y="100" width="780" height="18" as="geometry"/></mxCell>
+        <mxCell id="tgl" value="Dicetak: 02 Juni 2026  |  Total Data: 22 Layanan" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=9;fontColor=#666666;" vertex="1" parent="1"><mxGeometry x="60" y="120" width="780" height="15" as="geometry"/></mxCell>
+        <mxCell id="garis" value="" style="line;strokeColor=#1a1a2e;strokeWidth=2;" vertex="1" parent="1"><mxGeometry x="80" y="140" width="740" height="8" as="geometry"/></mxCell>
+
+        <mxCell id="thead" value="" style="fillColor=#1a1a2e;strokeColor=#1a1a2e;" vertex="1" parent="1"><mxGeometry x="80" y="152" width="740" height="28" as="geometry"/></mxCell>
+        <mxCell id="th1" value="No" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=9;fontStyle=1;fontColor=#ffffff;" vertex="1" parent="1"><mxGeometry x="80" y="152" width="40" height="28" as="geometry"/></mxCell>
+        <mxCell id="th2" value="Kode" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=9;fontStyle=1;fontColor=#ffffff;" vertex="1" parent="1"><mxGeometry x="120" y="152" width="70" height="28" as="geometry"/></mxCell>
+        <mxCell id="th3" value="Nama Layanan" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=9;fontStyle=1;fontColor=#ffffff;spacingLeft=5;" vertex="1" parent="1"><mxGeometry x="190" y="152" width="170" height="28" as="geometry"/></mxCell>
+        <mxCell id="th4" value="Kategori" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=9;fontStyle=1;fontColor=#ffffff;spacingLeft=5;" vertex="1" parent="1"><mxGeometry x="360" y="152" width="110" height="28" as="geometry"/></mxCell>
+        <mxCell id="th5" value="Bahan" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=9;fontStyle=1;fontColor=#ffffff;spacingLeft=5;" vertex="1" parent="1"><mxGeometry x="470" y="152" width="130" height="28" as="geometry"/></mxCell>
+        <mxCell id="th6" value="Harga Satuan" style="text;html=1;strokeColor=none;fillColor=none;align=right;fontSize=9;fontStyle=1;fontColor=#ffffff;spacingRight=5;" vertex="1" parent="1"><mxGeometry x="600" y="152" width="120" height="28" as="geometry"/></mxCell>
+        <mxCell id="th7" value="Status" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=9;fontStyle=1;fontColor=#ffffff;" vertex="1" parent="1"><mxGeometry x="720" y="152" width="100" height="28" as="geometry"/></mxCell>
+
+        <mxCell id="r1bg" value="" style="fillColor=#ffffff;strokeColor=#e0e0e0;" vertex="1" parent="1"><mxGeometry x="80" y="180" width="740" height="26" as="geometry"/></mxCell>
+        <mxCell id="r1n" value="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=9;" vertex="1" parent="1"><mxGeometry x="80" y="180" width="40" height="26" as="geometry"/></mxCell>
+        <mxCell id="r1k" value="LY-001" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=9;" vertex="1" parent="1"><mxGeometry x="120" y="180" width="70" height="26" as="geometry"/></mxCell>
+        <mxCell id="r1nm" value="Spanduk" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=9;spacingLeft=5;" vertex="1" parent="1"><mxGeometry x="190" y="180" width="170" height="26" as="geometry"/></mxCell>
+        <mxCell id="r1kat" value="Outdoor" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=9;spacingLeft=5;" vertex="1" parent="1"><mxGeometry x="360" y="180" width="110" height="26" as="geometry"/></mxCell>
+        <mxCell id="r1bh" value="Flexi China 280gr" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=9;spacingLeft=5;" vertex="1" parent="1"><mxGeometry x="470" y="180" width="130" height="26" as="geometry"/></mxCell>
+        <mxCell id="r1hr" value="Rp 15.000" style="text;html=1;strokeColor=none;fillColor=none;align=right;fontSize=9;spacingRight=5;" vertex="1" parent="1"><mxGeometry x="600" y="180" width="120" height="26" as="geometry"/></mxCell>
+        <mxCell id="r1st" value="Aktif" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=9;fontColor=#16a34a;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="720" y="180" width="100" height="26" as="geometry"/></mxCell>
+
+        <mxCell id="r2bg" value="" style="fillColor=#f9f9f9;strokeColor=#e0e0e0;" vertex="1" parent="1"><mxGeometry x="80" y="206" width="740" height="26" as="geometry"/></mxCell>
+        <mxCell id="r2n" value="2" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=9;" vertex="1" parent="1"><mxGeometry x="80" y="206" width="40" height="26" as="geometry"/></mxCell>
+        <mxCell id="r2k" value="LY-002" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=9;" vertex="1" parent="1"><mxGeometry x="120" y="206" width="70" height="26" as="geometry"/></mxCell>
+        <mxCell id="r2nm" value="Baliho" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=9;spacingLeft=5;" vertex="1" parent="1"><mxGeometry x="190" y="206" width="170" height="26" as="geometry"/></mxCell>
+        <mxCell id="r2kat" value="Outdoor" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=9;spacingLeft=5;" vertex="1" parent="1"><mxGeometry x="360" y="206" width="110" height="26" as="geometry"/></mxCell>
+        <mxCell id="r2bh" value="Albatros" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=9;spacingLeft=5;" vertex="1" parent="1"><mxGeometry x="470" y="206" width="130" height="26" as="geometry"/></mxCell>
+        <mxCell id="r2hr" value="Rp 20.000" style="text;html=1;strokeColor=none;fillColor=none;align=right;fontSize=9;spacingRight=5;" vertex="1" parent="1"><mxGeometry x="600" y="206" width="120" height="26" as="geometry"/></mxCell>
+        <mxCell id="r2st" value="Aktif" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=9;fontColor=#16a34a;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="720" y="206" width="100" height="26" as="geometry"/></mxCell>
+
+        <mxCell id="dots" value="...  (data lainnya)" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=9;fontColor=#aaaaaa;" vertex="1" parent="1"><mxGeometry x="80" y="235" width="740" height="26" as="geometry"/></mxCell>
+        <mxCell id="garis2" value="" style="line;strokeColor=#1a1a2e;" vertex="1" parent="1"><mxGeometry x="80" y="265" width="740" height="8" as="geometry"/></mxCell>
+        <mxCell id="footer" value="Sistem Informasi Anugrah Jaya Digital Printing  ©  2026" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=9;fontColor=#aaaaaa;" vertex="1" parent="1"><mxGeometry x="80" y="278" width="740" height="16" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

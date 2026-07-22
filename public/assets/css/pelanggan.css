@@ -1,0 +1,154 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --dark: #1a1a2e;
+    --accent: #ffc107;
+    --bg: #f0f2f8;
+    --card-radius: 16px;
+    --transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+
+body {
+    background-color: var(--bg);
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    color: #1a1a2e;
+}
+
+.pelanggan-wrapper { min-height: calc(100vh - 140px); }
+
+.card {
+    border-radius: var(--card-radius);
+    border: none;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
+    background: #fff;
+    transition: var(--transition);
+}
+
+.card:hover { box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+
+.card-header {
+    background: #fff;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-radius: var(--card-radius) var(--card-radius) 0 0 !important;
+    padding: 1rem 1.25rem;
+}
+
+.stat-card-pelanggan {
+    border-radius: var(--card-radius);
+    padding: 1.25rem;
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.stat-card-pelanggan:hover { transform: translateY(-2px); }
+
+.stat-card-pelanggan .stat-val {
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1;
+    color: #fff;
+}
+
+.stat-card-pelanggan .stat-lbl {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.7);
+    font-weight: 500;
+    margin-top: 4px;
+}
+
+.btn {
+    border-radius: 10px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.btn:hover { transform: translateY(-1px); }
+
+.btn-primary {
+    background: linear-gradient(135deg, #1a1a2e, #0f3460);
+    border: none;
+    box-shadow: 0 4px 12px rgba(26,26,46,0.25);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #0f3460, #1a1a2e);
+    box-shadow: 0 6px 16px rgba(26,26,46,0.35);
+}
+
+.form-control, .form-select {
+    border-radius: 10px;
+    font-size: 0.875rem;
+    border-color: #e5e7eb;
+    padding: 0.6rem 0.9rem;
+    transition: var(--transition);
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--dark);
+    box-shadow: 0 0 0 3px rgba(26,26,46,0.1);
+}
+
+.table th {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #9ca3af;
+    font-weight: 600;
+    background: #fafafa;
+    padding: 0.75rem 1rem;
+}
+
+.table td {
+    vertical-align: middle;
+    font-size: 0.875rem;
+    padding: 0.75rem 1rem;
+    border-color: rgba(0,0,0,0.04);
+}
+
+.badge {
+    font-size: 0.72rem;
+    padding: 0.35em 0.75em;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+.page-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--dark);
+    letter-spacing: -0.02em;
+}
+
+.welcome-banner {
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
+    border-radius: 20px;
+    padding: 1.75rem 2rem;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+
+.welcome-banner::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, rgba(255,193,7,0.15) 0%, transparent 70%);
+}
+
+.welcome-banner::after {
+    content: '';
+    position: absolute;
+    bottom: -60px;
+    left: 30%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+}
