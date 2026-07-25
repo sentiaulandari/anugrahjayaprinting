@@ -3,19 +3,16 @@
 
 <div class="d-flex align-items-center justify-content-between mb-4">
     <div>
-        <h4 class="page-title mb-0">Data Pesanan</h4>
+        <h4 class="page-title mb-0">Pemesanan</h4>
         <nav aria-label="breadcrumb"><ol class="breadcrumb mb-0 small"><li class="breadcrumb-item"><a href="<?= base_url('admin/dashboard') ?>">Dashboard</a></li><li class="breadcrumb-item active">Pesanan</li></ol></nav>
     </div>
-    <a href="<?= base_url('admin/pesanan/create') ?>" class="btn btn-primary btn-sm">
-        <i class="bi bi-plus-lg me-1"></i>Buat Pesanan
-    </a>
 </div>
 
 <?= view('layouts/partials/alert') ?>
 
 <div class="card">
     <div class="card-header d-flex align-items-center justify-content-between">
-        <span><i class="bi bi-cart3 me-2"></i>Daftar Pesanan</span>
+        <span><i class="bi bi-cart3 me-2"></i>Daftar Pesanan (Booking dari Konsumen)</span>
         <span class="badge bg-primary"><?= count($pesanan) ?> data</span>
     </div>
     <div class="card-body p-0">
@@ -30,7 +27,7 @@
                         <th>Total</th>
                         <th>Status</th>
                         <th>Pembayaran</th>
-                        <th width="100">Aksi</th>
+                        <th width="120">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,6 +46,9 @@
                             <td>
                                 <a href="<?= base_url('admin/pesanan/show/' . $p['no_pesanan']) ?>" class="btn btn-sm btn-outline-info py-1 px-2" title="Detail">
                                     <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="<?= base_url('admin/pesanan/edit/' . $p['no_pesanan']) ?>" class="btn btn-sm btn-outline-warning py-1 px-2" title="Edit">
+                                    <i class="bi bi-pencil"></i>
                                 </a>
                                 <a href="<?= base_url('admin/pesanan/delete/' . $p['no_pesanan']) ?>"
                                     class="btn btn-sm btn-outline-danger py-1 px-2 btn-hapus"

@@ -41,7 +41,7 @@
                     <label class="form-label fw-semibold small">Nama Layanan <span class="text-danger">*</span></label>
                     <input type="text" name="nama_layanan" class="form-control"
                         value="<?= old('nama_layanan', $layanan['nama_layanan'] ?? '') ?>"
-                        placeholder="Nama layanan percetakan" required>
+                        placeholder="Contoh: Baliho, Banner, Brosur" required>
                 </div>
 
                 <div class="col-md-6">
@@ -71,10 +71,27 @@
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label fw-semibold small">Harga Satuan (Rp) <span class="text-danger">*</span></label>
+                    <label class="form-label fw-semibold small">Harga Tetap (Rp)</label>
                     <input type="number" name="harga_satuan" class="form-control"
-                        value="<?= old('harga_satuan', $layanan['harga_satuan'] ?? '') ?>"
-                        placeholder="0" min="0" step="100" required>
+                        value="<?= old('harga_satuan', $layanan['harga_satuan'] ?? 0) ?>"
+                        placeholder="0" min="0" step="100">
+                    <div class="form-text">Harga tetap jika tidak ada ukuran</div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold small">Harga Per Meter (Rp)</label>
+                    <input type="number" name="harga_per_meter" class="form-control"
+                        value="<?= old('harga_per_meter', $layanan['harga_per_meter'] ?? 0) ?>"
+                        placeholder="0" min="0" step="100">
+                    <div class="form-text">Harga per m² untuk produk berukuran</div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold small">Diskon Desain Sendiri (Rp)</label>
+                    <input type="number" name="diskon_desain_sendiri" class="form-control"
+                        value="<?= old('diskon_desain_sendiri', $layanan['diskon_desain_sendiri'] ?? 5000) ?>"
+                        placeholder="5000" min="0" step="500">
+                    <div class="form-text">Potongan harga jika pelanggan bawa desain sendiri</div>
                 </div>
 
                 <div class="col-md-4">

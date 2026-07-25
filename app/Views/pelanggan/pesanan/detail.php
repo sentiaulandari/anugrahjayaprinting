@@ -69,11 +69,19 @@
                             <tr>
                                 <td>
                                     <div class="fw-semibold small"><?= $d['nama_layanan'] ?? $d['kode_layanan'] ?></div>
+                                    <?php if ($d['desain_sendiri']): ?>
+                                        <span class="badge bg-info" style="font-size:0.6rem;">Desain Sendiri</span>
+                                    <?php endif; ?>
                                     <?php if ($d['keterangan']): ?>
                                         <div class="text-muted" style="font-size:0.75rem;"><?= esc($d['keterangan']) ?></div>
                                     <?php endif; ?>
                                 </td>
-                                <td class="small"><?= $d['ukuran'] ?? '-' ?></td>
+                                <td class="small">
+                                    <?= $d['ukuran'] ?? '-' ?>
+                                    <?php if ($d['panjang'] && $d['lebar']): ?>
+                                        <div class="text-muted" style="font-size:0.7rem;"><?= $d['panjang'] ?>m × <?= $d['lebar'] ?>m</div>
+                                    <?php endif; ?>
+                                </td>
                                 <td><?= $d['qty'] ?></td>
                                 <td class="small">Rp <?= number_format($d['harga_satuan'], 0, ',', '.') ?></td>
                                 <td class="fw-semibold small">Rp <?= number_format($d['subtotal'], 0, ',', '.') ?></td>
@@ -90,46 +98,6 @@
                 </div>
             </div>
         </div>
-
-        <?php if ($pesanan['status_pesanan'] === 'selesai'): ?>
-        <div class="card" style="border:1px solid rgba(220,53,69,0.2);">
-            <div class="card-body">
-                <?php if ($sudahReturn): ?>
-                    <div class="d-flex align-items-center gap-3">
-                        <div style="width:44px;height:44px;background:rgba(220,53,69,0.08);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                            <i class="bi bi-arrow-return-left" style="color:#dc3545;font-size:1.2rem;"></i>
-                        </div>
-                        <div class="flex-grow-1">
-                            <div class="fw-semibold small">Return sudah diajukan</div>
-                            <div class="small text-muted">
-                                Tanggal: <?= date('d F Y', strtotime($sudahReturn['tgl_return'])) ?>
-                                &nbsp;&bull;&nbsp;
-                                Status: <?= view('layouts/partials/badge_status', ['status' => $sudahReturn['status_return']]) ?>
-                            </div>
-                        </div>
-                        <a href="<?= base_url('pelanggan/return/detail/' . $sudahReturn['id_return']) ?>"
-                            class="btn btn-sm btn-outline-danger flex-shrink-0">
-                            <i class="bi bi-eye me-1"></i>Lihat Detail Return
-                        </a>
-                    </div>
-                <?php else: ?>
-                    <div class="d-flex align-items-center gap-3">
-                        <div style="width:44px;height:44px;background:rgba(220,53,69,0.08);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                            <i class="bi bi-arrow-return-left" style="color:#dc3545;font-size:1.2rem;"></i>
-                        </div>
-                        <div class="flex-grow-1">
-                            <div class="fw-semibold small">Ada masalah dengan pesanan ini?</div>
-                            <div class="small text-muted">Ajukan return jika hasil cetak tidak sesuai atau ada cacat</div>
-                        </div>
-                        <a href="<?= base_url('pelanggan/return/form/' . $pesanan['no_pesanan']) ?>"
-                            class="btn btn-sm btn-danger flex-shrink-0">
-                            <i class="bi bi-arrow-return-left me-1"></i>Ajukan Return
-                        </a>
-                    </div>
-                <?php endif; ?>
-            </div>
-        </div>
-        <?php endif; ?>
 
     </div>
 
@@ -197,20 +165,6 @@
                     </div>
                     <div class="pt-1">
                         <div class="small fw-semibold text-danger">Dibatalkan</div>
-                    </div>
-                </div>
-                <?php endif; ?>
-
-                <?php if ($current === 'selesai' && $sudahReturn): ?>
-                <div class="d-flex gap-3 mt-2">
-                    <div class="rounded-circle d-flex align-items-center justify-content-center"
-                        style="width:32px;height:32px;min-width:32px;background:rgba(220,53,69,0.1);">
-                        <i class="bi bi-arrow-return-left" style="color:#dc3545;font-size:0.85rem;"></i>
-                    </div>
-                    <div class="pt-1">
-                        <div class="small fw-semibold" style="color:#dc3545;">
-                            Return <?= ucfirst($sudahReturn['status_return']) ?>
-                        </div>
                     </div>
                 </div>
                 <?php endif; ?>

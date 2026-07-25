@@ -36,7 +36,7 @@
 
 <div class="card">
     <div class="card-header d-flex align-items-center justify-content-between">
-        <span><i class="bi bi-cart3 me-2"></i>Data Pesanan: <?= date('d/m/Y', strtotime($dari)) ?> - <?= date('d/m/Y', strtotime($sampai)) ?></span>
+        <span><i class="bi bi-cart3 me-2"></i>Pemesanan: <?= date('d/m/Y', strtotime($dari)) ?> - <?= date('d/m/Y', strtotime($sampai)) ?></span>
         <span class="badge bg-primary"><?= count($pesanan) ?> data</span>
     </div>
     <div class="card-body p-0">

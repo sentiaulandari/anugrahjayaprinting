@@ -17,7 +17,7 @@ class BahanController extends BaseController
     public function index(): string
     {
         $data = [
-            'title'        => 'Data Bahan/Material',
+            'title'        => 'Pengelolaan Bahan',
             'bahan'        => $this->bahanModel->findAll(),
             'stokMenurun'  => $this->bahanModel->getStokMenurun(),
         ];
@@ -48,6 +48,7 @@ class BahanController extends BaseController
             'satuan'       => $this->request->getPost('satuan'),
             'stok'         => $this->request->getPost('stok'),
             'stok_minimum' => $this->request->getPost('stok_minimum'),
+            'harga'        => $this->request->getPost('harga') ?? 0,
             'keterangan'   => $this->request->getPost('keterangan'),
         ]);
 
@@ -89,6 +90,7 @@ class BahanController extends BaseController
             'satuan'       => $this->request->getPost('satuan'),
             'stok'         => $this->request->getPost('stok'),
             'stok_minimum' => $this->request->getPost('stok_minimum'),
+            'harga'        => $this->request->getPost('harga') ?? 0,
             'keterangan'   => $this->request->getPost('keterangan'),
         ]);
 

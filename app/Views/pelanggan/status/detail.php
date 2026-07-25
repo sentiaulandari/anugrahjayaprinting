@@ -64,6 +64,9 @@
                             <tr>
                                 <td>
                                     <div class="fw-semibold small"><?= $d['nama_layanan'] ?? $d['kode_layanan'] ?></div>
+                                    <?php if ($d['desain_sendiri']): ?>
+                                        <span class="badge bg-info" style="font-size:0.6rem;">Desain Sendiri</span>
+                                    <?php endif; ?>
                                     <?php if ($d['keterangan']): ?>
                                         <div class="text-muted" style="font-size:0.75rem;"><?= $d['keterangan'] ?></div>
                                     <?php endif; ?>
@@ -112,6 +115,76 @@
                         <div class="alert alert-info py-2 mb-0 small"><?= $pembayaran['catatan_admin'] ?></div>
                     </div>
                     <?php endif; ?>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
+
+        <?php if ($pesanan['status_bayar'] === 'sudah bayar' || $pesanan['status_pesanan'] === 'selesai'): ?>
+        <div class="card mt-3 border-success">
+            <div class="card-header bg-success text-white"><i class="bi bi-receipt-cutoff me-2"></i>Faktur Pembayaran</div>
+            <div class="card-body">
+                <div class="text-center mb-3">
+                    <h5 class="fw-bold mb-0">Anugrah Jaya Digital Printing</h5>
+                    <div class="small text-muted">Cetak Digital & Percetakan</div>
+                    <div class="small text-muted">Telp: 0822 8790 0182 | Budi: 0352 8766 0078</div>
+                </div>
+                <hr>
+                <div class="row g-2 small mb-3">
+                    <div class="col-6">
+                        <div class="text-muted">No. Pesanan</div>
+                        <div class="fw-bold"><?= $pesanan['no_pesanan'] ?></div>
+                    </div>
+                    <div class="col-6 text-end">
+                        <div class="text-muted">Tanggal</div>
+                        <div><?= date('d F Y', strtotime($pesanan['tgl_pesanan'])) ?></div>
+                    </div>
+                    <div class="col-6">
+                        <div class="text-muted">Pelanggan</div>
+                        <div class="fw-semibold"><?= $pesanan['nama_pelanggan'] ?? '-' ?></div>
+                    </div>
+                    <div class="col-6 text-end">
+                        <div class="text-muted">Status</div>
+                        <div class="badge bg-success">Lunas</div>
+                    </div>
+                </div>
+
+                <div class="table-responsive mb-3">
+                    <table class="table table-sm table-bordered mb-0 small">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Item</th>
+                                <th class="text-center">Qty</th>
+                                <th class="text-end">Harga</th>
+                                <th class="text-end">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($detail as $d): ?>
+                            <tr>
+                                <td>
+                                    <?= $d['nama_layanan'] ?? $d['kode_layanan'] ?>
+                                    <?php if ($d['ukuran']): ?>
+                                        <br><span class="text-muted"><?= $d['ukuran'] ?></span>
+                                    <?php endif; ?>
+                                </td>
+                                <td class="text-center"><?= $d['qty'] ?></td>
+                                <td class="text-end">Rp <?= number_format($d['harga_satuan'], 0, ',', '.') ?></td>
+                                <td class="text-end fw-semibold">Rp <?= number_format($d['subtotal'], 0, ',', '.') ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                        <tfoot>
+                            <tr class="table-light">
+                                <td colspan="3" class="text-end fw-bold">Total</td>
+                                <td class="text-end fw-bold text-primary">Rp <?= number_format($pesanan['total_harga'], 0, ',', '.') ?></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="text-center small text-muted">
+                    Terima kasih atas kepercayaan Anda 🙏
                 </div>
             </div>
         </div>

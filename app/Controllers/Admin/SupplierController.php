@@ -4,7 +4,6 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
 use App\Models\SupplierModel;
-use CodeIgniter\HTTP\RedirectResponse;
 
 class SupplierController extends BaseController
 {
@@ -18,7 +17,7 @@ class SupplierController extends BaseController
     public function index(): string
     {
         $data = [
-            'title'    => 'Data Supplier',
+            'title'    => 'Pengelolaan Supplier',
             'supplier' => $this->supplierModel->findAll(),
         ];
 
@@ -30,12 +29,10 @@ class SupplierController extends BaseController
         return view('admin/supplier/form', ['title' => 'Tambah Supplier']);
     }
 
-    public function store(): RedirectResponse
+    public function store()
     {
         $rules = [
             'nama_supplier' => 'required|max_length[100]',
-            'no_hp'         => 'permit_empty|max_length[15]',
-            'email'         => 'permit_empty|valid_email',
         ];
 
         if (!$this->validate($rules)) {
@@ -44,17 +41,17 @@ class SupplierController extends BaseController
 
         $this->supplierModel->insert([
             'nama_supplier' => $this->request->getPost('nama_supplier'),
+            'alamat'        => $this->request->getPost('alamat'),
             'no_hp'         => $this->request->getPost('no_hp'),
             'email'         => $this->request->getPost('email'),
-            'alamat'        => $this->request->getPost('alamat'),
-            'keterangan'    => $this->request->getPost('keterangan'),
+            'nama_produk'   => $this->request->getPost('nama_produk'),
             'created_at'    => date('Y-m-d H:i:s'),
         ]);
 
         return redirect()->to('/admin/supplier')->with('success', 'Supplier berhasil ditambahkan.');
     }
 
-    public function edit(int $id): RedirectResponse|string
+    public function edit(int $id): string
     {
         $supplier = $this->supplierModel->find($id);
 
@@ -65,7 +62,7 @@ class SupplierController extends BaseController
         return view('admin/supplier/form', ['title' => 'Edit Supplier', 'supplier' => $supplier]);
     }
 
-    public function update(int $id): RedirectResponse
+    public function update(int $id)
     {
         $supplier = $this->supplierModel->find($id);
 
@@ -75,8 +72,6 @@ class SupplierController extends BaseController
 
         $rules = [
             'nama_supplier' => 'required|max_length[100]',
-            'no_hp'         => 'permit_empty|max_length[15]',
-            'email'         => 'permit_empty|valid_email',
         ];
 
         if (!$this->validate($rules)) {
@@ -85,16 +80,16 @@ class SupplierController extends BaseController
 
         $this->supplierModel->update($id, [
             'nama_supplier' => $this->request->getPost('nama_supplier'),
+            'alamat'        => $this->request->getPost('alamat'),
             'no_hp'         => $this->request->getPost('no_hp'),
             'email'         => $this->request->getPost('email'),
-            'alamat'        => $this->request->getPost('alamat'),
-            'keterangan'    => $this->request->getPost('keterangan'),
+            'nama_produk'   => $this->request->getPost('nama_produk'),
         ]);
 
         return redirect()->to('/admin/supplier')->with('success', 'Supplier berhasil diperbarui.');
     }
 
-    public function delete(int $id): RedirectResponse
+    public function delete(int $id)
     {
         $supplier = $this->supplierModel->find($id);
 

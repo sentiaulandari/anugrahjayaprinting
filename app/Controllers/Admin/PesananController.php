@@ -29,7 +29,7 @@ class PesananController extends BaseController
     public function index(): string
     {
         $data = [
-            'title'   => 'Data Pesanan',
+            'title'   => 'Pemesanan',
             'pesanan' => $this->pesananModel->getWithPelanggan(),
         ];
 
@@ -53,75 +53,40 @@ class PesananController extends BaseController
         return view('admin/pesanan/detail', $data);
     }
 
-    public function create(): string
+    public function edit(string $no): string
     {
+        $pesanan = $this->pesananModel->getDetailPesanan($no);
+
+        if (!$pesanan) {
+            return redirect()->to('/admin/pesanan')->with('error', 'Pesanan tidak ditemukan.');
+        }
+
         $data = [
-            'title'     => 'Tambah Pesanan',
+            'title'   => 'Edit Pesanan',
+            'pesanan' => $pesanan,
+            'detail'  => $this->detailModel->getByNoPesanan($no),
             'pelanggan' => $this->pelangganModel->findAll(),
             'layanan'   => $this->layananModel->getAktif(),
-            'no_baru'   => $this->pesananModel->generateNoPesanan(),
-            'tgl_hari'  => date('Y-m-d'),
         ];
 
-        return view('admin/pesanan/form', $data);
+        return view('admin/pesanan/form_edit', $data);
     }
 
-    public function store()
+    public function update(string $no)
     {
-        $rules = [
-            'id_pelanggan' => 'required|integer',
-            'tgl_selesai'  => 'required|valid_date',
-        ];
+        $pesanan = $this->pesananModel->find($no);
 
-        if (!$this->validate($rules)) {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        if (!$pesanan) {
+            return redirect()->to('/admin/pesanan')->with('error', 'Pesanan tidak ditemukan.');
         }
 
-        $noPesanan = $this->pesananModel->generateNoPesanan();
-        $tglPesan  = date('Y-m-d');
-
-        $this->pesananModel->insert([
-            'no_pesanan'     => $noPesanan,
-            'id_pelanggan'   => $this->request->getPost('id_pelanggan'),
-            'tgl_pesanan'    => $tglPesan,
-            'tgl_selesai'    => $this->request->getPost('tgl_selesai'),
-            'status_pesanan' => 'menunggu',
-            'status_bayar'   => 'belum bayar',
-            'catatan'        => $this->request->getPost('catatan'),
-            'created_at'     => date('Y-m-d H:i:s'),
+        $this->pesananModel->update($no, [
+            'id_pelanggan' => $this->request->getPost('id_pelanggan'),
+            'tgl_selesai'  => $this->request->getPost('tgl_selesai'),
+            'catatan'      => $this->request->getPost('catatan'),
         ]);
 
-        $kodeLayanan = $this->request->getPost('kode_layanan');
-        $qtys        = $this->request->getPost('qty');
-        $ukurans     = $this->request->getPost('ukuran');
-        $keterangans = $this->request->getPost('keterangan_detail');
-        $total       = 0;
-
-        foreach ($kodeLayanan as $i => $kode) {
-            $layanan = $this->layananModel->find($kode);
-            if (!$layanan) {
-                continue;
-            }
-
-            $qty      = (int) $qtys[$i];
-            $harga    = (float) $layanan['harga_satuan'];
-            $subtotal = $qty * $harga;
-            $total   += $subtotal;
-
-            $this->detailModel->insert([
-                'no_pesanan'   => $noPesanan,
-                'kode_layanan' => $kode,
-                'qty'          => $qty,
-                'harga_satuan' => $harga,
-                'subtotal'     => $subtotal,
-                'ukuran'       => $ukurans[$i] ?? null,
-                'keterangan'   => $keterangans[$i] ?? null,
-            ]);
-        }
-
-        $this->pesananModel->update($noPesanan, ['total_harga' => $total]);
-
-        return redirect()->to('/admin/pesanan')->with('success', 'Pesanan ' . $noPesanan . ' berhasil dibuat.');
+        return redirect()->to('/admin/pesanan/show/' . $no)->with('success', 'Data pesanan berhasil diperbarui.');
     }
 
     public function updateStatus(string $no)

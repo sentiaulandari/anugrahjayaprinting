@@ -6,21 +6,18 @@ use App\Controllers\BaseController;
 use App\Models\PesananModel;
 use App\Models\DetailPesananModel;
 use App\Models\LayananModel;
-use App\Models\ReturnPesananModel;
 
 class PesananController extends BaseController
 {
     protected PesananModel $pesananModel;
     protected DetailPesananModel $detailModel;
     protected LayananModel $layananModel;
-    protected ReturnPesananModel $returnModel;
 
     public function __construct()
     {
         $this->pesananModel = new PesananModel();
         $this->detailModel  = new DetailPesananModel();
         $this->layananModel = new LayananModel();
-        $this->returnModel  = new ReturnPesananModel();
     }
 
     public function index(): string
@@ -44,13 +41,10 @@ class PesananController extends BaseController
             return redirect()->to('/pelanggan/pesanan')->with('error', 'Pesanan tidak ditemukan.');
         }
 
-        $sudahReturn = $this->returnModel->getByNoPesanan($no);
-
         $data = [
-            'title'       => 'Detail Pesanan',
-            'pesanan'     => $pesanan,
-            'detail'      => $this->detailModel->getByNoPesanan($no),
-            'sudahReturn' => $sudahReturn,
+            'title'   => 'Detail Pesanan',
+            'pesanan' => $pesanan,
+            'detail'  => $this->detailModel->getByNoPesanan($no),
         ];
 
         return view('pelanggan/pesanan/detail', $data);
@@ -97,7 +91,9 @@ class PesananController extends BaseController
 
         $kodeLayanan = $this->request->getPost('kode_layanan');
         $qtys        = $this->request->getPost('qty');
-        $ukurans     = $this->request->getPost('ukuran');
+        $panjangs    = $this->request->getPost('panjang');
+        $lebars      = $this->request->getPost('lebar');
+        $desains     = $this->request->getPost('desain_sendiri');
         $keterangans = $this->request->getPost('keterangan_detail');
         $total       = 0;
 
@@ -107,19 +103,39 @@ class PesananController extends BaseController
                 continue;
             }
 
-            $qty      = (int) $qtys[$i];
-            $harga    = (float) $layanan['harga_satuan'];
-            $subtotal = $qty * $harga;
+            $panjang   = (float) ($panjangs[$i] ?? 0);
+            $lebar     = (float) ($lebars[$i] ?? 0);
+            $qty       = (int) ($qtys[$i] ?? 1);
+            $desain    = isset($desains[$i]) ? 1 : 0;
+            $diskon    = (float) ($layanan['diskon_desain_sendiri'] ?? 5000);
+
+            $hargaPerMeter = (float) ($layanan['harga_per_meter'] ?? 0);
+            $hargaSatuan   = $panjang * $lebar * $hargaPerMeter;
+
+            if ($desain && $hargaSatuan > 0) {
+                $hargaSatuan = max(0, $hargaSatuan - $diskon);
+            }
+
+            if ($hargaSatuan <= 0) {
+                $hargaSatuan = (float) ($layanan['harga_satuan'] ?? 0);
+            }
+
+            $subtotal = $hargaSatuan * $qty;
             $total   += $subtotal;
 
+            $ukuranStr = ($panjang > 0 && $lebar > 0) ? $panjang . 'x' . $lebar . 'm' : null;
+
             $this->detailModel->insert([
-                'no_pesanan'   => $noPesanan,
-                'kode_layanan' => $kode,
-                'qty'          => $qty,
-                'harga_satuan' => $harga,
-                'subtotal'     => $subtotal,
-                'ukuran'       => $ukurans[$i] ?? null,
-                'keterangan'   => $keterangans[$i] ?? null,
+                'no_pesanan'      => $noPesanan,
+                'kode_layanan'    => $kode,
+                'qty'             => $qty,
+                'harga_satuan'    => $hargaSatuan,
+                'subtotal'        => $subtotal,
+                'ukuran'          => $ukuranStr,
+                'panjang'         => $panjang ?: null,
+                'lebar'           => $lebar ?: null,
+                'desain_sendiri'  => $desain,
+                'keterangan'      => $keterangans[$i] ?? null,
             ]);
         }
 

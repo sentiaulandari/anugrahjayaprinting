@@ -6,13 +6,12 @@ use App\Controllers\BaseController;
 use App\Models\PembelianModel;
 use App\Models\SupplierModel;
 use App\Models\BahanModel;
-use CodeIgniter\HTTP\RedirectResponse;
 
 class PembelianController extends BaseController
 {
     protected PembelianModel $pembelianModel;
-    protected SupplierModel  $supplierModel;
-    protected BahanModel     $bahanModel;
+    protected SupplierModel $supplierModel;
+    protected BahanModel $bahanModel;
 
     public function __construct()
     {
@@ -24,9 +23,8 @@ class PembelianController extends BaseController
     public function index(): string
     {
         $data = [
-            'title'      => 'Pengelolaan Pembelian',
-            'pembelian'  => $this->pembelianModel->getWithRelasi(),
-            'totalBulan' => $this->pembelianModel->getTotalPembelian(date('Y-m-01'), date('Y-m-d')),
+            'title'     => 'Pengelolaan Pembelian',
+            'pembelian' => $this->pembelianModel->getWithRelasi(),
         ];
 
         return view('admin/pembelian/index', $data);
@@ -36,21 +34,20 @@ class PembelianController extends BaseController
     {
         $data = [
             'title'    => 'Tambah Pembelian',
-            'supplier' => $this->supplierModel->getForSelect(),
-            'bahan'    => $this->bahanModel->getForSelect(),
-            'no_baru'  => $this->pembelianModel->generateNoPembelian(),
-            'tgl_hari' => date('Y-m-d'),
+            'supplier' => $this->supplierModel->findAll(),
+            'bahan'    => $this->bahanModel->findAll(),
         ];
 
         return view('admin/pembelian/form', $data);
     }
 
-    public function store(): RedirectResponse
+    public function store()
     {
         $rules = [
+            'id_supplier'   => 'required|integer',
             'id_bahan'      => 'required|integer',
             'jumlah'        => 'required|integer|greater_than[0]',
-            'harga_satuan'  => 'required|decimal|greater_than[0]',
+            'harga_satuan'  => 'required|decimal|greater_than_equal_to[0]',
             'tgl_pembelian' => 'required|valid_date',
         ];
 
@@ -58,40 +55,36 @@ class PembelianController extends BaseController
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
-        $jumlah      = (int)   $this->request->getPost('jumlah');
+        $jumlah     = (int) $this->request->getPost('jumlah');
         $hargaSatuan = (float) $this->request->getPost('harga_satuan');
-        $totalHarga  = $jumlah * $hargaSatuan;
-        $noPembelian = $this->pembelianModel->generateNoPembelian();
+        $hargaTotal  = $jumlah * $hargaSatuan;
 
         $this->pembelianModel->insert([
-            'no_pembelian'  => $noPembelian,
-            'id_supplier'   => $this->request->getPost('id_supplier') ?: null,
-            'id_bahan'      => $this->request->getPost('id_bahan'),
-            'tgl_pembelian' => $this->request->getPost('tgl_pembelian'),
-            'jumlah'        => $jumlah,
-            'harga_satuan'  => $hargaSatuan,
-            'total_harga'   => $totalHarga,
-            'keterangan'    => $this->request->getPost('keterangan'),
-            'created_at'    => date('Y-m-d H:i:s'),
+            'id_supplier'    => $this->request->getPost('id_supplier'),
+            'id_bahan'       => $this->request->getPost('id_bahan'),
+            'jumlah'         => $jumlah,
+            'harga_satuan'   => $hargaSatuan,
+            'harga_total'    => $hargaTotal,
+            'tgl_pembelian'  => $this->request->getPost('tgl_pembelian'),
+            'catatan'        => $this->request->getPost('catatan'),
+            'created_at'     => date('Y-m-d H:i:s'),
         ]);
 
-        $this->bahanModel->tambahStok((int) $this->request->getPost('id_bahan'), $jumlah);
+        $idBahan = $this->request->getPost('id_bahan');
+        $bahan   = $this->bahanModel->find($idBahan);
 
-        return redirect()->to('/admin/pembelian')->with('success', 'Pembelian ' . $noPembelian . ' berhasil dicatat. Stok bahan bertambah ' . $jumlah . '.');
-    }
-
-    public function show(int $id): RedirectResponse|string
-    {
-        $pembelian = $this->pembelianModel->getDetailById($id);
-
-        if (!$pembelian) {
-            return redirect()->to('/admin/pembelian')->with('error', 'Data pembelian tidak ditemukan.');
+        if ($bahan) {
+            $stokBaru = $bahan['stok'] + $jumlah;
+            $this->bahanModel->update($idBahan, [
+                'stok'  => $stokBaru,
+                'harga' => $hargaSatuan,
+            ]);
         }
 
-        return view('admin/pembelian/detail', ['title' => 'Detail Pembelian', 'pembelian' => $pembelian]);
+        return redirect()->to('/admin/pembelian')->with('success', 'Pembelian berhasil ditambahkan dan stok bahan bertambah.');
     }
 
-    public function delete(int $id): RedirectResponse
+    public function show(int $id): string
     {
         $pembelian = $this->pembelianModel->find($id);
 
@@ -99,9 +92,38 @@ class PembelianController extends BaseController
             return redirect()->to('/admin/pembelian')->with('error', 'Data pembelian tidak ditemukan.');
         }
 
-        $this->bahanModel->kurangiStok((int) $pembelian['id_bahan'], (int) $pembelian['jumlah']);
+        $supplier = $this->supplierModel->find($pembelian['id_supplier']);
+        $bahan    = $this->bahanModel->find($pembelian['id_bahan']);
+
+        $data = [
+            'title'     => 'Detail Pembelian',
+            'pembelian' => $pembelian,
+            'supplier'  => $supplier,
+            'bahan'     => $bahan,
+        ];
+
+        return view('admin/pembelian/detail', $data);
+    }
+
+    public function delete(int $id)
+    {
+        $pembelian = $this->pembelianModel->find($id);
+
+        if (!$pembelian) {
+            return redirect()->to('/admin/pembelian')->with('error', 'Data pembelian tidak ditemukan.');
+        }
+
+        $idBahan = $pembelian['id_bahan'];
+        $jumlah  = (int) $pembelian['jumlah'];
+        $bahan   = $this->bahanModel->find($idBahan);
+
+        if ($bahan) {
+            $stokBaru = max(0, $bahan['stok'] - $jumlah);
+            $this->bahanModel->update($idBahan, ['stok' => $stokBaru]);
+        }
+
         $this->pembelianModel->delete($id);
 
-        return redirect()->to('/admin/pembelian')->with('success', 'Pembelian dihapus. Stok bahan dikembalikan.');
+        return redirect()->to('/admin/pembelian')->with('success', 'Pembelian berhasil dihapus dan stok bahan dikurangi.');
     }
 }

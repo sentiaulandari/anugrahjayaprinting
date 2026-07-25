@@ -260,6 +260,97 @@
 </div>
 <?php endif; ?>
 
+<div class="row g-3 mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center gap-2">
+                    <div style="width:8px;height:8px;background:#28a745;border-radius:50%;"></div>
+                    <span style="font-weight:600;">Transaksi Terbaru</span>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <span class="badge" style="background:rgba(40,167,69,0.1);color:#28a745;font-size:0.7rem;">
+                        <?= $totalTransaksi ?> transaksi
+                    </span>
+                    <a href="<?= base_url('admin/pembayaran') ?>" class="btn btn-sm btn-outline-secondary" style="font-size:0.75rem;">
+                        Lihat Semua <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>No Pesanan</th>
+                                <th>Pelanggan</th>
+                                <th>Tanggal Bayar</th>
+                                <th>Jumlah Bayar</th>
+                                <th>Metode</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (empty($transaksiTerbaru)): ?>
+                                <tr>
+                                    <td colspan="7" class="text-center py-5">
+                                        <i class="bi bi-inbox fs-2 text-muted d-block mb-2"></i>
+                                        <span class="text-muted small">Belum ada transaksi</span>
+                                    </td>
+                                </tr>
+                            <?php else: ?>
+                                <?php foreach ($transaksiTerbaru as $t): ?>
+                                <tr>
+                                    <td style="font-size:0.82rem;color:#6c757d;"><?= $t['id_pembayaran'] ?></td>
+                                    <td>
+                                        <a href="<?= base_url('admin/pembayaran/show/' . $t['id_pembayaran']) ?>"
+                                            class="fw-semibold text-decoration-none" style="color:#1a1a2e;font-size:0.82rem;">
+                                            <?= $t['no_pesanan'] ?>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div style="width:28px;height:28px;background:linear-gradient(135deg,#28a745,#20c997);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.65rem;font-weight:700;flex-shrink:0;">
+                                                <?= strtoupper(substr($t['nama_pelanggan'] ?? 'U', 0, 1)) ?>
+                                            </div>
+                                            <span style="font-size:0.85rem;"><?= $t['nama_pelanggan'] ?? '-' ?></span>
+                                        </div>
+                                    </td>
+                                    <td style="font-size:0.82rem;color:#6c757d;">
+                                        <?= date('d/m/Y', strtotime($t['tgl_pembayaran'])) ?>
+                                    </td>
+                                    <td style="font-size:0.85rem;font-weight:600;color:#28a745;">
+                                        Rp <?= number_format($t['jumlah_bayar'], 0, ',', '.') ?>
+                                    </td>
+                                    <td>
+                                        <span class="badge" style="background:rgba(26,26,46,0.06);color:#1a1a2e;font-size:0.7rem;">
+                                            <?= ucfirst($t['metode_bayar']) ?>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        $statusColor = match($t['status_konfirmasi']) {
+                                            'diterima' => ['bg' => 'rgba(40,167,69,0.1)', 'color' => '#28a745'],
+                                            'ditolak'  => ['bg' => 'rgba(220,53,69,0.1)', 'color' => '#dc3545'],
+                                            default    => ['bg' => 'rgba(255,193,7,0.1)', 'color' => '#b8860b'],
+                                        };
+                                        ?>
+                                        <span class="badge" style="background:<?= $statusColor['bg'] ?>;color:<?= $statusColor['color'] ?>;font-size:0.7rem;">
+                                            <?= ucfirst($t['status_konfirmasi']) ?>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?= $this->endSection() ?>
 
 <?= $this->section('scripts') ?>

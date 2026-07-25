@@ -12,10 +12,10 @@ class SupplierModel extends Model
 
     protected $allowedFields = [
         'nama_supplier',
+        'alamat',
         'no_hp',
         'email',
-        'alamat',
-        'keterangan',
+        'nama_produk',
         'created_at',
     ];
 
@@ -23,12 +23,12 @@ class SupplierModel extends Model
 
     protected $validationRules = [
         'nama_supplier' => 'required|max_length[100]',
-        'no_hp'         => 'permit_empty|max_length[15]',
-        'email'         => 'permit_empty|valid_email',
     ];
 
-    public function getForSelect(): array
+    public function search(string $keyword): array
     {
-        return $this->findAll();
+        return $this->like('nama_supplier', $keyword)
+                    ->orLike('nama_produk', $keyword)
+                    ->findAll();
     }
 }

@@ -37,6 +37,16 @@
             </a>
         </div>
     </div>
+    <div class="col-md-4">
+        <div class="card h-100 text-center p-4">
+            <div class="mb-3"><i class="bi bi-calendar3 fs-1 text-info"></i></div>
+            <h6 class="fw-bold">Laporan Pertahun</h6>
+            <p class="text-muted small">Ringkasan pendapatan, pengeluaran, dan pesanan per bulan dalam satu tahun</p>
+            <a href="<?= base_url('admin/laporan/pertahun') ?>" class="btn btn-info btn-sm mt-auto">
+                <i class="bi bi-eye me-1"></i>Lihat Laporan
+            </a>
+        </div>
+    </div>
 </div>
 
 <?= $this->endSection() ?>

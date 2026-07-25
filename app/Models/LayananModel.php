@@ -16,6 +16,8 @@ class LayananModel extends Model
         'id_kategori',
         'id_bahan',
         'harga_satuan',
+        'harga_per_meter',
+        'diskon_desain_sendiri',
         'deskripsi',
         'gambar',
         'status',

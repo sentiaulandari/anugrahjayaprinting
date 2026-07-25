@@ -6,7 +6,7 @@
         <h4 class="page-title mb-0"><?= $title ?></h4>
         <nav aria-label="breadcrumb"><ol class="breadcrumb mb-0 small">
             <li class="breadcrumb-item"><a href="<?= base_url('admin/dashboard') ?>">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="<?= base_url('admin/pelanggan') ?>">Pelanggan</a></li>
+            <li class="breadcrumb-item"><a href="<?= base_url('admin/pelanggan') ?>">Konsumen</a></li>
             <li class="breadcrumb-item active">Edit</li>
         </ol></nav>
     </div>

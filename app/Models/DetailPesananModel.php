@@ -17,6 +17,9 @@ class DetailPesananModel extends Model
         'harga_satuan',
         'subtotal',
         'ukuran',
+        'panjang',
+        'lebar',
+        'desain_sendiri',
         'keterangan',
     ];
 

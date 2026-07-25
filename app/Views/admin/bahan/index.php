@@ -3,7 +3,7 @@
 
 <div class="d-flex align-items-center justify-content-between mb-4">
     <div>
-        <h4 class="page-title mb-0">Data Bahan/Material</h4>
+        <h4 class="page-title mb-0">Pengelolaan Bahan</h4>
         <nav aria-label="breadcrumb"><ol class="breadcrumb mb-0 small"><li class="breadcrumb-item"><a href="<?= base_url('admin/dashboard') ?>">Dashboard</a></li><li class="breadcrumb-item active">Bahan</li></ol></nav>
     </div>
     <a href="<?= base_url('admin/bahan/create') ?>" class="btn btn-primary btn-sm">
@@ -33,10 +33,10 @@
                         <th width="50">No</th>
                         <th>Nama Bahan</th>
                         <th>Satuan</th>
+                        <th class="text-end">Harga/Satuan</th>
                         <th>Stok</th>
                         <th>Min. Stok</th>
                         <th>Kondisi</th>
-                        <th>Keterangan</th>
                         <th width="100">Aksi</th>
                     </tr>
                 </thead>
@@ -50,6 +50,7 @@
                             <td><?= $i + 1 ?></td>
                             <td class="fw-semibold"><?= $b['nama_bahan'] ?></td>
                             <td><?= $b['satuan'] ?></td>
+                            <td class="text-end">Rp <?= number_format($b['harga'] ?? 0, 0, ',', '.') ?></td>
                             <td>
                                 <span class="fw-bold <?= $menipis ? 'text-danger' : 'text-success' ?>">
                                     <?= $b['stok'] ?>
@@ -63,7 +64,6 @@
                                     <span class="badge bg-success">Aman</span>
                                 <?php endif; ?>
                             </td>
-                            <td class="small text-muted"><?= $b['keterangan'] ?? '-' ?></td>
                             <td>
                                 <a href="<?= base_url('admin/bahan/edit/' . $b['id_bahan']) ?>" class="btn btn-sm btn-outline-warning py-1 px-2">
                                     <i class="bi bi-pencil"></i>

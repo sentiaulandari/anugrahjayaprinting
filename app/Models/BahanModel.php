@@ -15,6 +15,7 @@ class BahanModel extends Model
         'satuan',
         'stok',
         'stok_minimum',
+        'harga',
         'keterangan',
     ];
 

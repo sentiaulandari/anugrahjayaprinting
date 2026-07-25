@@ -7,7 +7,7 @@
         <nav aria-label="breadcrumb"><ol class="breadcrumb mb-0 small">
             <li class="breadcrumb-item"><a href="<?= base_url('admin/dashboard') ?>">Dashboard</a></li>
             <li class="breadcrumb-item"><a href="<?= base_url('admin/pembelian') ?>">Pembelian</a></li>
-            <li class="breadcrumb-item active"><?= $pembelian['no_pembelian'] ?></li>
+            <li class="breadcrumb-item active">Detail</li>
         </ol></nav>
     </div>
     <a href="<?= base_url('admin/pembelian') ?>" class="btn btn-sm btn-outline-secondary">
@@ -15,44 +15,40 @@
     </a>
 </div>
 
-<div class="card" style="max-width:600px;">
-    <div class="card-header"><i class="bi bi-bag-check me-2"></i><?= $pembelian['no_pembelian'] ?></div>
-    <div class="card-body">
-        <div class="row g-3 small">
-            <div class="col-md-6">
-                <div class="text-muted">No. Pembelian</div>
-                <div class="fw-bold"><?= $pembelian['no_pembelian'] ?></div>
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header fw-semibold"><i class="bi bi-info-circle me-2"></i>Informasi Pembelian</div>
+            <div class="card-body">
+                <table class="table table-sm table-borderless mb-0">
+                    <tr>
+                        <td class="text-muted" style="width:40%;">Tanggal</td>
+                        <td class="fw-semibold"><?= date('d F Y', strtotime($pembelian['tgl_pembelian'])) ?></td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">Supplier</td>
+                        <td class="fw-semibold"><?= esc($supplier['nama_supplier'] ?? '-') ?></td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">Bahan</td>
+                        <td class="fw-semibold"><?= esc($bahan['nama_bahan'] ?? '-') ?></td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">Jumlah</td>
+                        <td class="fw-semibold"><?= $pembelian['jumlah'] ?> <?= esc($bahan['satuan'] ?? '') ?></td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">Harga Total</td>
+                        <td class="fw-bold" style="color:#28a745;">Rp <?= number_format($pembelian['harga_total'], 0, ',', '.') ?></td>
+                    </tr>
+                    <?php if ($pembelian['catatan']): ?>
+                    <tr>
+                        <td class="text-muted">Catatan</td>
+                        <td><?= esc($pembelian['catatan']) ?></td>
+                    </tr>
+                    <?php endif; ?>
+                </table>
             </div>
-            <div class="col-md-6">
-                <div class="text-muted">Tanggal</div>
-                <div class="fw-semibold"><?= date('d F Y', strtotime($pembelian['tgl_pembelian'])) ?></div>
-            </div>
-            <div class="col-md-6">
-                <div class="text-muted">Supplier</div>
-                <div class="fw-semibold"><?= $pembelian['nama_supplier'] ?? '-' ?></div>
-            </div>
-            <div class="col-md-6">
-                <div class="text-muted">Bahan / Material</div>
-                <div class="fw-semibold"><?= $pembelian['nama_bahan'] ?? '-' ?> <span class="text-muted fw-normal">(<?= $pembelian['satuan'] ?? '' ?>)</span></div>
-            </div>
-            <div class="col-md-4">
-                <div class="text-muted">Jumlah</div>
-                <div class="fw-bold text-primary"><?= number_format($pembelian['jumlah'], 0, ',', '.') ?> <?= $pembelian['satuan'] ?? '' ?></div>
-            </div>
-            <div class="col-md-4">
-                <div class="text-muted">Harga Satuan</div>
-                <div>Rp <?= number_format($pembelian['harga_satuan'], 0, ',', '.') ?></div>
-            </div>
-            <div class="col-md-4">
-                <div class="text-muted">Total Harga</div>
-                <div class="fw-bold text-success">Rp <?= number_format($pembelian['total_harga'], 0, ',', '.') ?></div>
-            </div>
-            <?php if ($pembelian['keterangan']): ?>
-            <div class="col-12">
-                <div class="text-muted">Keterangan</div>
-                <div><?= esc($pembelian['keterangan']) ?></div>
-            </div>
-            <?php endif; ?>
         </div>
     </div>
 </div>

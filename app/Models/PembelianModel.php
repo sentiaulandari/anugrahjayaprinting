@@ -11,24 +11,24 @@ class PembelianModel extends Model
     protected $returnType = 'array';
 
     protected $allowedFields = [
-        'no_pembelian',
         'id_supplier',
         'id_bahan',
-        'tgl_pembelian',
         'jumlah',
         'harga_satuan',
-        'total_harga',
-        'keterangan',
+        'harga_total',
+        'tgl_pembelian',
+        'catatan',
         'created_at',
     ];
 
     protected $useTimestamps = false;
 
     protected $validationRules = [
-        'id_bahan'     => 'required|integer',
-        'jumlah'       => 'required|integer|greater_than[0]',
-        'harga_satuan' => 'required|decimal|greater_than[0]',
-        'tgl_pembelian'=> 'required|valid_date',
+        'id_supplier'    => 'required|integer',
+        'id_bahan'       => 'required|integer',
+        'jumlah'         => 'required|integer|greater_than[0]',
+        'harga_total'    => 'required|decimal|greater_than[0]',
+        'tgl_pembelian'  => 'required|valid_date',
     ];
 
     public function getWithRelasi(): array
@@ -36,41 +36,16 @@ class PembelianModel extends Model
         return $this->select('pembelian.*, supplier.nama_supplier, bahan.nama_bahan, bahan.satuan')
                     ->join('supplier', 'supplier.id_supplier = pembelian.id_supplier', 'left')
                     ->join('bahan', 'bahan.id_bahan = pembelian.id_bahan', 'left')
-                    ->orderBy('pembelian.created_at', 'DESC')
+                    ->orderBy('pembelian.tgl_pembelian', 'DESC')
                     ->findAll();
     }
 
-    public function getDetailById(int $id): array|null
+    public function getTotalByPeriode(string $dari, string $sampai): float
     {
-        return $this->select('pembelian.*, supplier.nama_supplier, bahan.nama_bahan, bahan.satuan')
-                    ->join('supplier', 'supplier.id_supplier = pembelian.id_supplier', 'left')
-                    ->join('bahan', 'bahan.id_bahan = pembelian.id_bahan', 'left')
-                    ->where('pembelian.id_pembelian', $id)
-                    ->first();
-    }
-
-    public function generateNoPembelian(): string
-    {
-        $prefix = 'PB-' . date('Ymd') . '-';
-        $last   = $this->like('no_pembelian', $prefix, 'after')
-                       ->orderBy('no_pembelian', 'DESC')
+        $result = $this->selectSum('harga_total')
+                       ->where('tgl_pembelian >=', $dari)
+                       ->where('tgl_pembelian <=', $sampai)
                        ->first();
-
-        if (!$last) {
-            return $prefix . '001';
-        }
-
-        $angka = (int) substr($last['no_pembelian'], strlen($prefix));
-        return $prefix . str_pad($angka + 1, 3, '0', STR_PAD_LEFT);
-    }
-
-    public function getTotalPembelian(string $dari = '', string $sampai = ''): float
-    {
-        $builder = $this->selectSum('total_harga');
-        if ($dari && $sampai) {
-            $builder->where('tgl_pembelian >=', $dari)->where('tgl_pembelian <=', $sampai);
-        }
-        $result = $builder->first();
-        return (float) ($result['total_harga'] ?? 0);
+        return (float) ($result['harga_total'] ?? 0);
     }
 }

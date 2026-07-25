@@ -130,7 +130,13 @@
                             </div>
                             <div>
                                 <div style="font-size:0.85rem;font-weight:600;"><?= $l['nama_layanan'] ?></div>
-                                <div style="font-size:0.72rem;color:#9ca3af;">Rp <?= number_format($l['harga_satuan'], 0, ',', '.') ?></div>
+                                <div style="font-size:0.72rem;color:#9ca3af;">
+                                    <?php if (($l['harga_per_meter'] ?? 0) > 0): ?>
+                                        Rp <?= number_format($l['harga_per_meter'], 0, ',', '.') ?>/m²
+                                    <?php else: ?>
+                                        Rp <?= number_format($l['harga_satuan'], 0, ',', '.') ?>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                         </div>
                         <a href="<?= base_url('pelanggan/pesanan/create') ?>"

@@ -26,7 +26,6 @@
                         <div class="col-md-6">
                             <label class="form-label small fw-semibold">Tanggal Pesanan</label>
                             <input type="text" class="form-control bg-light" value="<?= date('d F Y') ?>" readonly>
-                            <div class="form-text">Otomatis diisi hari ini</div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-semibold">Estimasi Selesai <span class="text-danger">*</span></label>
@@ -55,27 +54,48 @@
                     <div id="itemContainer">
                         <div class="item-row border rounded p-3 mb-2 bg-light">
                             <div class="row g-2 align-items-end">
-                                <div class="col-md-5">
+                                <div class="col-md-4">
                                     <label class="form-label small fw-semibold">Layanan <span class="text-danger">*</span></label>
-                                    <select name="kode_layanan[]" class="form-select form-select-sm layanan-select" required>
+                                    <select name="kode_layanan[]" class="form-select form-select-sm layanan-select" required
+                                        data-harga-per-meter data-diskon>
                                         <option value="">-- Pilih Layanan --</option>
                                         <?php foreach ($layanan as $l): ?>
-                                            <option value="<?= $l['kode_layanan'] ?>" data-harga="<?= $l['harga_satuan'] ?>">
-                                                <?= $l['nama_layanan'] ?> — Rp <?= number_format($l['harga_satuan'], 0, ',', '.') ?>
+                                            <option value="<?= $l['kode_layanan'] ?>"
+                                                data-harga="<?= $l['harga_satuan'] ?>"
+                                                data-hpm="<?= $l['harga_per_meter'] ?>"
+                                                data-diskon="<?= $l['diskon_desain_sendiri'] ?? 5000 ?>">
+                                                <?= $l['nama_layanan'] ?>
+                                                — Rp <?= number_format($l['harga_satuan'], 0, ',', '.') ?>
+                                                <?php if (($l['harga_per_meter'] ?? 0) > 0): ?>
+                                                    (Rp <?= number_format($l['harga_per_meter'], 0, ',', '.') ?>/m²)
+                                                <?php endif; ?>
                                             </option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
                                 <div class="col-md-2">
-                                    <label class="form-label small fw-semibold">Qty <span class="text-danger">*</span></label>
-                                    <input type="number" name="qty[]" class="form-control form-control-sm qty-input" value="1" min="1" required>
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label small fw-semibold">Ukuran</label>
-                                    <input type="text" name="ukuran[]" class="form-control form-control-sm" placeholder="mis: 3x1 m">
+                                    <label class="form-label small fw-semibold">Qty</label>
+                                    <input type="number" name="qty[]" class="form-control form-control-sm qty-input" value="1" min="1">
                                 </div>
                                 <div class="col-md-1">
-                                    <label class="form-label small fw-semibold">Sub</label>
+                                    <label class="form-label small fw-semibold">P (m)</label>
+                                    <input type="number" name="panjang[]" class="form-control form-control-sm panjang-input"
+                                        step="0.01" min="0" placeholder="0">
+                                </div>
+                                <div class="col-md-1">
+                                    <label class="form-label small fw-semibold">L (m)</label>
+                                    <input type="number" name="lebar[]" class="form-control form-control-sm lebar-input"
+                                        step="0.01" min="0" placeholder="0">
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="form-label small fw-semibold">Desain Sendiri</label>
+                                    <div class="form-check form-switch mt-1">
+                                        <input type="checkbox" name="desain_sendiri[]" class="form-check-input desain-input" value="1">
+                                        <label class="form-check-label small text-muted">Diskon -Rp5.000</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <label class="form-label small fw-semibold">Subtotal</label>
                                     <input type="text" class="form-control form-control-sm subtotal-display bg-white fw-semibold text-primary" readonly value="Rp 0">
                                 </div>
                                 <div class="col-md-1">
@@ -93,7 +113,7 @@
 
                     <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
                         <span class="small text-muted">
-                            <i class="bi bi-info-circle me-1"></i>Harga belum termasuk ongkos kirim
+                            <i class="bi bi-info-circle me-1"></i>Harga dihitung per meter². Jika bawa desain sendiri, diskon Rp5.000/item
                         </span>
                         <div>
                             <span class="fw-semibold">Total Estimasi: </span>
@@ -165,19 +185,40 @@
 
 <?= $this->section('scripts') ?>
 <script>
-    const layananOptions = `<?php foreach ($layanan as $l): ?><option value="<?= $l['kode_layanan'] ?>" data-harga="<?= $l['harga_satuan'] ?>"><?= $l['nama_layanan'] ?> — Rp <?= number_format($l['harga_satuan'], 0, ',', '.') ?></option><?php endforeach; ?>`;
+    const layananOptions = `<?php foreach ($layanan as $l): ?><option value="<?= $l['kode_layanan'] ?>" data-harga="<?= $l['harga_satuan'] ?>" data-hpm="<?= $l['harga_per_meter'] ?>" data-diskon="<?= $l['diskon_desain_sendiri'] ?? 5000 ?>"><?= $l['nama_layanan'] ?> — Rp <?= number_format($l['harga_satuan'], 0, ',', '.') ?><?php if (($l['harga_per_meter'] ?? 0) > 0): ?> (Rp <?= number_format($l['harga_per_meter'], 0, ',', '.') ?>/m²)<?php endif; ?></option><?php endforeach; ?>`;
 
     function formatRp(n) {
         return 'Rp ' + parseInt(n || 0).toLocaleString('id-ID');
     }
 
+    function hitungSubtotal(row) {
+        var sel = row.querySelector('.layanan-select');
+        var opt = sel.selectedOptions[0];
+        if (!opt) return 0;
+
+        var hpm = parseFloat(opt.dataset.hpm) || 0;
+        var diskon = parseFloat(opt.dataset.diskon) || 5000;
+        var hargaFix = parseFloat(opt.dataset.harga) || 0;
+        var panjang = parseFloat(row.querySelector('.panjang-input').value) || 0;
+        var lebar = parseFloat(row.querySelector('.lebar-input').value) || 0;
+        var qty = parseInt(row.querySelector('.qty-input').value) || 0;
+        var desain = row.querySelector('.desain-input').checked;
+
+        var hargaSatuan = panjang * lebar * hpm;
+        if (desain && hargaSatuan > 0) {
+            hargaSatuan = Math.max(0, hargaSatuan - diskon);
+        }
+        if (hargaSatuan <= 0) {
+            hargaSatuan = hargaFix;
+        }
+
+        return hargaSatuan * qty;
+    }
+
     function hitungTotal() {
-        let total = 0;
+        var total = 0;
         document.querySelectorAll('.item-row').forEach(function(row) {
-            const sel   = row.querySelector('.layanan-select');
-            const qty   = parseInt(row.querySelector('.qty-input').value) || 0;
-            const harga = sel.selectedOptions[0] ? parseFloat(sel.selectedOptions[0].dataset.harga) || 0 : 0;
-            const sub   = qty * harga;
+            var sub = hitungSubtotal(row);
             row.querySelector('.subtotal-display').value = formatRp(sub);
             total += sub;
         });
@@ -188,19 +229,21 @@
     document.getElementById('itemContainer').addEventListener('input', hitungTotal);
 
     document.getElementById('btnTambahItem').addEventListener('click', function() {
-        const template = document.querySelector('.item-row').cloneNode(true);
+        var template = document.querySelector('.item-row').cloneNode(true);
         template.querySelectorAll('input').forEach(function(i) {
-            if (i.type === 'number') i.value = 1;
+            if (i.type === 'number') i.value = i.classList.contains('qty-input') ? 1 : '';
+            else if (i.type === 'checkbox') i.checked = false;
             else if (!i.classList.contains('subtotal-display')) i.value = '';
         });
         template.querySelector('.layanan-select').innerHTML = '<option value="">-- Pilih Layanan --</option>' + layananOptions;
         template.querySelector('.subtotal-display').value = 'Rp 0';
         document.getElementById('itemContainer').appendChild(template);
+        hitungTotal();
     });
 
     document.getElementById('itemContainer').addEventListener('click', function(e) {
         if (e.target.closest('.btn-hapus-item')) {
-            const rows = document.querySelectorAll('.item-row');
+            var rows = document.querySelectorAll('.item-row');
             if (rows.length > 1) {
                 e.target.closest('.item-row').remove();
                 hitungTotal();
@@ -209,7 +252,7 @@
     });
 
     document.getElementById('formPesanan').addEventListener('submit', function() {
-        const btn = document.getElementById('btnSubmit');
+        var btn = document.getElementById('btnSubmit');
         btn.disabled = true;
         btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Mengirim...';
     });

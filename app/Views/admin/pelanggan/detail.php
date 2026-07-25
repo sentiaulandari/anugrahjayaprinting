@@ -3,10 +3,10 @@
 
 <div class="d-flex align-items-center justify-content-between mb-4">
     <div>
-        <h4 class="page-title mb-0">Detail Pelanggan</h4>
+        <h4 class="page-title mb-0">Detail Konsumen</h4>
         <nav aria-label="breadcrumb"><ol class="breadcrumb mb-0 small">
             <li class="breadcrumb-item"><a href="<?= base_url('admin/dashboard') ?>">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="<?= base_url('admin/pelanggan') ?>">Pelanggan</a></li>
+            <li class="breadcrumb-item"><a href="<?= base_url('admin/pelanggan') ?>">Konsumen</a></li>
             <li class="breadcrumb-item active">Detail</li>
         </ol></nav>
     </div>

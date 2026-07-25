@@ -29,25 +29,25 @@
         <a href="<?= base_url('admin/layanan') ?>"
             class="nav-item d-flex align-items-center gap-2 <?= (strpos(uri_string(), 'admin/layanan') !== false) ? 'active' : '' ?>">
             <i class="bi bi-grid-3x3-gap"></i>
-            <span>Data Layanan</span>
+            <span>Pengelolaan Produk</span>
         </a>
 
         <a href="<?= base_url('admin/bahan') ?>"
             class="nav-item d-flex align-items-center gap-2 <?= (strpos(uri_string(), 'admin/bahan') !== false) ? 'active' : '' ?>">
             <i class="bi bi-box-seam"></i>
-            <span>Data Bahan/Material</span>
+            <span>Pengelolaan Bahan</span>
         </a>
 
         <a href="<?= base_url('admin/pelanggan') ?>"
             class="nav-item d-flex align-items-center gap-2 <?= (strpos(uri_string(), 'admin/pelanggan') !== false) ? 'active' : '' ?>">
             <i class="bi bi-people"></i>
-            <span>Data Pelanggan</span>
+            <span>Pengelolaan Konsumen</span>
         </a>
 
         <a href="<?= base_url('admin/supplier') ?>"
             class="nav-item d-flex align-items-center gap-2 <?= (strpos(uri_string(), 'admin/supplier') !== false) ? 'active' : '' ?>">
             <i class="bi bi-truck"></i>
-            <span>Data Supplier</span>
+            <span>Pengelolaan Supplier</span>
         </a>
 
         <div class="nav-label small text-uppercase mt-3 mb-2">Transaksi</div>
@@ -55,13 +55,13 @@
         <a href="<?= base_url('admin/pembelian') ?>"
             class="nav-item d-flex align-items-center gap-2 <?= (strpos(uri_string(), 'admin/pembelian') !== false) ? 'active' : '' ?>">
             <i class="bi bi-bag-check"></i>
-            <span>Pembelian Bahan</span>
+            <span>Pengelolaan Pembelian</span>
         </a>
 
         <a href="<?= base_url('admin/pesanan') ?>"
             class="nav-item d-flex align-items-center gap-2 <?= (strpos(uri_string(), 'admin/pesanan') !== false) ? 'active' : '' ?>">
             <i class="bi bi-cart3"></i>
-            <span>Pesanan</span>
+            <span>Pemesanan</span>
         </a>
 
         <a href="<?= base_url('admin/pembayaran') ?>"
@@ -70,24 +70,27 @@
             <span>Konfirmasi Pembayaran</span>
         </a>
 
+        <a href="<?= base_url('admin/transaksi-cetak') ?>"
+            class="nav-item d-flex align-items-center gap-2 <?= (strpos(uri_string(), 'admin/transaksi-cetak') !== false) ? 'active' : '' ?>">
+            <i class="bi bi-printer"></i>
+            <span>Transaksi Cetak</span>
+        </a>
+
         <?php endif; ?>
 
         <div class="nav-label small text-uppercase mt-3 mb-2">Laporan</div>
 
         <a href="<?= base_url('admin/laporan') ?>"
-            class="nav-item d-flex align-items-center gap-2 <?= (strpos(uri_string(), 'admin/laporan') !== false) ? 'active' : '' ?>">
+            class="nav-item d-flex align-items-center gap-2 <?= (uri_string() === 'admin/laporan' || uri_string() === 'admin/laporan/pesanan' || uri_string() === 'admin/laporan/bahan' || uri_string() === 'admin/laporan/keuangan') ? 'active' : '' ?>">
             <i class="bi bi-file-earmark-bar-graph"></i>
             <span>Laporan</span>
         </a>
 
-        <?php if ($level === 'admin'): ?>
-        <div class="nav-label small text-uppercase mt-3 mb-2">Lainnya</div>
-        <a href="<?= base_url('admin/return') ?>"
-            class="nav-item d-flex align-items-center gap-2 <?= (strpos(uri_string(), 'admin/return') !== false) ? 'active' : '' ?>">
-            <i class="bi bi-arrow-return-left"></i>
-            <span>Return Pesanan</span>
+        <a href="<?= base_url('admin/laporan/pertahun') ?>"
+            class="nav-item d-flex align-items-center gap-2 <?= (strpos(uri_string(), 'admin/laporan/pertahun') !== false) ? 'active' : '' ?>">
+            <i class="bi bi-calendar3"></i>
+            <span>Laporan Pertahun</span>
         </a>
-        <?php endif; ?>
 
     </nav>
 

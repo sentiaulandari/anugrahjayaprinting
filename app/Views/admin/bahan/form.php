@@ -33,24 +33,32 @@
             </div>
 
             <div class="row g-3 mb-3">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <label class="form-label fw-semibold small">Satuan <span class="text-danger">*</span></label>
                     <input type="text" name="satuan" class="form-control"
                         value="<?= old('satuan', $bahan['satuan'] ?? '') ?>"
                         placeholder="meter / lembar / pcs" required>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label class="form-label fw-semibold small">Stok <span class="text-danger">*</span></label>
                     <input type="number" name="stok" class="form-control"
                         value="<?= old('stok', $bahan['stok'] ?? 0) ?>"
                         min="0" required>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label class="form-label fw-semibold small">Min. Stok <span class="text-danger">*</span></label>
                     <input type="number" name="stok_minimum" class="form-control"
                         value="<?= old('stok_minimum', $bahan['stok_minimum'] ?? 0) ?>"
                         min="0" required>
                 </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold small">Harga per Satuan (Rp)</label>
+                <input type="number" name="harga" class="form-control"
+                    value="<?= old('harga', $bahan['harga'] ?? 0) ?>"
+                    placeholder="0" min="0" step="100">
+                <div class="form-text">Harga satuan bahan ini. Akan otomatis terupdate saat pembelian baru.</div>
             </div>
 
             <div class="mb-4">

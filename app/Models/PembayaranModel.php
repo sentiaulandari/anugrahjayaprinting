@@ -66,4 +66,13 @@ class PembayaranModel extends Model
         $result = $builder->selectSum('jumlah_bayar')->first();
         return (float) ($result['jumlah_bayar'] ?? 0);
     }
+
+    public function getTransaksiTerbaru(int $limit = 10): array
+    {
+        return $this->select('pembayaran.*, pesanan.total_harga, pesanan.status_pesanan, pelanggan.nama_pelanggan')
+                    ->join('pesanan', 'pesanan.no_pesanan = pembayaran.no_pesanan', 'left')
+                    ->join('pelanggan', 'pelanggan.id_pelanggan = pesanan.id_pelanggan', 'left')
+                    ->orderBy('pembayaran.id_pembayaran', 'DESC')
+                    ->findAll($limit);
+    }
 }

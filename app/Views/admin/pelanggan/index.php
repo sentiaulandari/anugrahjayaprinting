@@ -3,7 +3,7 @@
 
 <div class="d-flex align-items-center justify-content-between mb-4">
     <div>
-        <h4 class="page-title mb-0">Data Pelanggan</h4>
+        <h4 class="page-title mb-0">Pengelolaan Konsumen</h4>
         <nav aria-label="breadcrumb"><ol class="breadcrumb mb-0 small"><li class="breadcrumb-item"><a href="<?= base_url('admin/dashboard') ?>">Dashboard</a></li><li class="breadcrumb-item active">Pelanggan</li></ol></nav>
     </div>
 </div>

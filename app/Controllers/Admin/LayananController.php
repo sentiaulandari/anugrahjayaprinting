@@ -24,7 +24,7 @@ class LayananController extends BaseController
     public function index(): string
     {
         $data = [
-            'title'   => 'Data Layanan',
+            'title' => 'Pengelolaan Produk',
             'layanan' => $this->layananModel->getWithRelasi(),
         ];
 
@@ -48,7 +48,7 @@ class LayananController extends BaseController
         $rules = [
             'kode_layanan' => 'required|max_length[10]|is_unique[layanan.kode_layanan]',
             'nama_layanan' => 'required|max_length[100]',
-            'harga_satuan' => 'required|decimal|greater_than[0]',
+            'harga_satuan' => 'required|decimal|greater_than_equal_to[0]',
             'status'       => 'required|in_list[aktif,nonaktif]',
         ];
 
@@ -66,14 +66,16 @@ class LayananController extends BaseController
         }
 
         $this->layananModel->insert([
-            'kode_layanan' => $this->request->getPost('kode_layanan'),
-            'nama_layanan' => $this->request->getPost('nama_layanan'),
-            'id_kategori'  => $this->request->getPost('id_kategori') ?: null,
-            'id_bahan'     => $this->request->getPost('id_bahan') ?: null,
-            'harga_satuan' => $this->request->getPost('harga_satuan'),
-            'deskripsi'    => $this->request->getPost('deskripsi'),
-            'gambar'       => $gambar,
-            'status'       => $this->request->getPost('status'),
+            'kode_layanan'            => $this->request->getPost('kode_layanan'),
+            'nama_layanan'            => $this->request->getPost('nama_layanan'),
+            'id_kategori'             => $this->request->getPost('id_kategori') ?: null,
+            'id_bahan'                => $this->request->getPost('id_bahan') ?: null,
+            'harga_satuan'            => $this->request->getPost('harga_satuan') ?? 0,
+            'harga_per_meter'         => $this->request->getPost('harga_per_meter') ?? 0,
+            'diskon_desain_sendiri'   => $this->request->getPost('diskon_desain_sendiri') ?? 5000,
+            'deskripsi'               => $this->request->getPost('deskripsi'),
+            'gambar'                  => $gambar,
+            'status'                  => $this->request->getPost('status'),
         ]);
 
         return redirect()->to('/admin/layanan')->with('success', 'Layanan berhasil ditambahkan.');
@@ -128,13 +130,15 @@ class LayananController extends BaseController
         }
 
         $this->layananModel->update($kode, [
-            'nama_layanan' => $this->request->getPost('nama_layanan'),
-            'id_kategori'  => $this->request->getPost('id_kategori') ?: null,
-            'id_bahan'     => $this->request->getPost('id_bahan') ?: null,
-            'harga_satuan' => $this->request->getPost('harga_satuan'),
-            'deskripsi'    => $this->request->getPost('deskripsi'),
-            'gambar'       => $gambar,
-            'status'       => $this->request->getPost('status'),
+            'nama_layanan'            => $this->request->getPost('nama_layanan'),
+            'id_kategori'             => $this->request->getPost('id_kategori') ?: null,
+            'id_bahan'                => $this->request->getPost('id_bahan') ?: null,
+            'harga_satuan'            => $this->request->getPost('harga_satuan') ?? 0,
+            'harga_per_meter'         => $this->request->getPost('harga_per_meter') ?? 0,
+            'diskon_desain_sendiri'   => $this->request->getPost('diskon_desain_sendiri') ?? 5000,
+            'deskripsi'               => $this->request->getPost('deskripsi'),
+            'gambar'                  => $gambar,
+            'status'                  => $this->request->getPost('status'),
         ]);
 
         return redirect()->to('/admin/layanan')->with('success', 'Layanan berhasil diperbarui.');

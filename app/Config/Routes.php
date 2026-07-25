@@ -47,8 +47,8 @@ $routes->group('admin', ['filter' => 'adminFilter'], function ($routes) {
 
     $routes->get('pesanan',                  'Admin\PesananController::index');
     $routes->get('pesanan/show/(:any)',      'Admin\PesananController::show/$1');
-    $routes->get('pesanan/create',           'Admin\PesananController::create');
-    $routes->post('pesanan/store',           'Admin\PesananController::store');
+    $routes->get('pesanan/edit/(:any)',      'Admin\PesananController::edit/$1');
+    $routes->post('pesanan/update/(:any)',   'Admin\PesananController::update/$1');
     $routes->post('pesanan/status/(:any)',   'Admin\PesananController::updateStatus/$1');
     $routes->get('pesanan/delete/(:any)',    'Admin\PesananController::delete/$1');
 
@@ -56,17 +56,22 @@ $routes->group('admin', ['filter' => 'adminFilter'], function ($routes) {
     $routes->get('pembayaran/show/(:num)',        'Admin\PembayaranController::show/$1');
     $routes->post('pembayaran/konfirmasi/(:num)', 'Admin\PembayaranController::konfirmasi/$1');
 
+    $routes->get('transaksi-cetak',                      'Admin\TransaksiCetakController::index');
+    $routes->get('transaksi-cetak/create',               'Admin\TransaksiCetakController::create');
+    $routes->post('transaksi-cetak/store',               'Admin\TransaksiCetakController::store');
+    $routes->get('transaksi-cetak/show/(:any)',          'Admin\TransaksiCetakController::show/$1');
+    $routes->get('transaksi-cetak/cetak/(:any)',         'Admin\TransaksiCetakController::cetakFaktur/$1');
+    $routes->get('transaksi-cetak/delete/(:any)',        'Admin\TransaksiCetakController::delete/$1');
+
     $routes->get('laporan',                'Admin\LaporanController::index');
     $routes->get('laporan/pesanan',        'Admin\LaporanController::pesanan');
     $routes->get('laporan/bahan',          'Admin\LaporanController::bahan');
     $routes->get('laporan/keuangan',       'Admin\LaporanController::keuangan');
+    $routes->get('laporan/pertahun',       'Admin\LaporanController::pertahun');
     $routes->get('laporan/cetak/pesanan',  'Admin\LaporanController::cetakPesanan');
     $routes->get('laporan/cetak/bahan',    'Admin\LaporanController::cetakBahan');
     $routes->get('laporan/cetak/keuangan', 'Admin\LaporanController::cetakKeuangan');
-
-    $routes->get('return',               'Admin\ReturnController::index');
-    $routes->get('return/show/(:num)',   'Admin\ReturnController::show/$1');
-    $routes->post('return/proses/(:num)','Admin\ReturnController::prosesReturn/$1');
+    $routes->get('laporan/cetak/pertahun', 'Admin\LaporanController::cetakPertahun');
 
     $routes->get('supplier',                'Admin\SupplierController::index');
     $routes->get('supplier/create',         'Admin\SupplierController::create');
@@ -80,6 +85,8 @@ $routes->group('admin', ['filter' => 'adminFilter'], function ($routes) {
     $routes->post('pembelian/store',        'Admin\PembelianController::store');
     $routes->get('pembelian/show/(:num)',   'Admin\PembelianController::show/$1');
     $routes->get('pembelian/delete/(:num)', 'Admin\PembelianController::delete/$1');
+
+
 });
 
 $routes->group('pelanggan', ['filter' => 'pelangganFilter'], function ($routes) {
@@ -96,11 +103,6 @@ $routes->group('pelanggan', ['filter' => 'pelangganFilter'], function ($routes) 
 
     $routes->get('status',               'Pelanggan\StatusController::index');
     $routes->get('status/detail/(:any)', 'Pelanggan\StatusController::detail/$1');
-
-    $routes->get('return',               'Pelanggan\ReturnController::index');
-    $routes->get('return/form/(:any)',   'Pelanggan\ReturnController::form/$1');
-    $routes->post('return/store',        'Pelanggan\ReturnController::store');
-    $routes->get('return/detail/(:num)', 'Pelanggan\ReturnController::detail/$1');
 });
 
 $routes->set404Override(function() {

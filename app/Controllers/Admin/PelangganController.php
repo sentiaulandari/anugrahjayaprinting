@@ -20,7 +20,7 @@ class PelangganController extends BaseController
     public function index(): string
     {
         $data = [
-            'title'     => 'Data Pelanggan',
+            'title'     => 'Pengelolaan Konsumen',
             'pelanggan' => $this->pelangganModel->getWithUser(),
         ];
 
@@ -32,10 +32,10 @@ class PelangganController extends BaseController
         $pelanggan = $this->pelangganModel->getDetailById($id);
 
         if (!$pelanggan) {
-            return redirect()->to('/admin/pelanggan')->with('error', 'Pelanggan tidak ditemukan.');
+            return redirect()->to('/admin/pelanggan')->with('error', 'Konsumen tidak ditemukan.');
         }
 
-        return view('admin/pelanggan/detail', ['title' => 'Detail Pelanggan', 'pelanggan' => $pelanggan]);
+        return view('admin/pelanggan/detail', ['title' => 'Detail Konsumen', 'pelanggan' => $pelanggan]);
     }
 
     public function edit(int $id): string
@@ -43,10 +43,10 @@ class PelangganController extends BaseController
         $pelanggan = $this->pelangganModel->find($id);
 
         if (!$pelanggan) {
-            return redirect()->to('/admin/pelanggan')->with('error', 'Pelanggan tidak ditemukan.');
+            return redirect()->to('/admin/pelanggan')->with('error', 'Konsumen tidak ditemukan.');
         }
 
-        return view('admin/pelanggan/form', ['title' => 'Edit Pelanggan', 'pelanggan' => $pelanggan]);
+        return view('admin/pelanggan/form', ['title' => 'Edit Konsumen', 'pelanggan' => $pelanggan]);
     }
 
     public function update(int $id)
@@ -54,7 +54,7 @@ class PelangganController extends BaseController
         $pelanggan = $this->pelangganModel->find($id);
 
         if (!$pelanggan) {
-            return redirect()->to('/admin/pelanggan')->with('error', 'Pelanggan tidak ditemukan.');
+            return redirect()->to('/admin/pelanggan')->with('error', 'Konsumen tidak ditemukan.');
         }
 
         $rules = [
@@ -74,7 +74,7 @@ class PelangganController extends BaseController
             'email'          => $this->request->getPost('email'),
         ]);
 
-        return redirect()->to('/admin/pelanggan')->with('success', 'Data pelanggan berhasil diperbarui.');
+        return redirect()->to('/admin/pelanggan')->with('success', 'Data konsumen berhasil diperbarui.');
     }
 
     public function delete(int $id)
@@ -82,7 +82,7 @@ class PelangganController extends BaseController
         $pelanggan = $this->pelangganModel->find($id);
 
         if (!$pelanggan) {
-            return redirect()->to('/admin/pelanggan')->with('error', 'Pelanggan tidak ditemukan.');
+            return redirect()->to('/admin/pelanggan')->with('error', 'Konsumen tidak ditemukan.');
         }
 
         if ($pelanggan['id_user']) {
@@ -91,6 +91,6 @@ class PelangganController extends BaseController
 
         $this->pelangganModel->delete($id);
 
-        return redirect()->to('/admin/pelanggan')->with('success', 'Pelanggan berhasil dihapus.');
+        return redirect()->to('/admin/pelanggan')->with('success', 'Konsumen berhasil dihapus.');
     }
 }

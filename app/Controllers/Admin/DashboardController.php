@@ -37,6 +37,9 @@ class DashboardController extends BaseController
                 date('Y-m-01'),
                 date('Y-m-d')
             ),
+            'transaksiTerbaru'   => $this->pembayaranModel->getTransaksiTerbaru(),
+            'totalTransaksi'     => $this->pembayaranModel->countAll(),
+            'totalPendapatanAll' => $this->pembayaranModel->getTotalPendapatan(),
         ];
 
         return view('admin/dashboard/index', $data);

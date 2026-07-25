@@ -10,9 +10,14 @@
             <li class="breadcrumb-item active"><?= $pesanan['no_pesanan'] ?></li>
         </ol></nav>
     </div>
-    <a href="<?= base_url('admin/pesanan') ?>" class="btn btn-sm btn-outline-secondary">
-        <i class="bi bi-arrow-left me-1"></i>Kembali
-    </a>
+    <div class="d-flex gap-2">
+        <a href="<?= base_url('admin/pesanan/edit/' . $pesanan['no_pesanan']) ?>" class="btn btn-sm btn-warning">
+            <i class="bi bi-pencil me-1"></i>Edit
+        </a>
+        <a href="<?= base_url('admin/pesanan') ?>" class="btn btn-sm btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i>Kembali
+        </a>
+    </div>
 </div>
 
 <?= view('layouts/partials/alert') ?>
@@ -72,7 +77,7 @@
                                 <th>Layanan</th>
                                 <th>Ukuran</th>
                                 <th class="text-center">Qty</th>
-                                <th class="text-end">Harga Satuan</th>
+                                <th class="text-end">Harga</th>
                                 <th class="text-end">Subtotal</th>
                             </tr>
                         </thead>
@@ -81,14 +86,19 @@
                             <tr>
                                 <td>
                                     <div class="fw-semibold small"><?= $d['nama_layanan'] ?? $d['kode_layanan'] ?></div>
-                                    <?php if ($d['nama_kategori']): ?>
-                                        <div class="text-muted" style="font-size:0.72rem;"><?= $d['nama_kategori'] ?></div>
+                                    <?php if ($d['desain_sendiri']): ?>
+                                        <span class="badge bg-info" style="font-size:0.65rem;">Desain Sendiri (-Rp <?= number_format($d['harga_satuan'] > 0 ? 5000 : 0, 0, ',', '.') ?>)</span>
                                     <?php endif; ?>
                                     <?php if ($d['keterangan']): ?>
                                         <div class="text-muted" style="font-size:0.72rem;"><i class="bi bi-chat-left-text me-1"></i><?= $d['keterangan'] ?></div>
                                     <?php endif; ?>
                                 </td>
-                                <td class="small"><?= $d['ukuran'] ?? '-' ?></td>
+                                <td class="small">
+                                    <?= $d['ukuran'] ?? '-' ?>
+                                    <?php if ($d['panjang'] && $d['lebar']): ?>
+                                        <div class="text-muted" style="font-size:0.7rem;"><?= $d['panjang'] ?>m × <?= $d['lebar'] ?>m</div>
+                                    <?php endif; ?>
+                                </td>
                                 <td class="text-center"><?= $d['qty'] ?></td>
                                 <td class="text-end small">Rp <?= number_format($d['harga_satuan'], 0, ',', '.') ?></td>
                                 <td class="text-end fw-semibold small">Rp <?= number_format($d['subtotal'], 0, ',', '.') ?></td>
@@ -110,7 +120,6 @@
 
     <div class="col-lg-4">
 
-        <?php if (session('level') === 'admin'): ?>
         <div class="card mb-3">
             <div class="card-header"><i class="bi bi-arrow-repeat me-2"></i>Update Status</div>
             <div class="card-body">
@@ -136,7 +145,6 @@
                 </form>
             </div>
         </div>
-        <?php endif; ?>
 
         <div class="card">
             <div class="card-header"><i class="bi bi-clock-history me-2"></i>Alur Status</div>

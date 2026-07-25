@@ -31,7 +31,7 @@
 
 <div class="header">
     <h2>ANUGRAH JAYA DIGITAL PRINTING</h2>
-    <p>Laporan Data Pesanan</p>
+    <p>Laporan Pemesanan</p>
     <p>Periode: <?= date('d F Y', strtotime($dari)) ?> s/d <?= date('d F Y', strtotime($sampai)) ?></p>
 </div>
 

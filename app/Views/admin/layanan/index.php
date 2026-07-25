@@ -3,7 +3,7 @@
 
 <div class="d-flex align-items-center justify-content-between mb-4">
     <div>
-        <h4 class="page-title mb-0">Data Layanan</h4>
+        <h4 class="page-title mb-0">Pengelolaan Produk</h4>
         <nav aria-label="breadcrumb"><ol class="breadcrumb mb-0 small"><li class="breadcrumb-item"><a href="<?= base_url('admin/dashboard') ?>">Dashboard</a></li><li class="breadcrumb-item active">Layanan</li></ol></nav>
     </div>
     <a href="<?= base_url('admin/layanan/create') ?>" class="btn btn-primary btn-sm">
@@ -28,7 +28,8 @@
                         <th>Nama Layanan</th>
                         <th>Kategori</th>
                         <th>Bahan</th>
-                        <th>Harga Satuan</th>
+                        <th>Harga Tetap</th>
+                        <th>Harga/m²</th>
                         <th>Status</th>
                         <th width="120">Aksi</th>
                     </tr>
@@ -56,6 +57,13 @@
                             <td><?= $l['nama_kategori'] ?? '-' ?></td>
                             <td><?= $l['nama_bahan'] ?? '-' ?></td>
                             <td>Rp <?= number_format($l['harga_satuan'], 0, ',', '.') ?></td>
+                            <td>
+                                <?php if (($l['harga_per_meter'] ?? 0) > 0): ?>
+                                    Rp <?= number_format($l['harga_per_meter'], 0, ',', '.') ?>/m²
+                                <?php else: ?>
+                                    <span class="text-muted">-</span>
+                                <?php endif; ?>
+                            </td>
                             <td><?= view('layouts/partials/badge_status', ['status' => $l['status']]) ?></td>
                             <td>
                                 <a href="<?= base_url('admin/layanan/edit/' . $l['kode_layanan']) ?>" class="btn btn-sm btn-outline-warning py-1 px-2" title="Edit">

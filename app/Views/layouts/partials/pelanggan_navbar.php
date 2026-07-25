@@ -37,17 +37,11 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link <?= (strpos(uri_string(), 'pelanggan/return') !== false) ? 'active fw-semibold' : '' ?>" href="<?= base_url('pelanggan/return') ?>">
-                        <i class="bi bi-arrow-return-left me-1"></i>Return
-                    </a>
-                </li>
-
                 <li class="nav-item ms-lg-2">
                     <div class="dropdown">
                         <button class="btn btn-outline-light btn-sm d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown">
                             <i class="bi bi-person-circle"></i>
-                            <span><?= session('nama_lengkap') ?? 'Pelanggan' ?></span>
+                            <span><?= session('nama_lengkap') ?? 'Konsumen' ?></span>
                             <i class="bi bi-chevron-down small"></i>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end shadow">
