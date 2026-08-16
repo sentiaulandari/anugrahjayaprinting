@@ -17,7 +17,7 @@
 
 <?= view('layouts/partials/alert') ?>
 
-<form action="<?= base_url('admin/pesanan/store') ?>" method="POST" id="formPesanan">
+<form action="<?= base_url('admin/pesanan/store') ?>" method="POST" id="formPesanan" enctype="multipart/form-data">
     <?= csrf_field() ?>
 
     <div class="row g-3">
@@ -71,22 +71,40 @@
                 </div>
                 <div class="card-body">
                     <div id="itemContainer">
-                        <div class="item-row border rounded p-3 mb-2 bg-light">
+                        <div class="item-row border rounded p-3 mb-2 bg-light" data-tipe="per_pcs">
                             <div class="row g-2 align-items-end">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <label class="form-label small fw-semibold">Layanan</label>
                                     <select name="kode_layanan[]" class="form-select form-select-sm layanan-select" required>
                                         <option value="">-- Pilih --</option>
                                         <?php foreach ($layanan as $l): ?>
-                                            <option value="<?= $l['kode_layanan'] ?>" data-harga="<?= $l['harga_satuan'] ?>">
-                                                <?= $l['nama_layanan'] ?> — Rp <?= number_format($l['harga_satuan'], 0, ',', '.') ?>
+                                            <option value="<?= $l['kode_layanan'] ?>"
+                                                data-harga="<?= $l['harga_satuan'] ?>"
+                                                data-hpm="<?= $l['harga_per_meter'] ?? 0 ?>"
+                                                data-diskon="<?= $l['diskon_desain_sendiri'] ?? 5000 ?>"
+                                                data-tipe="<?= $l['tipe_harga'] ?? 'per_pcs' ?>">
+                                                <?= $l['nama_layanan'] ?>
+                                                <?php if (($l['tipe_harga'] ?? 'per_pcs') === 'per_meter'): ?>
+                                                    — Rp <?= number_format($l['harga_per_meter'] ?? 0, 0, ',', '.') ?>/m²
+                                                <?php else: ?>
+                                                    — Rp <?= number_format($l['harga_satuan'], 0, ',', '.') ?>
+                                                <?php endif; ?>
                                             </option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-2 input-meter" style="display:none;">
+                                    <label class="form-label small fw-semibold">P (m)</label>
+                                    <input type="number" name="panjang[]" class="form-control form-control-sm panjang-input" step="0.01" min="0" placeholder="0">
+                                </div>
+                                <div class="col-md-2 input-meter" style="display:none;">
+                                    <label class="form-label small fw-semibold">L (m)</label>
+                                    <input type="number" name="lebar[]" class="form-control form-control-sm lebar-input" step="0.01" min="0" placeholder="0">
+                                </div>
+                                <div class="col-md-2 input-qty">
                                     <label class="form-label small fw-semibold">Qty</label>
                                     <input type="number" name="qty[]" class="form-control form-control-sm qty-input" value="1" min="1" required>
+                                    <small class="text-muted qty-label">pcs</small>
                                 </div>
                                 <div class="col-md-2">
                                     <label class="form-label small fw-semibold">Harga</label>
@@ -97,15 +115,18 @@
                                     <input type="text" class="form-control form-control-sm subtotal-display bg-white fw-semibold text-primary" readonly value="Rp 0">
                                 </div>
                                 <div class="col-md-1">
-                                    <label class="form-label small fw-semibold">Ukuran</label>
-                                    <input type="text" name="ukuran[]" class="form-control form-control-sm" placeholder="3x1m">
-                                </div>
-                                <div class="col-md-1">
                                     <button type="button" class="btn btn-sm btn-outline-danger btn-hapus-item w-100 mt-4">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </div>
-                                <div class="col-12">
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold">Upload Desain (Opsional)</label>
+                                    <input type="file" name="file_desain[]" class="form-control form-control-sm file-desain-input"
+                                        accept=".jpg,.jpeg,.png,.pdf,.ai,.cdr,.psd" onchange="validasiFile(this)">
+                                    <div class="form-text">Format: JPG, PNG, PDF, AI, CDR, PSD (Maks 10MB)</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold">Keterangan</label>
                                     <input type="text" name="keterangan_detail[]" class="form-control form-control-sm"
                                         placeholder="Keterangan item (opsional)">
                                 </div>
@@ -164,45 +185,143 @@
 
 <?= $this->section('scripts') ?>
 <script>
-    const layananOptions = `<?php foreach ($layanan as $l): ?><option value="<?= $l['kode_layanan'] ?>" data-harga="<?= $l['harga_satuan'] ?>"><?= $l['nama_layanan'] ?> — Rp <?= number_format($l['harga_satuan'], 0, ',', '.') ?></option><?php endforeach; ?>`;
+    const layananData = <?= json_encode(array_map(function($l) {
+        return [
+            'kode'   => $l['kode_layanan'],
+            'nama'   => $l['nama_layanan'],
+            'harga'  => $l['harga_satuan'],
+            'hpm'    => $l['harga_per_meter'] ?? 0,
+            'diskon' => $l['diskon_desain_sendiri'] ?? 5000,
+            'tipe'   => $l['tipe_harga'] ?? 'per_pcs',
+        ];
+    }, $layanan)) ?>;
 
     function formatRp(n) {
         return 'Rp ' + parseInt(n || 0).toLocaleString('id-ID');
     }
 
+    function getQtyLabel(tipe) {
+        const labels = {
+            'per_meter':  'm²',
+            'per_lembar': 'lembar',
+            'per_pcs':    'pcs',
+            'per_set':    'set',
+            'per_huruf':  'huruf',
+            'per_buku':   'buku',
+        };
+        return labels[tipe] || 'pcs';
+    }
+
+    function hitungSubtotal(row) {
+        var sel  = row.querySelector('.layanan-select');
+        var opt  = sel.selectedOptions[0];
+        if (!opt || !opt.value) return 0;
+
+        var tipe     = opt.dataset.tipe || 'per_pcs';
+        var hpm      = parseFloat(opt.dataset.hpm) || 0;
+        var diskon   = parseFloat(opt.dataset.diskon) || 5000;
+        var hargaFix = parseFloat(opt.dataset.harga) || 0;
+        var qty      = parseInt(row.querySelector('.qty-input').value) || 0;
+
+        if (tipe === 'per_meter') {
+            var panjang = parseFloat(row.querySelector('.panjang-input').value) || 0;
+            var lebar   = parseFloat(row.querySelector('.lebar-input').value) || 0;
+            var hargaSatuan = panjang * lebar * hpm;
+            return hargaSatuan * qty;
+        }
+
+        return hargaFix * qty;
+    }
+
     function hitungTotal() {
         let total = 0;
         let count = 0;
-
         document.querySelectorAll('.item-row').forEach(function(row) {
-            const sel   = row.querySelector('.layanan-select');
-            const qty   = parseInt(row.querySelector('.qty-input').value) || 0;
-            const harga = sel.selectedOptions[0] ? parseFloat(sel.selectedOptions[0].dataset.harga) || 0 : 0;
-            const sub   = qty * harga;
-
+            var sub = hitungSubtotal(row);
+            var sel = row.querySelector('.layanan-select');
+            var opt = sel.selectedOptions[0];
+            var harga = 0;
+            if (opt && opt.value) {
+                var tipe = opt.dataset.tipe || 'per_pcs';
+                if (tipe === 'per_meter') {
+                    var p = parseFloat(row.querySelector('.panjang-input').value) || 0;
+                    var l = parseFloat(row.querySelector('.lebar-input').value) || 0;
+                    harga = p * l * (parseFloat(opt.dataset.hpm) || 0);
+                } else {
+                    harga = parseFloat(opt.dataset.harga) || 0;
+                }
+            }
             row.querySelector('.harga-display').value    = formatRp(harga);
             row.querySelector('.subtotal-display').value = formatRp(sub);
             total += sub;
             count++;
         });
-
         document.getElementById('grandTotal').textContent    = formatRp(total);
         document.getElementById('ringkasanTotal').textContent = formatRp(total);
         document.getElementById('jumlahItem').textContent    = count + ' item';
     }
 
-    document.getElementById('itemContainer').addEventListener('change', hitungTotal);
-    document.getElementById('itemContainer').addEventListener('input', hitungTotal);
+    function updateTipeLayout(row) {
+        var sel = row.querySelector('.layanan-select');
+        var opt = sel.selectedOptions[0];
+        var meterInputs = row.querySelectorAll('.input-meter');
+        var qtyLabel    = row.querySelector('.qty-label');
+
+        if (!opt || !opt.value) {
+            meterInputs.forEach(function(el) { el.style.display = 'none'; });
+            qtyLabel.textContent = 'pcs';
+            return;
+        }
+
+        var tipe = opt.dataset.tipe || 'per_pcs';
+        row.dataset.tipe = tipe;
+
+        if (tipe === 'per_meter') {
+            meterInputs.forEach(function(el) { el.style.display = ''; });
+        } else {
+            meterInputs.forEach(function(el) { el.style.display = 'none'; });
+        }
+        qtyLabel.textContent = getQtyLabel(tipe);
+    }
+
+    document.getElementById('itemContainer').addEventListener('change', function(e) {
+        if (e.target.classList.contains('layanan-select')) {
+            updateTipeLayout(e.target.closest('.item-row'));
+        }
+        hitungTotal();
+    });
+
+    document.getElementById('itemContainer').addEventListener('input', function(e) {
+        if (e.target.classList.contains('panjang-input') ||
+            e.target.classList.contains('lebar-input') ||
+            e.target.classList.contains('qty-input')) {
+            hitungTotal();
+        }
+    });
 
     document.getElementById('btnTambahItem').addEventListener('click', function() {
         const template = document.querySelector('.item-row').cloneNode(true);
         template.querySelectorAll('input').forEach(function(i) {
-            if (i.type === 'number') i.value = 1;
+            if (i.type === 'number') i.value = i.classList.contains('qty-input') ? 1 : '';
+            else if (i.type === 'checkbox') i.checked = false;
+            else if (i.type === 'file') i.value = '';
             else if (!i.classList.contains('subtotal-display') && !i.classList.contains('harga-display')) i.value = '';
         });
-        template.querySelector('.layanan-select').innerHTML = '<option value="">-- Pilih --</option>' + layananOptions;
+
+        var layananOpts = '<option value="">-- Pilih --</option>';
+        layananData.forEach(function(l) {
+            var unitLabel = l.tipe === 'per_meter' ? 'Rp ' + parseInt(l.hpm).toLocaleString('id-ID') + '/m²' :
+                           'Rp ' + parseInt(l.harga).toLocaleString('id-ID') + '/' + getQtyLabel(l.tipe);
+            layananOpts += '<option value="' + l.kode + '" data-harga="' + l.harga + '" data-hpm="' + l.hpm + '" data-diskon="' + l.diskon + '" data-tipe="' + l.tipe + '">' + l.nama + ' — ' + unitLabel + '</option>';
+        });
+        template.querySelector('.layanan-select').innerHTML = layananOpts;
         template.querySelector('.subtotal-display').value = 'Rp 0';
         template.querySelector('.harga-display').value    = 'Rp 0';
+
+        var meterInputs = template.querySelectorAll('.input-meter');
+        meterInputs.forEach(function(el) { el.style.display = 'none'; });
+        template.querySelector('.qty-label').textContent = 'pcs';
+
         document.getElementById('itemContainer').appendChild(template);
         hitungTotal();
     });
@@ -216,6 +335,16 @@
             }
         }
     });
+
+    function validasiFile(input) {
+        if (input.files && input.files[0]) {
+            var file = input.files[0];
+            if (file.size > 10 * 1024 * 1024) {
+                alert('Ukuran file maksimal 10MB!');
+                input.value = '';
+            }
+        }
+    }
 
     document.getElementById('formPesanan').addEventListener('submit', function() {
         const btn = document.getElementById('btnSubmit');

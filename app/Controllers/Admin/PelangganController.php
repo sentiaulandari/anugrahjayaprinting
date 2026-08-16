@@ -27,6 +27,55 @@ class PelangganController extends BaseController
         return view('admin/pelanggan/index', $data);
     }
 
+    public function create(): string
+    {
+        $data = [
+            'title' => 'Tambah Konsumen',
+        ];
+
+        return view('admin/pelanggan/form', $data);
+    }
+
+    public function store()
+    {
+        $rules = [
+            'nama_pelanggan' => 'required|max_length[100]',
+            'no_hp'          => 'permit_empty|max_length[15]',
+            'email'          => 'permit_empty|valid_email',
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
+        $this->pelangganModel->insert([
+            'nama_pelanggan' => $this->request->getPost('nama_pelanggan'),
+            'alamat'         => $this->request->getPost('alamat'),
+            'no_hp'          => $this->request->getPost('no_hp'),
+            'email'          => $this->request->getPost('email'),
+            'created_at'     => date('Y-m-d H:i:s'),
+        ]);
+
+        return redirect()->to('/admin/pelanggan')->with('success', 'Konsumen berhasil ditambahkan.');
+    }
+
+    public function search()
+    {
+        $keyword = $this->request->getGet('q');
+        if (!$keyword || strlen($keyword) < 2) {
+            return $this->response->setJSON([]);
+        }
+
+        $pelanggan = $this->pelangganModel
+            ->like('nama_pelanggan', $keyword)
+            ->orLike('no_hp', $keyword)
+            ->orLike('email', $keyword)
+            ->limit(10)
+            ->findAll();
+
+        return $this->response->setJSON($pelanggan);
+    }
+
     public function show(int $id): string
     {
         $pelanggan = $this->pelangganModel->getDetailById($id);

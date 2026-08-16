@@ -24,7 +24,7 @@
                 <thead class="table-light">
                     <tr>
                         <th>No Transaksi</th>
-                        <th>Pelanggan</th>
+                        <th>Konsumen</th>
                         <th>Tanggal</th>
                         <th>Total</th>
                         <th>Bayar</th>
@@ -38,7 +38,7 @@
                         <?php foreach ($transaksi as $t): ?>
                         <tr>
                             <td><span class="fw-semibold small"><?= $t['no_transaksi'] ?></span></td>
-                            <td><?= $t['nama_pelanggan'] ?? 'Walk-in' ?></td>
+                            <td><?= $t['nama_pelanggan'] ?? '-' ?></td>
                             <td><?= date('d/m/Y H:i', strtotime($t['created_at'])) ?></td>
                             <td>Rp <?= number_format($t['total_harga'], 0, ',', '.') ?></td>
                             <td><span class="badge bg-success">Lunas</span></td>

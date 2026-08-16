@@ -36,8 +36,8 @@
                         <div class="fw-bold"><?= $transaksi['no_transaksi'] ?></div>
                     </div>
                     <div class="col-md-4">
-                        <div class="text-muted">Pelanggan</div>
-                        <div class="fw-semibold"><?= $transaksi['nama_pelanggan'] ?? 'Walk-in' ?></div>
+                        <div class="text-muted">Konsumen</div>
+                        <div class="fw-semibold"><?= $transaksi['nama_pelanggan'] ?? '-' ?></div>
                         <div class="text-muted"><?= $transaksi['no_hp'] ?? '' ?></div>
                     </div>
                     <div class="col-md-4">

@@ -6,6 +6,9 @@
         <h4 class="page-title mb-0">Pengelolaan Konsumen</h4>
         <nav aria-label="breadcrumb"><ol class="breadcrumb mb-0 small"><li class="breadcrumb-item"><a href="<?= base_url('admin/dashboard') ?>">Dashboard</a></li><li class="breadcrumb-item active">Pelanggan</li></ol></nav>
     </div>
+    <a href="<?= base_url('admin/pelanggan/create') ?>" class="btn btn-sm btn-primary">
+        <i class="bi bi-plus-lg me-1"></i>Tambah Konsumen
+    </a>
 </div>
 
 <?= view('layouts/partials/alert') ?>

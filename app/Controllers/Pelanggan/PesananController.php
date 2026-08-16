@@ -97,23 +97,51 @@ class PesananController extends BaseController
         $keterangans = $this->request->getPost('keterangan_detail');
         $total       = 0;
 
+        $filesDesain = $this->request->getFiles('file_desain');
+        // getFiles() untuk input name="file_desain[]" mengembalikan ['file_desain' => [...]]
+        $filesDesainArr = $filesDesain['file_desain'] ?? [];
+
+        $uploadPath = WRITEPATH . '../public/uploads/desain';
+        if (!is_dir($uploadPath)) {
+            mkdir($uploadPath, 0777, true);
+        }
+
         foreach ($kodeLayanan as $i => $kode) {
             $layanan = $this->layananModel->find($kode);
             if (!$layanan) {
                 continue;
             }
 
-            $panjang   = (float) ($panjangs[$i] ?? 0);
-            $lebar     = (float) ($lebars[$i] ?? 0);
-            $qty       = (int) ($qtys[$i] ?? 1);
-            $desain    = isset($desains[$i]) ? 1 : 0;
-            $diskon    = (float) ($layanan['diskon_desain_sendiri'] ?? 5000);
+            $panjang    = (float) ($panjangs[$i] ?? 0);
+            $lebar      = (float) ($lebars[$i] ?? 0);
+            $qty        = (int) ($qtys[$i] ?? 1);
+            $desain     = isset($desains[$i]) ? 1 : 0;
+            $diskon     = (float) ($layanan['diskon_desain_sendiri'] ?? 5000);
+            $tipeHarga  = $layanan['tipe_harga'] ?? 'per_pcs';
+            $hargaSatuan = 0;
 
-            $hargaPerMeter = (float) ($layanan['harga_per_meter'] ?? 0);
-            $hargaSatuan   = $panjang * $lebar * $hargaPerMeter;
+            switch ($tipeHarga) {
+                case 'per_meter':
+                    $hargaSatuan = $panjang * $lebar * (float) ($layanan['harga_per_meter'] ?? 0);
+                    if ($desain && $hargaSatuan > 0) {
+                        $hargaSatuan = max(0, $hargaSatuan - $diskon);
+                    }
+                    break;
 
-            if ($desain && $hargaSatuan > 0) {
-                $hargaSatuan = max(0, $hargaSatuan - $diskon);
+                case 'per_lembar':
+                case 'per_pcs':
+                case 'per_huruf':
+                case 'per_buku':
+                    $hargaSatuan = (float) ($layanan['harga_satuan'] ?? 0);
+                    break;
+
+                case 'per_set':
+                    $hargaSatuan = (float) ($layanan['harga_satuan'] ?? 0);
+                    break;
+
+                default:
+                    $hargaSatuan = (float) ($layanan['harga_satuan'] ?? 0);
+                    break;
             }
 
             if ($hargaSatuan <= 0) {
@@ -123,7 +151,17 @@ class PesananController extends BaseController
             $subtotal = $hargaSatuan * $qty;
             $total   += $subtotal;
 
-            $ukuranStr = ($panjang > 0 && $lebar > 0) ? $panjang . 'x' . $lebar . 'm' : null;
+            $ukuranStr = null;
+            if ($tipeHarga === 'per_meter' && $panjang > 0 && $lebar > 0) {
+                $ukuranStr = $panjang . 'x' . $lebar . 'm';
+            }
+
+            $fileDesainPath = null;
+            if (isset($filesDesainArr[$i]) && $filesDesainArr[$i]->isValid() && !$filesDesainArr[$i]->hasMoved()) {
+                $fileName = $noPesanan . '_' . $i . '_' . $filesDesainArr[$i]->getClientName();
+                $filesDesainArr[$i]->move($uploadPath, $fileName);
+                $fileDesainPath = 'uploads/desain/' . $fileName;
+            }
 
             $this->detailModel->insert([
                 'no_pesanan'      => $noPesanan,
@@ -132,9 +170,10 @@ class PesananController extends BaseController
                 'harga_satuan'    => $hargaSatuan,
                 'subtotal'        => $subtotal,
                 'ukuran'          => $ukuranStr,
-                'panjang'         => $panjang ?: null,
-                'lebar'           => $lebar ?: null,
+                'panjang'         => ($tipeHarga === 'per_meter' && $panjang > 0) ? $panjang : null,
+                'lebar'           => ($tipeHarga === 'per_meter' && $lebar > 0) ? $lebar : null,
                 'desain_sendiri'  => $desain,
+                'file_desain'     => $fileDesainPath,
                 'keterangan'      => $keterangans[$i] ?? null,
             ]);
         }
@@ -143,5 +182,23 @@ class PesananController extends BaseController
 
         return redirect()->to('/pelanggan/pembayaran/form/' . $noPesanan)
                          ->with('success', 'Pesanan ' . $noPesanan . ' berhasil dibuat. Silakan lakukan pembayaran.');
+    }
+
+    public function cetakFaktur(string $no): string
+    {
+        $idPelanggan = session()->get('id_pelanggan');
+        $pesanan     = $this->pesananModel->getDetailPesanan($no);
+
+        if (!$pesanan || $pesanan['id_pelanggan'] != $idPelanggan) {
+            return redirect()->to('/pelanggan/pesanan')->with('error', 'Pesanan tidak ditemukan.');
+        }
+
+        $data = [
+            'title'   => 'Faktur Pesanan',
+            'pesanan' => $pesanan,
+            'detail'  => $this->detailModel->getByNoPesanan($no),
+        ];
+
+        return view('pelanggan/pesanan/faktur', $data);
     }
 }

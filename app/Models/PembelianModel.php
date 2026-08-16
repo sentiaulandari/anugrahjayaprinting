@@ -11,11 +11,8 @@ class PembelianModel extends Model
     protected $returnType = 'array';
 
     protected $allowedFields = [
+        'no_faktur',
         'id_supplier',
-        'id_bahan',
-        'jumlah',
-        'harga_satuan',
-        'harga_total',
         'tgl_pembelian',
         'catatan',
         'created_at',
@@ -23,29 +20,39 @@ class PembelianModel extends Model
 
     protected $useTimestamps = false;
 
-    protected $validationRules = [
-        'id_supplier'    => 'required|integer',
-        'id_bahan'       => 'required|integer',
-        'jumlah'         => 'required|integer|greater_than[0]',
-        'harga_total'    => 'required|decimal|greater_than[0]',
-        'tgl_pembelian'  => 'required|valid_date',
-    ];
-
     public function getWithRelasi(): array
     {
-        return $this->select('pembelian.*, supplier.nama_supplier, bahan.nama_bahan, bahan.satuan')
+        return $this->select('pembelian.*, supplier.nama_supplier,
+                            (SELECT COUNT(*) FROM detail_pembelian WHERE detail_pembelian.id_pembelian = pembelian.id_pembelian) as total_item,
+                            (SELECT IFNULL(SUM(subtotal), 0) FROM detail_pembelian WHERE detail_pembelian.id_pembelian = pembelian.id_pembelian) as total_harga')
                     ->join('supplier', 'supplier.id_supplier = pembelian.id_supplier', 'left')
-                    ->join('bahan', 'bahan.id_bahan = pembelian.id_bahan', 'left')
                     ->orderBy('pembelian.tgl_pembelian', 'DESC')
                     ->findAll();
     }
 
+    public function generateNoFaktur(): string
+    {
+        $prefix = 'FB-' . date('Ymd') . '-';
+        $last   = $this->like('no_faktur', $prefix, 'after')
+                       ->orderBy('no_faktur', 'DESC')
+                       ->first();
+
+        if (!$last) {
+            return $prefix . '001';
+        }
+
+        $angka = (int) substr($last['no_faktur'], strlen($prefix));
+        return $prefix . str_pad($angka + 1, 3, '0', STR_PAD_LEFT);
+    }
+
     public function getTotalByPeriode(string $dari, string $sampai): float
     {
-        $result = $this->selectSum('harga_total')
-                       ->where('tgl_pembelian >=', $dari)
-                       ->where('tgl_pembelian <=', $sampai)
-                       ->first();
-        return (float) ($result['harga_total'] ?? 0);
+        $result = $this->db->query('
+            SELECT IFNULL(SUM(dp.subtotal), 0) as total
+            FROM pembelian p
+            LEFT JOIN detail_pembelian dp ON dp.id_pembelian = p.id_pembelian
+            WHERE p.tgl_pembelian >= ? AND p.tgl_pembelian <= ?
+        ', [$dari, $sampai])->getRow();
+        return (float) ($result->total ?? 0);
     }
 }

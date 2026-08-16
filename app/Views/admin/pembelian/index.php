@@ -20,11 +20,11 @@
                 <thead>
                     <tr>
                         <th>No</th>
+                        <th>No Faktur</th>
                         <th>Tanggal</th>
                         <th>Supplier</th>
-                        <th>Bahan</th>
-                        <th>Jumlah</th>
-                        <th>Harga Total</th>
+                        <th>Jumlah Item</th>
+                        <th>Total Harga</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -40,11 +40,11 @@
                         <?php foreach ($pembelian as $i => $p): ?>
                         <tr>
                             <td><?= $i + 1 ?></td>
+                            <td class="fw-semibold" style="font-size:0.85rem;"><?= esc($p['no_faktur'] ?? '-') ?></td>
                             <td style="font-size:0.82rem;"><?= date('d/m/Y', strtotime($p['tgl_pembelian'])) ?></td>
                             <td class="fw-semibold" style="font-size:0.85rem;"><?= esc($p['nama_supplier'] ?? '-') ?></td>
-                            <td style="font-size:0.85rem;"><?= esc($p['nama_bahan'] ?? '-') ?></td>
-                            <td style="font-size:0.85rem;"><?= $p['jumlah'] ?> <?= esc($p['satuan'] ?? '') ?></td>
-                            <td style="font-size:0.85rem;font-weight:600;">Rp <?= number_format($p['harga_total'], 0, ',', '.') ?></td>
+                            <td style="font-size:0.85rem;"><?= $p['total_item'] ?? 0 ?> item</td>
+                            <td style="font-size:0.85rem;font-weight:600;">Rp <?= number_format($p['total_harga'] ?? 0, 0, ',', '.') ?></td>
                             <td>
                                 <div class="d-flex gap-1">
                                     <a href="<?= base_url('admin/pembelian/show/' . $p['id_pembelian']) ?>"

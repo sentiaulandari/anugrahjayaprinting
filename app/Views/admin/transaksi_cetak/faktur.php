@@ -45,8 +45,8 @@
         <span class="value"><?= date('d/m/Y H:i', strtotime($transaksi['created_at'])) ?></span>
     </div>
     <div class="info-row">
-        <span class="label">Pelanggan</span>
-        <span class="value"><?= $transaksi['nama_pelanggan'] ?: 'Walk-in' ?></span>
+        <span class="label">Konsumen</span>
+        <span class="value"><?= $transaksi['nama_pelanggan'] ?: '-' ?></span>
     </div>
     <?php if ($transaksi['no_hp']): ?>
     <div class="info-row">

@@ -59,6 +59,7 @@ class TransaksiCetakController extends BaseController
             'no_transaksi'   => $noTransaksi,
             'nama_pelanggan' => $this->request->getPost('nama_pelanggan') ?: null,
             'no_hp'          => $this->request->getPost('no_hp') ?: null,
+            'id_pelanggan'   => $this->request->getPost('id_pelanggan') ?: null,
             'tgl_transaksi'  => $this->request->getPost('tgl_transaksi'),
             'metode_bayar'   => $this->request->getPost('metode_bayar'),
             'status_bayar'   => 'lunas',
@@ -81,17 +82,30 @@ class TransaksiCetakController extends BaseController
                     continue;
                 }
 
-                $panjang   = (float) ($panjangs[$i] ?? 0);
-                $lebar     = (float) ($lebars[$i] ?? 0);
-                $qty       = (int) ($qtys[$i] ?? 1);
-                $desain    = isset($desains[$i]) ? 1 : 0;
-                $diskon    = (float) ($layanan['diskon_desain_sendiri'] ?? 5000);
+                $panjang    = (float) ($panjangs[$i] ?? 0);
+                $lebar      = (float) ($lebars[$i] ?? 0);
+                $qty        = (int) ($qtys[$i] ?? 1);
+                $desain     = isset($desains[$i]) ? 1 : 0;
+                $diskon     = (float) ($layanan['diskon_desain_sendiri'] ?? 5000);
+                $tipeHarga  = $layanan['tipe_harga'] ?? 'per_pcs';
+                $hargaSatuan = 0;
 
-                $hargaPerMeter = (float) ($layanan['harga_per_meter'] ?? 0);
-                $hargaSatuan   = $panjang * $lebar * $hargaPerMeter;
+                switch ($tipeHarga) {
+                    case 'per_meter':
+                        $hargaSatuan = $panjang * $lebar * (float) ($layanan['harga_per_meter'] ?? 0);
+                        if ($desain && $hargaSatuan > 0) {
+                            $hargaSatuan = max(0, $hargaSatuan - $diskon);
+                        }
+                        break;
 
-                if ($desain && $hargaSatuan > 0) {
-                    $hargaSatuan = max(0, $hargaSatuan - $diskon);
+                    case 'per_lembar':
+                    case 'per_pcs':
+                    case 'per_huruf':
+                    case 'per_buku':
+                    case 'per_set':
+                    default:
+                        $hargaSatuan = (float) ($layanan['harga_satuan'] ?? 0);
+                        break;
                 }
 
                 if ($hargaSatuan <= 0) {
@@ -105,8 +119,8 @@ class TransaksiCetakController extends BaseController
                     'no_transaksi'    => $noTransaksi,
                     'kode_layanan'    => $kode,
                     'nama_produk'     => $layanan['nama_layanan'],
-                    'panjang'         => $panjang ?: null,
-                    'lebar'           => $lebar ?: null,
+                    'panjang'         => ($tipeHarga === 'per_meter' && $panjang > 0) ? $panjang : null,
+                    'lebar'           => ($tipeHarga === 'per_meter' && $lebar > 0) ? $lebar : null,
                     'qty'             => $qty,
                     'harga_satuan'    => $hargaSatuan,
                     'subtotal'        => $subtotal,

@@ -29,10 +29,15 @@ class StokService
                 continue;
             }
 
-            $this->bahanModel->kurangiStok(
-                (int) $layanan['id_bahan'],
-                (int) $detail['qty']
-            );
+            $tipeHarga = $layanan['tipe_harga'] ?? 'per_pcs';
+            $jumlah    = $this->hitungKebutuhanStok($detail, $tipeHarga);
+
+            if ($jumlah > 0) {
+                $this->bahanModel->kurangiStok(
+                    (int) $layanan['id_bahan'],
+                    $jumlah
+                );
+            }
         }
     }
 
@@ -46,10 +51,40 @@ class StokService
                 continue;
             }
 
-            $this->bahanModel->tambahStok(
-                (int) $layanan['id_bahan'],
-                (int) $detail['qty']
-            );
+            $tipeHarga = $layanan['tipe_harga'] ?? 'per_pcs';
+            $jumlah    = $this->hitungKebutuhanStok($detail, $tipeHarga);
+
+            if ($jumlah > 0) {
+                $this->bahanModel->tambahStok(
+                    (int) $layanan['id_bahan'],
+                    $jumlah
+                );
+            }
+        }
+    }
+
+    private function hitungKebutuhanStok(array $detail, string $tipeHarga): int
+    {
+        $qty = (int) $detail['qty'];
+
+        switch ($tipeHarga) {
+            case 'per_meter':
+                $panjang = (float) ($detail['panjang'] ?? 0);
+                $lebar   = (float) ($detail['lebar'] ?? 0);
+                if ($panjang > 0 && $lebar > 0) {
+                    return (int) ceil($panjang * $lebar * $qty);
+                }
+                return $qty;
+
+            case 'per_lembar':
+            case 'per_set':
+            case 'per_buku':
+                return $qty;
+
+            case 'per_pcs':
+            case 'per_huruf':
+            default:
+                return $qty;
         }
     }
 }

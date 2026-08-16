@@ -11,6 +11,11 @@
         </ol></nav>
     </div>
     <div class="d-flex gap-2">
+        <?php if ($pesanan['status_bayar'] === 'lunas'): ?>
+        <a href="<?= base_url('admin/pesanan/cetak/' . $pesanan['no_pesanan']) ?>" target="_blank" class="btn btn-sm btn-success">
+            <i class="bi bi-printer me-1"></i>Cetak Faktur
+        </a>
+        <?php endif; ?>
         <a href="<?= base_url('admin/pesanan/edit/' . $pesanan['no_pesanan']) ?>" class="btn btn-sm btn-warning">
             <i class="bi bi-pencil me-1"></i>Edit
         </a>
@@ -74,40 +79,105 @@
                     <table class="table table-sm align-middle mb-0">
                         <thead class="table-light">
                             <tr>
-                                <th>Layanan</th>
-                                <th>Ukuran</th>
-                                <th class="text-center">Qty</th>
-                                <th class="text-end">Harga</th>
-                                <th class="text-end">Subtotal</th>
+                                <th style="min-width:160px;">Layanan</th>
+                                <th style="min-width:90px;">Ukuran</th>
+                                <th class="text-center" style="min-width:50px;">Qty</th>
+                                <th class="text-end" style="min-width:100px;">Harga</th>
+                                <th class="text-end" style="min-width:100px;">Subtotal</th>
+                                <th style="min-width:200px;">File Desain & Keterangan</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($detail as $d): ?>
+                            <?php
+                                $tipeLabel = match($d['tipe_harga'] ?? '') {
+                                    'per_meter'  => 'Per Meter',
+                                    'per_lembar' => 'Per Lembar',
+                                    'per_set'    => 'Per Set',
+                                    'per_huruf'  => 'Per Huruf',
+                                    'per_buku'   => 'Per Buku',
+                                    default      => 'Per Pcs',
+                                };
+                                $hasFile  = !empty($d['file_desain']);
+                                $ext      = $hasFile ? strtolower(pathinfo($d['file_desain'], PATHINFO_EXTENSION)) : '';
+                                $isImage  = in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp']);
+                                $fileName = $hasFile ? basename($d['file_desain']) : '';
+                            ?>
                             <tr>
                                 <td>
-                                    <div class="fw-semibold small"><?= $d['nama_layanan'] ?? $d['kode_layanan'] ?></div>
-                                    <?php if ($d['desain_sendiri']): ?>
-                                        <span class="badge bg-info" style="font-size:0.65rem;">Desain Sendiri (-Rp <?= number_format($d['harga_satuan'] > 0 ? 5000 : 0, 0, ',', '.') ?>)</span>
-                                    <?php endif; ?>
-                                    <?php if ($d['keterangan']): ?>
-                                        <div class="text-muted" style="font-size:0.72rem;"><i class="bi bi-chat-left-text me-1"></i><?= $d['keterangan'] ?></div>
-                                    <?php endif; ?>
+                                    <div class="fw-semibold small"><?= esc($d['nama_layanan'] ?? $d['kode_layanan']) ?></div>
+                                    <div class="mt-1 d-flex flex-wrap gap-1">
+                                        <span class="badge bg-secondary" style="font-size:0.6rem;"><?= $tipeLabel ?></span>
+                                        <?php if ($d['desain_sendiri']): ?>
+                                            <span class="badge bg-info text-dark" style="font-size:0.6rem;">Desain Sendiri</span>
+                                        <?php endif; ?>
+                                    </div>
                                 </td>
                                 <td class="small">
-                                    <?= $d['ukuran'] ?? '-' ?>
                                     <?php if ($d['panjang'] && $d['lebar']): ?>
-                                        <div class="text-muted" style="font-size:0.7rem;"><?= $d['panjang'] ?>m × <?= $d['lebar'] ?>m</div>
+                                        <span class="fw-semibold"><?= $d['panjang'] ?> × <?= $d['lebar'] ?> m</span>
+                                    <?php elseif ($d['ukuran']): ?>
+                                        <?= esc($d['ukuran']) ?>
+                                    <?php else: ?>
+                                        <span class="text-muted">-</span>
                                     <?php endif; ?>
                                 </td>
                                 <td class="text-center"><?= $d['qty'] ?></td>
                                 <td class="text-end small">Rp <?= number_format($d['harga_satuan'], 0, ',', '.') ?></td>
                                 <td class="text-end fw-semibold small">Rp <?= number_format($d['subtotal'], 0, ',', '.') ?></td>
+                                <td>
+                                    <?php if ($hasFile): ?>
+                                        <div class="d-flex align-items-start gap-2">
+                                            <?php if ($isImage): ?>
+                                                <!-- Thumbnail yang bisa diklik untuk preview -->
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalDesain<?= $d['id_detail'] ?>" title="Klik untuk preview">
+                                                    <img src="<?= base_url($d['file_desain']) ?>" alt="Desain"
+                                                         class="rounded border shadow-sm"
+                                                         style="width:56px;height:56px;object-fit:cover;flex-shrink:0;">
+                                                </a>
+                                            <?php else: ?>
+                                                <!-- Icon file non-gambar -->
+                                                <div class="rounded border bg-light d-flex align-items-center justify-content-center flex-shrink-0"
+                                                     style="width:56px;height:56px;">
+                                                    <i class="bi bi-file-earmark-<?= in_array($ext, ['pdf']) ? 'pdf text-danger' : 'text text-secondary' ?> fs-4"></i>
+                                                </div>
+                                            <?php endif; ?>
+                                            <div class="flex-grow-1 min-width-0">
+                                                <div class="small text-truncate fw-semibold" style="max-width:120px;" title="<?= esc($fileName) ?>">
+                                                    <?= esc($fileName) ?>
+                                                </div>
+                                                <div class="small text-muted text-uppercase"><?= $ext ?></div>
+                                                <div class="d-flex gap-1 mt-1">
+                                                    <?php if ($isImage): ?>
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalDesain<?= $d['id_detail'] ?>"
+                                                       class="btn btn-xs btn-outline-secondary py-0 px-1" style="font-size:0.7rem;">
+                                                        <i class="bi bi-eye me-1"></i>Lihat
+                                                    </a>
+                                                    <?php endif; ?>
+                                                    <a href="<?= base_url($d['file_desain']) ?>" download="<?= esc($fileName) ?>"
+                                                       class="btn btn-xs btn-outline-primary py-0 px-1" style="font-size:0.7rem;">
+                                                        <i class="bi bi-download me-1"></i>Download
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php else: ?>
+                                        <span class="text-muted small fst-italic">Tidak ada file</span>
+                                    <?php endif; ?>
+
+                                    <?php if (!empty($d['keterangan'])): ?>
+                                        <div class="mt-2 p-2 bg-light rounded border" style="font-size:0.78rem;">
+                                            <span class="text-muted fw-semibold"><i class="bi bi-chat-square-text me-1"></i>Keterangan:</span><br>
+                                            <?= esc($d['keterangan']) ?>
+                                        </div>
+                                    <?php endif; ?>
+                                </td>
                             </tr>
                             <?php endforeach; ?>
                         </tbody>
                         <tfoot class="table-light">
                             <tr>
-                                <td colspan="4" class="text-end fw-bold">Total Harga</td>
+                                <td colspan="5" class="text-end fw-bold">Total Harga</td>
                                 <td class="text-end fw-bold text-primary">Rp <?= number_format($pesanan['total_harga'], 0, ',', '.') ?></td>
                             </tr>
                         </tfoot>
@@ -200,5 +270,43 @@
 
     </div>
 </div>
+
+<?php foreach ($detail as $d): ?>
+<?php if (!empty($d['file_desain'])):
+    $ext = strtolower(pathinfo($d['file_desain'], PATHINFO_EXTENSION));
+    $isImage = in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp']);
+    if (!$isImage) continue;
+    $fileName = basename($d['file_desain']);
+?>
+<div class="modal fade" id="modalDesain<?= $d['id_detail'] ?>" tabindex="-1" aria-label="Preview desain <?= esc($d['nama_layanan'] ?? '') ?>">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content bg-dark">
+            <div class="modal-header border-secondary py-2">
+                <h6 class="modal-title text-white">
+                    <i class="bi bi-image me-2"></i><?= esc($d['nama_layanan'] ?? 'Desain') ?>
+                </h6>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center p-2">
+                <img src="<?= base_url($d['file_desain']) ?>" alt="Desain <?= esc($d['nama_layanan'] ?? '') ?>"
+                     class="img-fluid rounded" style="max-height:70vh;">
+            </div>
+            <div class="modal-footer border-secondary py-2 d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="text-white small fw-semibold"><?= esc($fileName) ?></div>
+                    <div class="text-muted" style="font-size:0.75rem;">
+                        <?= strtoupper($ext) ?> · Desain dari konsumen
+                    </div>
+                </div>
+                <a href="<?= base_url($d['file_desain']) ?>" download="<?= esc($fileName) ?>"
+                   class="btn btn-warning btn-sm">
+                    <i class="bi bi-download me-1"></i>Download File
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+<?php endforeach; ?>
 
 <?= $this->endSection() ?>

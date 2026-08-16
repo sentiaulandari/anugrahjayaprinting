@@ -14,6 +14,7 @@ class TransaksiCetakModel extends Model
         'no_transaksi',
         'nama_pelanggan',
         'no_hp',
+        'id_pelanggan',
         'tgl_transaksi',
         'total_harga',
         'metode_bayar',

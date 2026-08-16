@@ -40,17 +40,24 @@ $routes->group('admin', ['filter' => 'adminFilter'], function ($routes) {
     $routes->get('bahan/delete/(:num)',      'Admin\BahanController::delete/$1');
 
     $routes->get('pelanggan',                'Admin\PelangganController::index');
+    $routes->get('pelanggan/create',         'Admin\PelangganController::create');
+    $routes->post('pelanggan/store',         'Admin\PelangganController::store');
     $routes->get('pelanggan/show/(:num)',    'Admin\PelangganController::show/$1');
     $routes->get('pelanggan/edit/(:num)',    'Admin\PelangganController::edit/$1');
     $routes->post('pelanggan/update/(:num)', 'Admin\PelangganController::update/$1');
-    $routes->get('pelanggan/delete/(:num)', 'Admin\PelangganController::delete/$1');
+    $routes->get('pelanggan/delete/(:num)',  'Admin\PelangganController::delete/$1');
+
+    $routes->get('pelanggan/search',         'Admin\PelangganController::search');
 
     $routes->get('pesanan',                  'Admin\PesananController::index');
+    $routes->get('pesanan/create',           'Admin\PesananController::create');
+    $routes->post('pesanan/store',           'Admin\PesananController::store');
     $routes->get('pesanan/show/(:any)',      'Admin\PesananController::show/$1');
     $routes->get('pesanan/edit/(:any)',      'Admin\PesananController::edit/$1');
     $routes->post('pesanan/update/(:any)',   'Admin\PesananController::update/$1');
     $routes->post('pesanan/status/(:any)',   'Admin\PesananController::updateStatus/$1');
     $routes->get('pesanan/delete/(:any)',    'Admin\PesananController::delete/$1');
+    $routes->get('pesanan/cetak/(:any)',     'Admin\PesananController::cetakFaktur/$1');
 
     $routes->get('pembayaran',                   'Admin\PembayaranController::index');
     $routes->get('pembayaran/show/(:num)',        'Admin\PembayaranController::show/$1');
@@ -96,6 +103,7 @@ $routes->group('pelanggan', ['filter' => 'pelangganFilter'], function ($routes) 
     $routes->get('pesanan/show/(:any)', 'Pelanggan\PesananController::show/$1');
     $routes->get('pesanan/create',      'Pelanggan\PesananController::create');
     $routes->post('pesanan/store',      'Pelanggan\PesananController::store');
+    $routes->get('pesanan/cetak/(:any)','Pelanggan\PesananController::cetakFaktur/$1');
 
     $routes->get('pembayaran',              'Pelanggan\PembayaranController::index');
     $routes->get('pembayaran/form/(:any)', 'Pelanggan\PembayaranController::form/$1');

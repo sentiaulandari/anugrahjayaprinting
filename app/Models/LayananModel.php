@@ -18,6 +18,7 @@ class LayananModel extends Model
         'harga_satuan',
         'harga_per_meter',
         'diskon_desain_sendiri',
+        'tipe_harga',
         'deskripsi',
         'gambar',
         'status',
@@ -28,7 +29,8 @@ class LayananModel extends Model
     protected $validationRules = [
         'kode_layanan' => 'required|max_length[10]',
         'nama_layanan' => 'required|max_length[100]',
-        'harga_satuan' => 'required|decimal|greater_than[0]',
+        'harga_satuan' => 'required|decimal|greater_than_equal_to[0]',
+        'tipe_harga'   => 'required|in_list[per_meter,per_lembar,per_pcs,per_set,per_huruf,per_buku]',
         'status'       => 'required|in_list[aktif,nonaktif]',
     ];
 
@@ -70,5 +72,18 @@ class LayananModel extends Model
 
         $angka = (int) substr($last['kode_layanan'], 3);
         return 'LY-' . str_pad($angka + 1, 3, '0', STR_PAD_LEFT);
+    }
+
+    public function labelTipeHarga(string $tipe): string
+    {
+        $labels = [
+            'per_meter'  => 'Per Meter',
+            'per_lembar' => 'Per Lembar',
+            'per_pcs'    => 'Per Pcs',
+            'per_set'    => 'Per Set',
+            'per_huruf'  => 'Per Huruf',
+            'per_buku'   => 'Per Buku',
+        ];
+        return $labels[$tipe] ?? $tipe;
     }
 }

@@ -326,3 +326,37 @@ app/
 - PK berwarna orange, FK berwarna biru, header tabel gelap dengan aksen kuning
 - Legenda relasi disertakan di bawah diagram
 - Status: Selesai
+
+### [2026-07-27] - REVISI BESAR: PEMBELIAN MULTI-ITEM, UPLOAD DESAIN, LOGIKA HARGA
+**1. Pembelian Multi-Item + No Faktur:**
+- Migration `AddNoFakturToPembelian` — tambah kolom `no_faktur` VARCHAR(20) ke tabel `pembelian`
+- Migration `CreateDetailPembelianTable` — tabel `detail_pembelian` (id_detail, id_pembelian, id_bahan, jumlah, harga_satuan, subtotal)
+- Dibuat `DetailPembelianModel.php` — CRUD + getByPembelian()
+- Update `PembelianModel` — generateNoFaktur() format FB-YYYYMMDD-001, getWithRelasi() subquery total
+- Rewrite `Admin/PembelianController` — store() multi-item, stok bertambah per item
+- Rewrite view `admin/pembelian/form.php` — form multi-item dinamis + auto no_faktur
+- Rewrite view `admin/pembelian/index.php` — tampilkan no_faktur, jumlah item, grand total
+- Rewrite view `admin/pembelian/detail.php` — tabel detail items + grand total
+
+**2. Upload Desain di Pemesanan:**
+- Migration `AddFileDesainToDetailPesanan` — tambah kolom `file_desain` ke `detail_pesanan`
+- Update `Pelanggan/PesananController::store()` — handle file upload ke `public/uploads/desain/`
+- Update `Admin/PesananController::store()` — handle file upload juga
+- Update view `pelanggan/pesanan/form.php` — input file upload per item
+- Update view detail (admin + pelanggan) — tampilkan link download desain
+
+**3. Logika Harga Berdasarkan Tipe:**
+- Migration `AddTipeHargaToLayanan` — ENUM tipe_harga (per_meter, per_lembar, per_pcs, per_set, per_huruf, per_buku)
+- Update `LayananModel` — tipe_harga ke allowedFields
+- Update `LayananSeeder` — 22 layanan dengan tipe_harga yang tepat
+- Pricing logic: per_meter = P x L x Harga/m², lainnya = Qty x Harga_satuan
+- Update `StokService` — per_meter hitung area, lainnya pakai qty
+- Update `Admin/LayananController` — form tipe_harga
+
+**4. Admin Bisa Buat Pesanan:**
+- Tambah route admin/pesanan/create + store
+- Update `Admin/PesananController` — method create() + store()
+- Update admin pesanan form — form lengkap dengan upload desain + pricing dinamis
+
+**5. Folder Baru:** `public/uploads/desain/`
+- Status: Selesai — Migration perlu dijalankan: `php spark migrate`

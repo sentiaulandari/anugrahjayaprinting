@@ -6,9 +6,14 @@
         <h4 class="page-title mb-0">Detail Pesanan</h4>
         <small class="text-muted"><?= $pesanan['no_pesanan'] ?></small>
     </div>
-    <a href="<?= base_url('pelanggan/pesanan') ?>" class="btn btn-sm btn-outline-secondary">
-        <i class="bi bi-arrow-left me-1"></i>Kembali
-    </a>
+    <div class="d-flex gap-2">
+        <a href="<?= base_url('pelanggan/pesanan/cetak/' . $pesanan['no_pesanan']) ?>" target="_blank" class="btn btn-sm btn-success">
+            <i class="bi bi-printer me-1"></i>Cetak Faktur
+        </a>
+        <a href="<?= base_url('pelanggan/pesanan') ?>" class="btn btn-sm btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i>Kembali
+        </a>
+    </div>
 </div>
 
 <?= view('layouts/partials/alert') ?>
@@ -62,6 +67,7 @@
                                 <th>Qty</th>
                                 <th>Harga</th>
                                 <th>Subtotal</th>
+                                <th>Desain</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -69,6 +75,9 @@
                             <tr>
                                 <td>
                                     <div class="fw-semibold small"><?= $d['nama_layanan'] ?? $d['kode_layanan'] ?></div>
+                                    <span class="badge bg-secondary" style="font-size:0.6rem;">
+                                        <?= $d['tipe_harga'] === 'per_meter' ? 'Per Meter' : ($d['tipe_harga'] === 'per_lembar' ? 'Per Lembar' : ($d['tipe_harga'] === 'per_set' ? 'Per Set' : ($d['tipe_harga'] === 'per_huruf' ? 'Per Huruf' : ($d['tipe_harga'] === 'per_buku' ? 'Per Buku' : 'Per Pcs')))) ?>
+                                    </span>
                                     <?php if ($d['desain_sendiri']): ?>
                                         <span class="badge bg-info" style="font-size:0.6rem;">Desain Sendiri</span>
                                     <?php endif; ?>
@@ -85,12 +94,21 @@
                                 <td><?= $d['qty'] ?></td>
                                 <td class="small">Rp <?= number_format($d['harga_satuan'], 0, ',', '.') ?></td>
                                 <td class="fw-semibold small">Rp <?= number_format($d['subtotal'], 0, ',', '.') ?></td>
+                                <td>
+                                    <?php if (!empty($d['file_desain'])): ?>
+                                        <a href="<?= base_url($d['file_desain']) ?>" target="_blank" class="btn btn-sm btn-outline-primary" style="font-size:0.7rem;">
+                                            <i class="bi bi-file-earmark me-1"></i>Lihat
+                                        </a>
+                                    <?php else: ?>
+                                        <span class="text-muted small">-</span>
+                                    <?php endif; ?>
+                                </td>
                             </tr>
                             <?php endforeach; ?>
                         </tbody>
                         <tfoot class="table-light">
                             <tr>
-                                <td colspan="4" class="text-end fw-bold">Total</td>
+                                <td colspan="5" class="text-end fw-bold">Total</td>
                                 <td class="fw-bold text-primary">Rp <?= number_format($pesanan['total_harga'], 0, ',', '.') ?></td>
                             </tr>
                         </tfoot>

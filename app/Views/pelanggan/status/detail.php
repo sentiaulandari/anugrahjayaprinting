@@ -57,6 +57,7 @@
                                 <th>Ukuran</th>
                                 <th>Qty</th>
                                 <th>Subtotal</th>
+                                <th>Desain</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -74,12 +75,21 @@
                                 <td class="small"><?= $d['ukuran'] ?? '-' ?></td>
                                 <td><?= $d['qty'] ?></td>
                                 <td class="small fw-semibold">Rp <?= number_format($d['subtotal'], 0, ',', '.') ?></td>
+                                <td>
+                                    <?php if (!empty($d['file_desain'])): ?>
+                                        <a href="<?= base_url($d['file_desain']) ?>" target="_blank" class="btn btn-sm btn-outline-primary" style="font-size:0.7rem;">
+                                            <i class="bi bi-file-earmark me-1"></i>Lihat
+                                        </a>
+                                    <?php else: ?>
+                                        <span class="text-muted small">-</span>
+                                    <?php endif; ?>
+                                </td>
                             </tr>
                             <?php endforeach; ?>
                         </tbody>
                         <tfoot class="table-light">
                             <tr>
-                                <td colspan="3" class="text-end fw-bold">Total</td>
+                                <td colspan="4" class="text-end fw-bold">Total</td>
                                 <td class="fw-bold text-primary">Rp <?= number_format($pesanan['total_harga'], 0, ',', '.') ?></td>
                             </tr>
                         </tfoot>
@@ -246,11 +256,9 @@
         <?php if ($pesanan['status_bayar'] === 'belum bayar' && !$isBatal): ?>
         <div class="card mt-3 border-warning">
             <div class="card-body text-center py-3">
-                <i class="bi bi-exclamation-triangle text-warning fs-3 d-block mb-2"></i>
-                <div class="small fw-semibold mb-2">Belum Melakukan Pembayaran</div>
-                <a href="<?= base_url('pelanggan/pembayaran/form/' . $pesanan['no_pesanan']) ?>" class="btn btn-warning btn-sm w-100">
-                    <i class="bi bi-credit-card me-1"></i>Bayar Sekarang
-                </a>
+                <i class="bi bi-credit-card text-warning fs-3 d-block mb-2"></i>
+                <div class="small fw-semibold mb-1">Menunggu Konfirmasi Pembayaran</div>
+                <div class="text-muted" style="font-size:0.75rem;">Admin akan segera mengkonfirmasi pembayaran, mohon tunggu sejenak</div>
             </div>
         </div>
         <?php endif; ?>

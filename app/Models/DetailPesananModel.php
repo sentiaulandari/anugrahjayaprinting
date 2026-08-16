@@ -20,21 +20,15 @@ class DetailPesananModel extends Model
         'panjang',
         'lebar',
         'desain_sendiri',
+        'file_desain',
         'keterangan',
     ];
 
     protected $useTimestamps = false;
 
-    protected $validationRules = [
-        'no_pesanan'   => 'required|max_length[20]',
-        'kode_layanan' => 'required|max_length[10]',
-        'qty'          => 'required|integer|greater_than[0]',
-        'harga_satuan' => 'required|decimal|greater_than[0]',
-    ];
-
     public function getByNoPesanan(string $noPesanan): array
     {
-        return $this->select('detail_pesanan.*, layanan.nama_layanan, layanan.gambar, kategori.nama_kategori')
+        return $this->select('detail_pesanan.*, layanan.nama_layanan, layanan.gambar, layanan.tipe_harga, kategori.nama_kategori')
                     ->join('layanan', 'layanan.kode_layanan = detail_pesanan.kode_layanan', 'left')
                     ->join('kategori', 'kategori.id_kategori = layanan.id_kategori', 'left')
                     ->where('detail_pesanan.no_pesanan', $noPesanan)

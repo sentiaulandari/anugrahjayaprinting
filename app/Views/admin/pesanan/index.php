@@ -6,6 +6,9 @@
         <h4 class="page-title mb-0">Pemesanan</h4>
         <nav aria-label="breadcrumb"><ol class="breadcrumb mb-0 small"><li class="breadcrumb-item"><a href="<?= base_url('admin/dashboard') ?>">Dashboard</a></li><li class="breadcrumb-item active">Pesanan</li></ol></nav>
     </div>
+    <a href="<?= base_url('admin/pesanan/create') ?>" class="btn btn-sm btn-primary">
+        <i class="bi bi-plus-lg me-1"></i>Buat Pesanan
+    </a>
 </div>
 
 <?= view('layouts/partials/alert') ?>

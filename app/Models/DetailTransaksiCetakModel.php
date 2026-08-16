@@ -27,8 +27,9 @@ class DetailTransaksiCetakModel extends Model
 
     public function getByNoTransaksi(string $noTransaksi): array
     {
-        return $this->select('detail_transaksi_cetak.*, layanan.nama_layanan, layanan.nama_kategori')
+        return $this->select('detail_transaksi_cetak.*, layanan.nama_layanan, kategori.nama_kategori')
                     ->join('layanan', 'layanan.kode_layanan = detail_transaksi_cetak.kode_layanan', 'left')
+                    ->join('kategori', 'kategori.id_kategori = layanan.id_kategori', 'left')
                     ->where('detail_transaksi_cetak.no_transaksi', $noTransaksi)
                     ->findAll();
     }
