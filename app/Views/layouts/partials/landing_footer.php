@@ -12,7 +12,6 @@
                 <div class="d-flex gap-3 mt-3">
                     <a href="#" class="text-white-50 fs-5"><i class="bi bi-facebook"></i></a>
                     <a href="#" class="text-white-50 fs-5"><i class="bi bi-instagram"></i></a>
-                    <a href="#" class="text-white-50 fs-5"><i class="bi bi-whatsapp"></i></a>
                 </div>
             </div>
 
@@ -32,11 +31,11 @@
                 <ul class="list-unstyled text-white-50 small">
                     <li class="mb-2">
                         <i class="bi bi-geo-alt me-2 text-warning"></i>
-                        Jl. [Alamat Lengkap]
+                        Jl. Gajah Mada No.17 b, Kp. Olo, Kec. Nanggalo, Kota Padang, Sumatera Barat 25173
                     </li>
                     <li class="mb-2">
                         <i class="bi bi-telephone me-2 text-warning"></i>
-                        08xx-xxxx-xxxx
+                        0822-8790-0182
                     </li>
                     <li class="mb-2">
                         <i class="bi bi-envelope me-2 text-warning"></i>
@@ -44,7 +43,7 @@
                     </li>
                     <li class="mb-2">
                         <i class="bi bi-clock me-2 text-warning"></i>
-                        Senin - Sabtu, 08.00 - 17.00
+                        Senin - Sabtu, 09.00 - 17.00
                     </li>
                 </ul>
             </div>
