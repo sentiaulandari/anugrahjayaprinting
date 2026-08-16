@@ -7,7 +7,7 @@
     <meta name="description" content="Jasa cetak digital berkualitas tinggi - Spanduk, Brosur, Banner, Kartu Nama dan lainnya.">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="<?= base_url('assets/css/landing.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/landing.css') ?>?v=<?= filemtime(ROOTPATH . 'public/assets/css/landing.css') ?>">
 </head>
 <body>
 
