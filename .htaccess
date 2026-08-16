@@ -1,0 +1,21 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Arahkan semua request ke folder /public
+    # Kecuali file/folder yang benar-benar ada di root (tidak ada)
+
+    # Jika request adalah untuk file static yang ada di public/
+    RewriteCond %{REQUEST_URI} ^/assets/
+    RewriteRule ^assets/(.*)$ public/assets/$1 [L]
+
+    RewriteCond %{REQUEST_URI} ^/uploads/
+    RewriteRule ^uploads/(.*)$ public/uploads/$1 [L]
+
+    # Semua request lainnya ke public/index.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ public/index.php/$1 [L]
+
+    # Jika akses langsung ke root tanpa path
+    RewriteRule ^$ public/index.php [L]
+</IfModule>
