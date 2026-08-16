@@ -682,7 +682,7 @@ footer a:hover { color: var(--accent) !important; }
 }
 
 /* ============================================================
-   HERO IMAGE SLIDER
+   HERO IMAGE SLIDER — FIXED VERSION
    ============================================================ */
 
 .hero-slider-wrap {
@@ -696,30 +696,39 @@ footer a:hover { color: var(--accent) !important; }
     animation: float 6s ease-in-out infinite;
 }
 
-/* Slider container */
+/* Container slider — height fixed agar slide tidak menumpuk */
 .hero-slider {
     position: relative;
     width: 100%;
-    aspect-ratio: 4/3;
+    height: 390px;         /* height eksplisit, tidak pakai aspect-ratio */
     overflow: hidden;
     border-radius: 24px;
+    background: #1a1a2e;
 }
 
-/* Setiap slide */
+/* Setiap slide — HIDDEN by default, absolute overlay */
 .hero-slide {
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     opacity: 0;
-    transition: opacity 0.7s ease;
+    visibility: hidden;
+    transition: opacity 0.7s ease, visibility 0.7s ease;
     pointer-events: none;
+    z-index: 1;
 }
 
+/* Hanya slide aktif yang tampil */
 .hero-slide.active {
     opacity: 1;
+    visibility: visible;
     pointer-events: auto;
+    z-index: 2;
 }
 
-/* Gambar slide */
+/* Gambar slide — isi penuh container */
 .hero-slide-img {
     width: 100%;
     height: 100%;
@@ -727,35 +736,35 @@ footer a:hover { color: var(--accent) !important; }
     overflow: hidden;
 }
 
-.hero-slide-img img {
+.hero-slide-img > img {
+    position: absolute;
+    top: 0; left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
-    position: absolute;
-    inset: 0;
     z-index: 1;
     transition: transform 6s ease;
 }
 
-.hero-slide.active .hero-slide-img img {
+.hero-slide.active .hero-slide-img > img {
     transform: scale(1.05);
 }
 
-/* Overlay gelap di atas foto */
+/* Overlay gelap */
 .hero-slide-overlay {
     position: absolute;
     inset: 0;
     background: linear-gradient(
         to bottom,
-        rgba(0,0,0,0.15) 0%,
+        rgba(0,0,0,0.1) 0%,
         rgba(0,0,0,0.0) 40%,
-        rgba(0,0,0,0.55) 100%
+        rgba(0,0,0,0.6) 100%
     );
     z-index: 2;
 }
 
-/* Caption di bawah slide */
+/* Caption */
 .hero-slide-caption {
     position: absolute;
     bottom: 1.25rem;
@@ -768,7 +777,7 @@ footer a:hover { color: var(--accent) !important; }
 .hero-slide-badge {
     display: inline-flex;
     align-items: center;
-    background: rgba(255,193,7,0.9);
+    background: rgba(255,193,7,0.92);
     color: #1a1a2e;
     font-size: 0.72rem;
     font-weight: 700;
@@ -786,7 +795,7 @@ footer a:hover { color: var(--accent) !important; }
     line-height: 1.2;
 }
 
-/* Placeholder — tampil jika foto belum diupload */
+/* Placeholder — tampil sebagai background jika tidak ada foto */
 .hero-slide-placeholder {
     position: absolute;
     inset: 0;
@@ -794,12 +803,6 @@ footer a:hover { color: var(--accent) !important; }
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-/* Sembunyikan placeholder jika foto berhasil load */
-.hero-slide-img img:not([style*="display:none"]) ~ .hero-slide-placeholder,
-.hero-slide-img img:not([style*="display: none"]) ~ .hero-slide-placeholder {
-    display: none;
 }
 
 .placeholder-inner {
@@ -830,18 +833,16 @@ footer a:hover { color: var(--accent) !important; }
     font-weight: 500;
 }
 
-/* --- Dots --- */
+/* Dots */
 .hero-slider-dots {
     position: absolute;
-    bottom: 0;
+    bottom: 12px;
     left: 0;
     right: 0;
     display: flex;
     justify-content: center;
     gap: 6px;
-    padding: 0.75rem 0;
     z-index: 10;
-    background: linear-gradient(to top, rgba(0,0,0,0.3), transparent);
 }
 
 .hero-dot {
@@ -853,6 +854,7 @@ footer a:hover { color: var(--accent) !important; }
     cursor: pointer;
     padding: 0;
     transition: all 0.3s;
+    flex-shrink: 0;
 }
 
 .hero-dot.active {
@@ -861,7 +863,7 @@ footer a:hover { color: var(--accent) !important; }
     border-radius: 4px;
 }
 
-/* --- Prev / Next buttons --- */
+/* Prev / Next */
 .hero-slider-btn {
     position: absolute;
     top: 50%;
@@ -893,7 +895,7 @@ footer a:hover { color: var(--accent) !important; }
 .hero-slider-prev { left: 12px; }
 .hero-slider-next { right: 12px; }
 
-/* --- Progress bar autoplay --- */
+/* Progress bar */
 .hero-slider-progress {
     position: absolute;
     bottom: 0;

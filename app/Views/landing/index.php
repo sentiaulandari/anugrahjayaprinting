@@ -56,18 +56,9 @@
                 <div class="hero-slider-wrap">
                     <div class="hero-slider" id="heroSlider">
 
-                        <!-- Slide 1 — foto toko (ganti src dengan foto asli) -->
+                        <!-- Slide 1 -->
                         <div class="hero-slide active">
                             <div class="hero-slide-img" style="background:linear-gradient(135deg,#0f3460 0%,#1a1a2e 100%);">
-                                <img src="<?= base_url('uploads/hero/slide1.jpg') ?>"
-                                     onerror="this.style.display='none'"
-                                     alt="Toko Anugrah Jaya Digital Printing">
-                                <div class="hero-slide-overlay"></div>
-                                <div class="hero-slide-caption">
-                                    <span class="hero-slide-badge"><i class="bi bi-shop me-1"></i>Toko Kami</span>
-                                    <div class="hero-slide-text">Modern & Lengkap</div>
-                                </div>
-                                <!-- Placeholder visual jika belum ada foto -->
                                 <div class="hero-slide-placeholder">
                                     <div class="placeholder-inner">
                                         <i class="bi bi-printer-fill"></i>
@@ -75,20 +66,21 @@
                                         <small>Cetak Indoor & Outdoor</small>
                                     </div>
                                 </div>
+                                <img src="<?= base_url('uploads/hero/slide1.jpg') ?>"
+                                     alt="Toko Anugrah Jaya Digital Printing"
+                                     onload="this.style.opacity='1'"
+                                     style="opacity:0;transition:opacity 0.5s;">
+                                <div class="hero-slide-overlay"></div>
+                                <div class="hero-slide-caption">
+                                    <span class="hero-slide-badge"><i class="bi bi-shop me-1"></i>Toko Kami</span>
+                                    <div class="hero-slide-text">Modern & Lengkap</div>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Slide 2 -->
                         <div class="hero-slide">
                             <div class="hero-slide-img" style="background:linear-gradient(135deg,#1a6b3c 0%,#0d4a2a 100%);">
-                                <img src="<?= base_url('uploads/hero/slide2.jpg') ?>"
-                                     onerror="this.style.display='none'"
-                                     alt="Hasil Cetak Berkualitas">
-                                <div class="hero-slide-overlay"></div>
-                                <div class="hero-slide-caption">
-                                    <span class="hero-slide-badge"><i class="bi bi-stars me-1"></i>Kualitas Premium</span>
-                                    <div class="hero-slide-text">Hasil Cetak Terbaik</div>
-                                </div>
                                 <div class="hero-slide-placeholder">
                                     <div class="placeholder-inner">
                                         <i class="bi bi-image-fill"></i>
@@ -96,20 +88,21 @@
                                         <small>Warna tajam & tahan lama</small>
                                     </div>
                                 </div>
+                                <img src="<?= base_url('uploads/hero/slide2.jpg') ?>"
+                                     alt="Hasil Cetak Berkualitas"
+                                     onload="this.style.opacity='1'"
+                                     style="opacity:0;transition:opacity 0.5s;">
+                                <div class="hero-slide-overlay"></div>
+                                <div class="hero-slide-caption">
+                                    <span class="hero-slide-badge"><i class="bi bi-stars me-1"></i>Kualitas Premium</span>
+                                    <div class="hero-slide-text">Hasil Cetak Terbaik</div>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Slide 3 -->
                         <div class="hero-slide">
                             <div class="hero-slide-img" style="background:linear-gradient(135deg,#7c3aed 0%,#4c1d95 100%);">
-                                <img src="<?= base_url('uploads/hero/slide3.jpg') ?>"
-                                     onerror="this.style.display:'none'"
-                                     alt="Layanan Desain Grafis">
-                                <div class="hero-slide-overlay"></div>
-                                <div class="hero-slide-caption">
-                                    <span class="hero-slide-badge"><i class="bi bi-palette-fill me-1"></i>Desain Grafis</span>
-                                    <div class="hero-slide-text">Bawa Desain Sendiri</div>
-                                </div>
                                 <div class="hero-slide-placeholder">
                                     <div class="placeholder-inner">
                                         <i class="bi bi-palette-fill"></i>
@@ -117,26 +110,36 @@
                                         <small>Desain sendiri = hemat lebih</small>
                                     </div>
                                 </div>
+                                <img src="<?= base_url('uploads/hero/slide3.jpg') ?>"
+                                     alt="Layanan Desain Grafis"
+                                     onload="this.style.opacity='1'"
+                                     style="opacity:0;transition:opacity 0.5s;">
+                                <div class="hero-slide-overlay"></div>
+                                <div class="hero-slide-caption">
+                                    <span class="hero-slide-badge"><i class="bi bi-palette-fill me-1"></i>Desain Grafis</span>
+                                    <div class="hero-slide-text">Bawa Desain Sendiri</div>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Slide 4 -->
                         <div class="hero-slide">
                             <div class="hero-slide-img" style="background:linear-gradient(135deg,#b45309 0%,#78350f 100%);">
-                                <img src="<?= base_url('uploads/hero/slide4.jpg') ?>"
-                                     onerror="this.style.display='none'"
-                                     alt="Pengiriman Cepat">
-                                <div class="hero-slide-overlay"></div>
-                                <div class="hero-slide-caption">
-                                    <span class="hero-slide-badge"><i class="bi bi-lightning-charge-fill me-1"></i>Proses Cepat</span>
-                                    <div class="hero-slide-text">Selesai Tepat Waktu</div>
-                                </div>
                                 <div class="hero-slide-placeholder">
                                     <div class="placeholder-inner">
                                         <i class="bi bi-lightning-charge-fill"></i>
                                         <span>Pengerjaan<br>Cepat</span>
                                         <small>Estimasi waktu yang jelas</small>
                                     </div>
+                                </div>
+                                <img src="<?= base_url('uploads/hero/slide4.jpg') ?>"
+                                     alt="Pengiriman Cepat"
+                                     onload="this.style.opacity='1'"
+                                     style="opacity:0;transition:opacity 0.5s;">
+                                <div class="hero-slide-overlay"></div>
+                                <div class="hero-slide-caption">
+                                    <span class="hero-slide-badge"><i class="bi bi-lightning-charge-fill me-1"></i>Proses Cepat</span>
+                                    <div class="hero-slide-text">Selesai Tepat Waktu</div>
                                 </div>
                             </div>
                         </div>
