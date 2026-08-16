@@ -132,7 +132,7 @@ class TransaksiCetakController extends BaseController
 
         $this->transaksiModel->update($noTransaksi, ['total_harga' => $total]);
 
-        return redirect()->to('/admin/transaksi-cetak/cetak/' . $noTransaksi)->with('success', 'Transaksi cetak berhasil dibuat. Status: LUNAS.');
+        return redirect()->to('/admin/transaksi-cetak/cetak/' . $noTransaksi . '?baru=1')->with('success', 'Transaksi cetak berhasil dibuat. Status: LUNAS.');
     }
 
     public function show(string $no): string

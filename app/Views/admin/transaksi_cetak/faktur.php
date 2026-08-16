@@ -25,6 +25,7 @@
         @media print {
             body { padding: 5mm; }
             @page { size: 80mm auto; margin: 0; }
+            .no-print { display: none !important; }
         }
     </style>
 </head>
@@ -98,6 +99,34 @@
         <strong>Anugrah Jaya Digital Printing</strong>
     </div>
 
-    <script>window.onload = function() { window.print(); }</script>
+    <!-- Tombol kembali — hanya tampil di layar, tidak tercetak -->
+    <div class="no-print" style="margin-top:16px;text-align:center;">
+        <a href="<?= base_url('admin/transaksi-cetak') ?>"
+           style="display:inline-block;background:#1a1a2e;color:#fff;padding:8px 20px;border-radius:8px;text-decoration:none;font-size:12px;font-weight:600;">
+            ← Kembali ke Daftar Transaksi
+        </a>
+    </div>
+
+    <script>
+        window.onload = function() {
+            window.print();
+        };
+        // Setelah dialog print ditutup (baik cetak maupun batal), redirect ke index
+        window.onafterprint = function() {
+            window.location.href = '<?= base_url('admin/transaksi-cetak') ?>';
+        };
+        // Fallback: jika browser tidak support onafterprint, redirect setelah 1.5 detik
+        // hanya aktif kalau dari store (ada query ?baru=1)
+        <?php if ($this->request->getGet('baru')): ?>
+        setTimeout(function() {
+            if (!window._printed) {
+                window.location.href = '<?= base_url('admin/transaksi-cetak') ?>';
+            }
+        }, 30000); // 30 detik timeout fallback
+        <?php endif; ?>
+        window._printed = false;
+        var _origPrint = window.print;
+        window.print = function() { window._printed = true; _origPrint.call(window); };
+    </script>
 </body>
 </html>
