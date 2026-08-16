@@ -53,48 +53,118 @@
             </div>
 
             <div class="col-lg-6 d-none d-lg-block">
-                <div class="hero-visual text-center">
-                    <div class="hero-card-float mx-auto" style="max-width:340px;">
-                        <div class="d-flex align-items-center gap-3 mb-4">
-                            <div style="width:44px;height:44px;background:linear-gradient(135deg,#ffc107,#ff9800);border-radius:12px;display:flex;align-items:center;justify-content:center;">
-                                <i class="bi bi-printer-fill text-dark fs-5"></i>
-                            </div>
-                            <div>
-                                <div class="fw-bold text-white" style="font-size:0.9rem;">Anugrah Jaya DP</div>
-                                <div style="font-size:0.72rem;color:rgba(255,255,255,0.5);">Digital Printing</div>
-                            </div>
-                            <span class="ms-auto badge" style="background:rgba(40,167,69,0.2);color:#4ade80;font-size:0.65rem;">Online</span>
-                        </div>
+                <div class="hero-slider-wrap">
+                    <div class="hero-slider" id="heroSlider">
 
-                        <div class="mb-3">
-                            <div style="font-size:0.72rem;color:rgba(255,255,255,0.4);margin-bottom:0.5rem;">Layanan Populer</div>
-                            <?php
-                            $preview = array_slice($layanan, 0, 3);
-                            $previewDefault = [
-                                ['nama_layanan' => 'Spanduk', 'harga_satuan' => 15000],
-                                ['nama_layanan' => 'Brosur', 'harga_satuan' => 500],
-                                ['nama_layanan' => 'Kartu Nama', 'harga_satuan' => 25000],
-                            ];
-                            $items = !empty($preview) ? $preview : $previewDefault;
-                            ?>
-                            <?php foreach ($items as $item): ?>
-                            <div class="d-flex align-items-center justify-content-between py-2" style="border-bottom:1px solid rgba(255,255,255,0.06);">
-                                <div class="d-flex align-items-center gap-2">
-                                    <div style="width:6px;height:6px;background:#ffc107;border-radius:50%;"></div>
-                                    <span style="font-size:0.82rem;color:rgba(255,255,255,0.8);"><?= $item['nama_layanan'] ?></span>
+                        <!-- Slide 1 — foto toko (ganti src dengan foto asli) -->
+                        <div class="hero-slide active">
+                            <div class="hero-slide-img" style="background:linear-gradient(135deg,#0f3460 0%,#1a1a2e 100%);">
+                                <img src="<?= base_url('uploads/hero/slide1.jpg') ?>"
+                                     onerror="this.style.display='none'"
+                                     alt="Toko Anugrah Jaya Digital Printing">
+                                <div class="hero-slide-overlay"></div>
+                                <div class="hero-slide-caption">
+                                    <span class="hero-slide-badge"><i class="bi bi-shop me-1"></i>Toko Kami</span>
+                                    <div class="hero-slide-text">Modern & Lengkap</div>
                                 </div>
-                                <span style="font-size:0.78rem;color:#ffc107;font-weight:600;">
-                                    Rp <?= number_format($item['harga_satuan'], 0, ',', '.') ?>
-                                </span>
+                                <!-- Placeholder visual jika belum ada foto -->
+                                <div class="hero-slide-placeholder">
+                                    <div class="placeholder-inner">
+                                        <i class="bi bi-printer-fill"></i>
+                                        <span>Anugrah Jaya<br>Digital Printing</span>
+                                        <small>Cetak Indoor & Outdoor</small>
+                                    </div>
+                                </div>
                             </div>
-                            <?php endforeach; ?>
                         </div>
 
-                        <a href="<?= base_url('auth/register') ?>" style="display:block;background:linear-gradient(135deg,#ffc107,#ff9800);color:#1a1a2e;text-align:center;padding:0.65rem;border-radius:10px;font-weight:700;font-size:0.85rem;text-decoration:none;">
-                            Pesan Sekarang →
-                        </a>
+                        <!-- Slide 2 -->
+                        <div class="hero-slide">
+                            <div class="hero-slide-img" style="background:linear-gradient(135deg,#1a6b3c 0%,#0d4a2a 100%);">
+                                <img src="<?= base_url('uploads/hero/slide2.jpg') ?>"
+                                     onerror="this.style.display='none'"
+                                     alt="Hasil Cetak Berkualitas">
+                                <div class="hero-slide-overlay"></div>
+                                <div class="hero-slide-caption">
+                                    <span class="hero-slide-badge"><i class="bi bi-stars me-1"></i>Kualitas Premium</span>
+                                    <div class="hero-slide-text">Hasil Cetak Terbaik</div>
+                                </div>
+                                <div class="hero-slide-placeholder">
+                                    <div class="placeholder-inner">
+                                        <i class="bi bi-image-fill"></i>
+                                        <span>Kualitas<br>Terjamin</span>
+                                        <small>Warna tajam & tahan lama</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 3 -->
+                        <div class="hero-slide">
+                            <div class="hero-slide-img" style="background:linear-gradient(135deg,#7c3aed 0%,#4c1d95 100%);">
+                                <img src="<?= base_url('uploads/hero/slide3.jpg') ?>"
+                                     onerror="this.style.display:'none'"
+                                     alt="Layanan Desain Grafis">
+                                <div class="hero-slide-overlay"></div>
+                                <div class="hero-slide-caption">
+                                    <span class="hero-slide-badge"><i class="bi bi-palette-fill me-1"></i>Desain Grafis</span>
+                                    <div class="hero-slide-text">Bawa Desain Sendiri</div>
+                                </div>
+                                <div class="hero-slide-placeholder">
+                                    <div class="placeholder-inner">
+                                        <i class="bi bi-palette-fill"></i>
+                                        <span>Layanan<br>Desain</span>
+                                        <small>Desain sendiri = hemat lebih</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 4 -->
+                        <div class="hero-slide">
+                            <div class="hero-slide-img" style="background:linear-gradient(135deg,#b45309 0%,#78350f 100%);">
+                                <img src="<?= base_url('uploads/hero/slide4.jpg') ?>"
+                                     onerror="this.style.display='none'"
+                                     alt="Pengiriman Cepat">
+                                <div class="hero-slide-overlay"></div>
+                                <div class="hero-slide-caption">
+                                    <span class="hero-slide-badge"><i class="bi bi-lightning-charge-fill me-1"></i>Proses Cepat</span>
+                                    <div class="hero-slide-text">Selesai Tepat Waktu</div>
+                                </div>
+                                <div class="hero-slide-placeholder">
+                                    <div class="placeholder-inner">
+                                        <i class="bi bi-lightning-charge-fill"></i>
+                                        <span>Pengerjaan<br>Cepat</span>
+                                        <small>Estimasi waktu yang jelas</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div><!-- /.hero-slider -->
+
+                    <!-- Dots navigasi -->
+                    <div class="hero-slider-dots">
+                        <button class="hero-dot active" data-idx="0" aria-label="Slide 1"></button>
+                        <button class="hero-dot" data-idx="1" aria-label="Slide 2"></button>
+                        <button class="hero-dot" data-idx="2" aria-label="Slide 3"></button>
+                        <button class="hero-dot" data-idx="3" aria-label="Slide 4"></button>
                     </div>
-                </div>
+
+                    <!-- Tombol prev/next -->
+                    <button class="hero-slider-btn hero-slider-prev" id="heroPrev" aria-label="Sebelumnya">
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
+                    <button class="hero-slider-btn hero-slider-next" id="heroNext" aria-label="Berikutnya">
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
+
+                    <!-- Progress bar autoplay -->
+                    <div class="hero-slider-progress">
+                        <div class="hero-slider-progress-bar" id="heroProgressBar"></div>
+                    </div>
+
+                </div><!-- /.hero-slider-wrap -->
             </div>
 
         </div>
@@ -128,61 +198,150 @@
     </div>
 </section>
 
-<section id="layanan" class="py-5 py-lg-6" style="background:#f8f9fc;">
+<section id="layanan" class="py-5 py-lg-6" style="background:#f4f5f7;">
     <div class="container">
-        <div class="text-center mb-5">
+        <div class="text-center mb-4">
             <div class="section-badge">Layanan Kami</div>
             <h2 class="section-title">Apa yang Kami Tawarkan?</h2>
             <p class="text-muted" style="max-width:500px;margin:0 auto;">Berbagai layanan cetak digital berkualitas tinggi untuk semua kebutuhan Anda</p>
         </div>
 
-        <div class="row g-4">
+        <!-- Search & Filter Bar -->
+        <div class="produk-search-wrap mb-4">
+            <div class="produk-search-box">
+                <i class="bi bi-search produk-search-icon"></i>
+                <input type="text" id="inputCariProduk" class="produk-search-input"
+                    placeholder="Cari layanan cetak... contoh: spanduk, brosur, kartu nama">
+                <button type="button" id="btnClearSearch" class="produk-search-clear" style="display:none;" title="Hapus">
+                    <i class="bi bi-x-circle-fill"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Filter Kategori -->
+        <?php if (!empty($kategori)): ?>
+        <div class="produk-filter-wrap mb-4">
+            <button class="produk-filter-pill active" data-kat="semua">
+                <i class="bi bi-grid-fill me-1"></i>Semua
+            </button>
+            <?php foreach ($kategori as $kat): ?>
+            <button class="produk-filter-pill" data-kat="<?= esc($kat) ?>">
+                <?= esc($kat) ?>
+            </button>
+            <?php endforeach; ?>
+        </div>
+        <?php endif; ?>
+
+        <!-- Hasil & Counter -->
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <span id="produkCounter" class="small text-muted">
+                Menampilkan <strong id="produkCount"><?= count($displayLayanan ?? $layanan) ?></strong> layanan
+            </span>
+            <span id="produkNoResult" class="small text-danger fw-semibold" style="display:none;">
+                <i class="bi bi-search me-1"></i>Tidak ada layanan yang cocok
+            </span>
+        </div>
+
+        <div class="row g-4" id="produkGrid">
             <?php
-            $iconWraps = [
-                ['bg' => 'rgba(26,26,46,0.08)',   'color' => '#1a1a2e'],
-                ['bg' => 'rgba(40,167,69,0.1)',    'color' => '#28a745'],
-                ['bg' => 'rgba(255,193,7,0.12)',   'color' => '#b8860b'],
-                ['bg' => 'rgba(220,53,69,0.1)',    'color' => '#dc3545'],
-                ['bg' => 'rgba(13,202,240,0.1)',   'color' => '#0dcaf0'],
-                ['bg' => 'rgba(111,66,193,0.1)',   'color' => '#6f42c1'],
+            $categoryColors = [
+                0 => ['badge_bg'=>'#1a1a2e', 'badge_color'=>'#fff', 'price_color'=>'#1a1a2e'],
+                1 => ['badge_bg'=>'#28a745', 'badge_color'=>'#fff', 'price_color'=>'#1a8a36'],
+                2 => ['badge_bg'=>'#e07b00', 'badge_color'=>'#fff', 'price_color'=>'#e07b00'],
+                3 => ['badge_bg'=>'#dc3545', 'badge_color'=>'#fff', 'price_color'=>'#c82333'],
+                4 => ['badge_bg'=>'#0077cc', 'badge_color'=>'#fff', 'price_color'=>'#0077cc'],
+                5 => ['badge_bg'=>'#6f42c1', 'badge_color'=>'#fff', 'price_color'=>'#6f42c1'],
             ];
-            $icons = ['bi-image','bi-file-earmark-text','bi-credit-card-2-front','bi-sticker','bi-calendar3','bi-grid-3x3-gap'];
-            $btnClass = ['btn-dark','btn-success','btn-warning','btn-danger','btn-info','btn-secondary'];
+            $placeholderGradients = [
+                0 => 'linear-gradient(135deg,#1a1a2e,#2d3561)',
+                1 => 'linear-gradient(135deg,#28a745,#20c55e)',
+                2 => 'linear-gradient(135deg,#e07b00,#ffc107)',
+                3 => 'linear-gradient(135deg,#dc3545,#ff6b81)',
+                4 => 'linear-gradient(135deg,#0077cc,#00b4db)',
+                5 => 'linear-gradient(135deg,#6f42c1,#a855f7)',
+            ];
+            $icons = ['bi-image-fill','bi-file-earmark-text-fill','bi-credit-card-2-front-fill','bi-sticker-fill','bi-calendar3','bi-grid-3x3-gap-fill'];
             $displayLayanan = !empty($layanan) ? $layanan : [];
             ?>
             <?php foreach ($displayLayanan as $i => $l): ?>
-            <?php $idx = $i % 6; ?>
-            <div class="col-md-6 col-lg-4">
-                <div class="service-card card h-100 p-4 text-center border-0 shadow-sm">
-                    <div class="service-icon-wrap" style="background:<?= $iconWraps[$idx]['bg'] ?>;">
+            <?php
+                $idx         = $i % 6;
+                $cc          = $categoryColors[$idx];
+                $gradBg      = $placeholderGradients[$idx];
+                $tipeLabel   = ['per_meter'=>'/m²','per_lembar'=>'/lembar','per_pcs'=>'/pcs','per_set'=>'/set','per_huruf'=>'/huruf','per_buku'=>'/buku'][$l['tipe_harga'] ?? 'per_pcs'] ?? '/pcs';
+                $hargaDisplay = ($l['tipe_harga'] === 'per_meter' && ($l['harga_per_meter'] ?? 0) > 0)
+                    ? $l['harga_per_meter'] : $l['harga_satuan'];
+                $linkPesan   = (session()->get('logged_in') && session('level') === 'pelanggan')
+                    ? base_url('pelanggan/pesanan/create')
+                    : base_url('auth/register');
+                // Atribut untuk filtering
+                $dataNama = strtolower($l['nama_layanan'] . ' ' . ($l['deskripsi'] ?? '') . ' ' . ($l['nama_bahan'] ?? '') . ' ' . ($l['nama_kategori'] ?? ''));
+                $dataKat  = $l['nama_kategori'] ?? '';
+            ?>
+            <div class="col-sm-6 col-lg-4 col-xl-3 produk-item"
+                 data-nama="<?= esc(strtolower($l['nama_layanan'])) ?>"
+                 data-kata="<?= esc(strtolower($dataNama)) ?>"
+                 data-kat="<?= esc($dataKat) ?>">
+                <div class="produk-card">
+                    <div class="produk-card-img">
                         <?php if (!empty($l['gambar'])): ?>
                             <img src="<?= base_url('uploads/layanan/' . $l['gambar']) ?>"
-                                style="width:36px;height:36px;object-fit:cover;border-radius:8px;" alt="">
+                                 alt="<?= esc($l['nama_layanan']) ?>">
                         <?php else: ?>
-                            <i class="bi <?= $icons[$idx] ?>" style="color:<?= $iconWraps[$idx]['color'] ?>;font-size:1.6rem;"></i>
+                            <div class="produk-placeholder" style="background:<?= $gradBg ?>;">
+                                <i class="bi <?= $icons[$idx] ?>"></i>
+                                <span><?= esc($l['nama_layanan']) ?></span>
+                            </div>
+                        <?php endif; ?>
+                        <?php if (!empty($l['nama_kategori'])): ?>
+                        <span class="produk-badge" style="background:<?= $cc['badge_bg'] ?>;color:<?= $cc['badge_color'] ?>;">
+                            <?= esc($l['nama_kategori']) ?>
+                        </span>
                         <?php endif; ?>
                     </div>
-                    <h5 class="fw-700 mb-2" style="font-size:1rem;font-weight:700;"><?= $l['nama_layanan'] ?></h5>
-                    <p class="text-muted mb-3" style="font-size:0.82rem;line-height:1.6;">
-                        <?= !empty($l['deskripsi']) ? character_limiter($l['deskripsi'], 75) : 'Layanan cetak berkualitas tinggi dengan hasil terbaik dan harga terjangkau.' ?>
-                    </p>
-                    <div class="service-price mb-3">
-                        Rp <?= number_format($l['harga_satuan'], 0, ',', '.') ?>
-                        <span class="text-muted fw-normal" style="font-size:0.75rem;">/ <?= $l['satuan'] ?? 'pcs' ?></span>
+                    <div class="produk-card-body">
+                        <h5 class="produk-nama"><?= esc($l['nama_layanan']) ?></h5>
+                        <?php if (!empty($l['nama_bahan'])): ?>
+                        <div class="produk-meta">
+                            <i class="bi bi-layers me-1"></i><?= esc($l['nama_bahan']) ?>
+                        </div>
+                        <?php endif; ?>
+                        <p class="produk-desc">
+                            <?= !empty($l['deskripsi'])
+                                ? esc(mb_strimwidth($l['deskripsi'], 0, 80, '...'))
+                                : 'Layanan cetak berkualitas tinggi dengan hasil terbaik dan harga terjangkau.' ?>
+                        </p>
+                        <div class="produk-divider"></div>
+                        <div class="produk-footer">
+                            <div class="produk-harga" style="color:<?= $cc['price_color'] ?>;">
+                                Rp <?= number_format($hargaDisplay, 0, ',', '.') ?>
+                                <span class="produk-satuan"><?= $tipeLabel ?></span>
+                            </div>
+                            <a href="<?= $linkPesan ?>" class="produk-btn-pesan" style="background:<?= $cc['badge_bg'] ?>;">
+                                <i class="bi bi-cart-plus me-1"></i>Pesan
+                            </a>
+                        </div>
                     </div>
-                    <?php if (session()->get('logged_in') && session('level') === 'pelanggan'): ?>
-                        <a href="<?= base_url('pelanggan/pesanan/create') ?>" class="btn btn-sm <?= $btnClass[$idx] ?> mt-auto px-4">
-                            <i class="bi bi-cart-plus me-1"></i>Pesan
-                        </a>
-                    <?php else: ?>
-                        <a href="<?= base_url('auth/register') ?>" class="btn btn-sm <?= $btnClass[$idx] ?> mt-auto px-4">
-                            <i class="bi bi-cart-plus me-1"></i>Pesan
-                        </a>
-                    <?php endif; ?>
                 </div>
             </div>
             <?php endforeach; ?>
         </div>
+
+        <!-- Empty state -->
+        <div id="produkEmpty" class="text-center py-5" style="display:none;">
+            <i class="bi bi-search" style="font-size:3rem;color:#d1d5db;"></i>
+            <p class="mt-3 fw-semibold" style="color:#6b7280;">Tidak ada layanan yang cocok dengan pencarian Anda</p>
+            <button type="button" id="btnResetFilter" class="btn btn-outline-secondary btn-sm mt-1">
+                <i class="bi bi-arrow-counterclockwise me-1"></i>Reset Pencarian
+            </button>
+        </div>
+
+        <?php if (empty($displayLayanan)): ?>
+        <div class="col-12 text-center py-5 text-muted">
+            <i class="bi bi-grid fs-1 d-block mb-2 opacity-25"></i>
+            Belum ada layanan tersedia
+        </div>
+        <?php endif; ?>
     </div>
 </section>
 
@@ -249,4 +408,192 @@
     </div>
 </section>
 
+<?= $this->endSection() ?>
+
+<?= $this->section('scripts') ?>
+<script>
+(function () {
+    var inputCari   = document.getElementById('inputCariProduk');
+    var btnClear    = document.getElementById('btnClearSearch');
+    var btnReset    = document.getElementById('btnResetFilter');
+    var produkItems = document.querySelectorAll('.produk-item');
+    var counterEl   = document.getElementById('produkCount');
+    var emptyEl     = document.getElementById('produkEmpty');
+    var noResultEl  = document.getElementById('produkNoResult');
+    var filterBtns  = document.querySelectorAll('.produk-filter-pill');
+
+    var activeKat   = 'semua';
+    var activeQuery = '';
+
+    function applyFilter() {
+        var q    = activeQuery.toLowerCase().trim();
+        var kat  = activeKat;
+        var visible = 0;
+
+        produkItems.forEach(function (item) {
+            var kata    = item.dataset.kata  || '';
+            var itemKat = item.dataset.kat   || '';
+
+            var matchQ   = !q || kata.indexOf(q) !== -1;
+            var matchKat = kat === 'semua' || itemKat === kat;
+
+            if (matchQ && matchKat) {
+                item.style.display = '';
+                visible++;
+            } else {
+                item.style.display = 'none';
+            }
+        });
+
+        // Counter
+        if (counterEl) counterEl.textContent = visible;
+
+        // Empty state
+        if (emptyEl)     emptyEl.style.display    = visible === 0 ? 'block' : 'none';
+        if (noResultEl)  noResultEl.style.display  = (visible === 0 && q) ? 'inline' : 'none';
+
+        // Clear button
+        if (btnClear) btnClear.style.display = q ? 'flex' : 'none';
+    }
+
+    // Input search — debounce 200ms
+    var timer;
+    if (inputCari) {
+        inputCari.addEventListener('input', function () {
+            clearTimeout(timer);
+            activeQuery = this.value;
+            timer = setTimeout(applyFilter, 200);
+        });
+        inputCari.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                this.value = '';
+                activeQuery = '';
+                applyFilter();
+            }
+        });
+    }
+
+    // Clear button
+    if (btnClear) {
+        btnClear.addEventListener('click', function () {
+            inputCari.value = '';
+            activeQuery = '';
+            applyFilter();
+            inputCari.focus();
+        });
+    }
+
+    // Reset filter
+    if (btnReset) {
+        btnReset.addEventListener('click', function () {
+            if (inputCari) inputCari.value = '';
+            activeQuery = '';
+            activeKat   = 'semua';
+            filterBtns.forEach(function (b) {
+                b.classList.toggle('active', b.dataset.kat === 'semua');
+            });
+            applyFilter();
+        });
+    }
+
+    // Filter kategori
+    filterBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            filterBtns.forEach(function (b) { b.classList.remove('active'); });
+            this.classList.add('active');
+            activeKat = this.dataset.kat;
+            applyFilter();
+
+            // Scroll ke section layanan
+            var section = document.getElementById('layanan');
+            if (section) {
+                var top = section.getBoundingClientRect().top + window.scrollY - 80;
+                window.scrollTo({ top: top, behavior: 'smooth' });
+            }
+        });
+    });
+
+    // Init
+    applyFilter();
+})();
+</script>
+
+<script>
+// Hero Image Slider
+(function () {
+    var slider   = document.getElementById('heroSlider');
+    if (!slider) return;
+
+    var slides   = slider.querySelectorAll('.hero-slide');
+    var dots     = document.querySelectorAll('.hero-dot');
+    var progressBar = document.getElementById('heroProgressBar');
+    var current  = 0;
+    var total    = slides.length;
+    var autoplayMs = 4500;
+    var timer, progressTimer, progressStart;
+
+    function goTo(idx) {
+        slides[current].classList.remove('active');
+        dots[current].classList.remove('active');
+        current = (idx + total) % total;
+        slides[current].classList.add('active');
+        dots[current].classList.add('active');
+        startProgress();
+    }
+
+    function next() { goTo(current + 1); }
+    function prev() { goTo(current - 1); }
+
+    function startProgress() {
+        clearInterval(timer);
+        if (progressBar) {
+            progressBar.style.transition = 'none';
+            progressBar.style.width = '0%';
+            // Force reflow
+            progressBar.offsetWidth;
+            progressBar.style.transition = 'width ' + autoplayMs + 'ms linear';
+            progressBar.style.width = '100%';
+        }
+        timer = setTimeout(next, autoplayMs);
+    }
+
+    // Dots
+    dots.forEach(function (dot) {
+        dot.addEventListener('click', function () {
+            goTo(parseInt(this.dataset.idx));
+        });
+    });
+
+    // Prev / Next buttons
+    var btnPrev = document.getElementById('heroPrev');
+    var btnNext = document.getElementById('heroNext');
+    if (btnPrev) btnPrev.addEventListener('click', function () { goTo(current - 1); });
+    if (btnNext) btnNext.addEventListener('click', function () { goTo(current + 1); });
+
+    // Pause on hover
+    var wrap = slider.closest('.hero-slider-wrap');
+    if (wrap) {
+        wrap.addEventListener('mouseenter', function () {
+            clearTimeout(timer);
+            if (progressBar) progressBar.style.animationPlayState = 'paused';
+        });
+        wrap.addEventListener('mouseleave', function () {
+            startProgress();
+        });
+    }
+
+    // Touch/swipe
+    var touchStartX = 0;
+    slider.addEventListener('touchstart', function (e) {
+        touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+    slider.addEventListener('touchend', function (e) {
+        var diff = touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 40) diff > 0 ? next() : prev();
+    }, { passive: true });
+
+    // Init
+    startProgress();
+})();
+</script>
 <?= $this->endSection() ?>

@@ -29,6 +29,16 @@
     </div>
     <div class="col-md-4">
         <div class="card h-100 text-center p-4">
+            <div class="mb-3"><i class="bi bi-scissors fs-1 text-danger"></i></div>
+            <h6 class="fw-bold">Laporan Bahan Terpakai</h6>
+            <p class="text-muted small">Laporan penggunaan bahan dari pesanan & transaksi cetak per periode</p>
+            <a href="<?= base_url('admin/laporan/bahan-terpakai') ?>" class="btn btn-danger btn-sm mt-auto">
+                <i class="bi bi-eye me-1"></i>Lihat Laporan
+            </a>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 text-center p-4">
             <div class="mb-3"><i class="bi bi-cash-stack fs-1 text-success"></i></div>
             <h6 class="fw-bold">Laporan Keuangan</h6>
             <p class="text-muted small">Laporan pendapatan dan transaksi pembayaran</p>
@@ -43,6 +53,26 @@
             <h6 class="fw-bold">Laporan Pertahun</h6>
             <p class="text-muted small">Ringkasan pendapatan, pengeluaran, dan pesanan per bulan dalam satu tahun</p>
             <a href="<?= base_url('admin/laporan/pertahun') ?>" class="btn btn-info btn-sm mt-auto">
+                <i class="bi bi-eye me-1"></i>Lihat Laporan
+            </a>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 text-center p-4">
+            <div class="mb-3"><i class="bi bi-truck fs-1" style="color:#6f42c1;"></i></div>
+            <h6 class="fw-bold">Laporan Supplier</h6>
+            <p class="text-muted small">Ringkasan data supplier dan riwayat pembelian bahan</p>
+            <a href="<?= base_url('admin/laporan/supplier') ?>" class="btn btn-sm mt-auto" style="background:#6f42c1;color:#fff;">
+                <i class="bi bi-eye me-1"></i>Lihat Laporan
+            </a>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 text-center p-4">
+            <div class="mb-3"><i class="bi bi-people fs-1 text-secondary"></i></div>
+            <h6 class="fw-bold">Laporan Konsumen</h6>
+            <p class="text-muted small">Data konsumen beserta ringkasan total pesanan dan nilai transaksi</p>
+            <a href="<?= base_url('admin/laporan/konsumen') ?>" class="btn btn-secondary btn-sm mt-auto">
                 <i class="bi bi-eye me-1"></i>Lihat Laporan
             </a>
         </div>

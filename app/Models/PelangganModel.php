@@ -46,4 +46,24 @@ class PelangganModel extends Model
                     ->where('pelanggan.id_pelanggan', $id)
                     ->first();
     }
+
+    /**
+     * Pelanggan dengan ringkasan total pesanan dan nilai transaksi
+     */
+    public function getWithRingkasanPesanan(): array
+    {
+        return $this->db->query("
+            SELECT
+                pl.*,
+                COUNT(DISTINCT ps.no_pesanan) AS total_pesanan,
+                IFNULL(SUM(ps.total_harga), 0) AS total_nilai,
+                SUM(CASE WHEN ps.status_pesanan = 'selesai' THEN 1 ELSE 0 END) AS pesanan_selesai,
+                SUM(CASE WHEN ps.status_pesanan = 'dibatalkan' THEN 1 ELSE 0 END) AS pesanan_batal,
+                MAX(ps.tgl_pesanan) AS terakhir_pesan
+            FROM pelanggan pl
+            LEFT JOIN pesanan ps ON ps.id_pelanggan = pl.id_pelanggan
+            GROUP BY pl.id_pelanggan
+            ORDER BY total_nilai DESC
+        ")->getResultArray();
+    }
 }

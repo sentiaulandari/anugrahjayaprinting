@@ -8,6 +8,10 @@ use App\Models\PembayaranModel;
 use App\Models\PembelianModel;
 use App\Models\BahanModel;
 use App\Models\LayananModel;
+use App\Models\SupplierModel;
+use App\Models\PelangganModel;
+use App\Models\DetailPesananModel;
+use App\Models\DetailTransaksiCetakModel;
 
 class LaporanController extends BaseController
 {
@@ -16,14 +20,22 @@ class LaporanController extends BaseController
     protected PembelianModel $pembelianModel;
     protected BahanModel $bahanModel;
     protected LayananModel $layananModel;
+    protected SupplierModel $supplierModel;
+    protected PelangganModel $pelangganModel;
+    protected DetailPesananModel $detailPesananModel;
+    protected DetailTransaksiCetakModel $detailTransaksiModel;
 
     public function __construct()
     {
-        $this->pesananModel    = new PesananModel();
-        $this->pembayaranModel = new PembayaranModel();
-        $this->pembelianModel  = new PembelianModel();
-        $this->bahanModel      = new BahanModel();
-        $this->layananModel    = new LayananModel();
+        $this->pesananModel         = new PesananModel();
+        $this->pembayaranModel      = new PembayaranModel();
+        $this->pembelianModel       = new PembelianModel();
+        $this->bahanModel           = new BahanModel();
+        $this->layananModel         = new LayananModel();
+        $this->supplierModel        = new SupplierModel();
+        $this->pelangganModel       = new PelangganModel();
+        $this->detailPesananModel   = new DetailPesananModel();
+        $this->detailTransaksiModel = new DetailTransaksiCetakModel();
     }
 
     public function index(): string
@@ -177,5 +189,167 @@ class LaporanController extends BaseController
         ];
 
         return view('admin/laporan/cetak_pertahun', $data);
+    }
+
+    // ================================================================
+    // LAPORAN BAHAN TERPAKAI
+    // ================================================================
+    public function bahanTerpakai(): string
+    {
+        $dari   = $this->request->getGet('dari')   ?? date('Y-m-01');
+        $sampai = $this->request->getGet('sampai') ?? date('Y-m-d');
+
+        $bahanDariPesanan    = $this->detailPesananModel->getBahanTerpakaiByPeriode($dari, $sampai);
+        $bahanDariTransaksi  = $this->detailTransaksiModel->getBahanTerpakaiByPeriode($dari, $sampai);
+
+        // Merge kedua sumber
+        $merged = [];
+        foreach ($bahanDariPesanan as $b) {
+            $id = $b['id_bahan'];
+            $merged[$id] = [
+                'id_bahan'      => $id,
+                'nama_bahan'    => $b['nama_bahan'],
+                'satuan'        => $b['satuan'],
+                'dari_pesanan'  => (int) $b['total_terpakai'],
+                'dari_transaksi'=> 0,
+                'total'         => (int) $b['total_terpakai'],
+            ];
+        }
+        foreach ($bahanDariTransaksi as $b) {
+            $id = $b['id_bahan'];
+            if (isset($merged[$id])) {
+                $merged[$id]['dari_transaksi'] += (int) $b['total_terpakai'];
+                $merged[$id]['total']          += (int) $b['total_terpakai'];
+            } else {
+                $merged[$id] = [
+                    'id_bahan'      => $id,
+                    'nama_bahan'    => $b['nama_bahan'],
+                    'satuan'        => $b['satuan'],
+                    'dari_pesanan'  => 0,
+                    'dari_transaksi'=> (int) $b['total_terpakai'],
+                    'total'         => (int) $b['total_terpakai'],
+                ];
+            }
+        }
+        usort($merged, fn($a, $b) => $b['total'] - $a['total']);
+
+        $data = [
+            'title'  => 'Laporan Bahan Terpakai',
+            'dari'   => $dari,
+            'sampai' => $sampai,
+            'bahan'  => $merged,
+        ];
+
+        return view('admin/laporan/bahan_terpakai', $data);
+    }
+
+    public function cetakBahanTerpakai(): string
+    {
+        $dari   = $this->request->getGet('dari')   ?? date('Y-m-01');
+        $sampai = $this->request->getGet('sampai') ?? date('Y-m-d');
+
+        $bahanDariPesanan    = $this->detailPesananModel->getBahanTerpakaiByPeriode($dari, $sampai);
+        $bahanDariTransaksi  = $this->detailTransaksiModel->getBahanTerpakaiByPeriode($dari, $sampai);
+
+        $merged = [];
+        foreach ($bahanDariPesanan as $b) {
+            $id = $b['id_bahan'];
+            $merged[$id] = ['id_bahan' => $id, 'nama_bahan' => $b['nama_bahan'], 'satuan' => $b['satuan'], 'dari_pesanan' => (int) $b['total_terpakai'], 'dari_transaksi' => 0, 'total' => (int) $b['total_terpakai']];
+        }
+        foreach ($bahanDariTransaksi as $b) {
+            $id = $b['id_bahan'];
+            if (isset($merged[$id])) {
+                $merged[$id]['dari_transaksi'] += (int) $b['total_terpakai'];
+                $merged[$id]['total']          += (int) $b['total_terpakai'];
+            } else {
+                $merged[$id] = ['id_bahan' => $id, 'nama_bahan' => $b['nama_bahan'], 'satuan' => $b['satuan'], 'dari_pesanan' => 0, 'dari_transaksi' => (int) $b['total_terpakai'], 'total' => (int) $b['total_terpakai']];
+            }
+        }
+        usort($merged, fn($a, $b) => $b['total'] - $a['total']);
+
+        $data = [
+            'title'  => 'Cetak Laporan Bahan Terpakai',
+            'dari'   => $dari,
+            'sampai' => $sampai,
+            'bahan'  => $merged,
+        ];
+
+        return view('admin/laporan/cetak_bahan_terpakai', $data);
+    }
+
+    // ================================================================
+    // LAPORAN SUPPLIER
+    // ================================================================
+    public function supplier(): string
+    {
+        $data = [
+            'title'    => 'Laporan Supplier',
+            'supplier' => $this->supplierModel->getWithTotalPembelian(),
+        ];
+
+        return view('admin/laporan/supplier', $data);
+    }
+
+    public function cetakSupplier(): string
+    {
+        $data = [
+            'title'    => 'Cetak Laporan Supplier',
+            'supplier' => $this->supplierModel->getWithTotalPembelian(),
+        ];
+
+        return view('admin/laporan/cetak_supplier', $data);
+    }
+
+    // ================================================================
+    // LAPORAN KONSUMEN
+    // ================================================================
+    public function konsumen(): string
+    {
+        $data = [
+            'title'     => 'Laporan Konsumen',
+            'pelanggan' => $this->pelangganModel->getWithRingkasanPesanan(),
+        ];
+
+        return view('admin/laporan/konsumen', $data);
+    }
+
+    public function cetakKonsumen(): string
+    {
+        $data = [
+            'title'     => 'Cetak Laporan Konsumen',
+            'pelanggan' => $this->pelangganModel->getWithRingkasanPesanan(),
+        ];
+
+        return view('admin/laporan/cetak_konsumen', $data);
+    }
+
+    // ================================================================
+    // LAPORAN PERTAHUN — Detail per bulan
+    // ================================================================
+    public function pertahunDetail(): string
+    {
+        $tahun = $this->request->getGet('tahun') ?? date('Y');
+        $bulan = (int) ($this->request->getGet('bulan') ?? date('n'));
+
+        $dari   = sprintf('%s-%02d-01', $tahun, $bulan);
+        $sampai = date('Y-m-t', strtotime($dari));
+
+        $namaBulan = [1=>'Januari',2=>'Februari',3=>'Maret',4=>'April',5=>'Mei',6=>'Juni',
+                      7=>'Juli',8=>'Agustus',9=>'September',10=>'Oktober',11=>'November',12=>'Desember'];
+
+        $data = [
+            'title'      => 'Detail Laporan ' . $namaBulan[$bulan] . ' ' . $tahun,
+            'tahun'      => $tahun,
+            'bulan'      => $bulan,
+            'namaBulan'  => $namaBulan[$bulan],
+            'dari'       => $dari,
+            'sampai'     => $sampai,
+            'pesanan'    => $this->pesananModel->getPesananByPeriode($dari, $sampai),
+            'pembayaran' => $this->pembayaranModel->getWithPesanan(),
+            'pendapatan' => $this->pembayaranModel->getTotalPendapatan($dari, $sampai),
+            'pengeluaran'=> $this->pembelianModel->getTotalByPeriode($dari, $sampai),
+        ];
+
+        return view('admin/laporan/pertahun_detail', $data);
     }
 }

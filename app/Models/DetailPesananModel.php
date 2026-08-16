@@ -48,4 +48,32 @@ class DetailPesananModel extends Model
 
         return (float) ($result['subtotal'] ?? 0);
     }
+
+    /**
+     * Laporan bahan terpakai dari pesanan per periode
+     */
+    public function getBahanTerpakaiByPeriode(string $dari, string $sampai): array
+    {
+        return $this->db->query("
+            SELECT
+                b.id_bahan,
+                b.nama_bahan,
+                b.satuan,
+                SUM(
+                    CASE
+                        WHEN l.tipe_harga = 'per_meter' THEN CEIL(dp.panjang * dp.lebar * dp.qty)
+                        ELSE dp.qty
+                    END
+                ) AS total_terpakai,
+                COUNT(DISTINCT dp.no_pesanan) AS total_pesanan
+            FROM detail_pesanan dp
+            JOIN pesanan p ON p.no_pesanan = dp.no_pesanan
+            JOIN layanan l ON l.kode_layanan = dp.kode_layanan
+            JOIN bahan b ON b.id_bahan = l.id_bahan
+            WHERE p.tgl_pesanan >= ? AND p.tgl_pesanan <= ?
+              AND p.status_pesanan NOT IN ('dibatalkan')
+            GROUP BY b.id_bahan, b.nama_bahan, b.satuan
+            ORDER BY total_terpakai DESC
+        ", [$dari, $sampai])->getResultArray();
+    }
 }

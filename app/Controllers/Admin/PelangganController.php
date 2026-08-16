@@ -61,17 +61,23 @@ class PelangganController extends BaseController
 
     public function search()
     {
-        $keyword = $this->request->getGet('q');
-        if (!$keyword || strlen($keyword) < 2) {
-            return $this->response->setJSON([]);
-        }
+        $keyword = trim($this->request->getGet('q') ?? '');
 
-        $pelanggan = $this->pelangganModel
-            ->like('nama_pelanggan', $keyword)
-            ->orLike('no_hp', $keyword)
-            ->orLike('email', $keyword)
-            ->limit(10)
-            ->findAll();
+        if (strlen($keyword) < 2) {
+            // Kembalikan semua pelanggan (dibatasi 50) jika query kosong
+            $pelanggan = $this->pelangganModel
+                ->orderBy('nama_pelanggan', 'ASC')
+                ->limit(50)
+                ->findAll();
+        } else {
+            $pelanggan = $this->pelangganModel
+                ->like('nama_pelanggan', $keyword)
+                ->orLike('no_hp', $keyword)
+                ->orLike('email', $keyword)
+                ->orderBy('nama_pelanggan', 'ASC')
+                ->limit(20)
+                ->findAll();
+        }
 
         return $this->response->setJSON($pelanggan);
     }

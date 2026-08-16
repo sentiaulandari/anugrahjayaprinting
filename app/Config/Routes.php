@@ -75,10 +75,17 @@ $routes->group('admin', ['filter' => 'adminFilter'], function ($routes) {
     $routes->get('laporan/bahan',          'Admin\LaporanController::bahan');
     $routes->get('laporan/keuangan',       'Admin\LaporanController::keuangan');
     $routes->get('laporan/pertahun',       'Admin\LaporanController::pertahun');
-    $routes->get('laporan/cetak/pesanan',  'Admin\LaporanController::cetakPesanan');
-    $routes->get('laporan/cetak/bahan',    'Admin\LaporanController::cetakBahan');
-    $routes->get('laporan/cetak/keuangan', 'Admin\LaporanController::cetakKeuangan');
-    $routes->get('laporan/cetak/pertahun', 'Admin\LaporanController::cetakPertahun');
+    $routes->get('laporan/pertahun/detail','Admin\LaporanController::pertahunDetail');
+    $routes->get('laporan/bahan-terpakai', 'Admin\LaporanController::bahanTerpakai');
+    $routes->get('laporan/supplier',       'Admin\LaporanController::supplier');
+    $routes->get('laporan/konsumen',       'Admin\LaporanController::konsumen');
+    $routes->get('laporan/cetak/pesanan',        'Admin\LaporanController::cetakPesanan');
+    $routes->get('laporan/cetak/bahan',          'Admin\LaporanController::cetakBahan');
+    $routes->get('laporan/cetak/keuangan',       'Admin\LaporanController::cetakKeuangan');
+    $routes->get('laporan/cetak/pertahun',       'Admin\LaporanController::cetakPertahun');
+    $routes->get('laporan/cetak/bahan-terpakai', 'Admin\LaporanController::cetakBahanTerpakai');
+    $routes->get('laporan/cetak/supplier',       'Admin\LaporanController::cetakSupplier');
+    $routes->get('laporan/cetak/konsumen',       'Admin\LaporanController::cetakKonsumen');
 
     $routes->get('supplier',                'Admin\SupplierController::index');
     $routes->get('supplier/create',         'Admin\SupplierController::create');

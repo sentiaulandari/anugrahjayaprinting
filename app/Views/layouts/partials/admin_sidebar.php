@@ -81,15 +81,51 @@
         <div class="nav-label small text-uppercase mt-3 mb-2">Laporan</div>
 
         <a href="<?= base_url('admin/laporan') ?>"
-            class="nav-item d-flex align-items-center gap-2 <?= (uri_string() === 'admin/laporan' || uri_string() === 'admin/laporan/pesanan' || uri_string() === 'admin/laporan/bahan' || uri_string() === 'admin/laporan/keuangan') ? 'active' : '' ?>">
+            class="nav-item d-flex align-items-center gap-2 <?= (uri_string() === 'admin/laporan') ? 'active' : '' ?>">
             <i class="bi bi-file-earmark-bar-graph"></i>
-            <span>Laporan</span>
+            <span>Menu Laporan</span>
+        </a>
+
+        <a href="<?= base_url('admin/laporan/pesanan') ?>"
+            class="nav-item d-flex align-items-center gap-2 <?= (strpos(uri_string(), 'admin/laporan/pesanan') !== false) ? 'active' : '' ?>">
+            <i class="bi bi-cart3"></i>
+            <span>Lap. Pesanan</span>
+        </a>
+
+        <a href="<?= base_url('admin/laporan/keuangan') ?>"
+            class="nav-item d-flex align-items-center gap-2 <?= (strpos(uri_string(), 'admin/laporan/keuangan') !== false) ? 'active' : '' ?>">
+            <i class="bi bi-cash-stack"></i>
+            <span>Lap. Keuangan</span>
         </a>
 
         <a href="<?= base_url('admin/laporan/pertahun') ?>"
             class="nav-item d-flex align-items-center gap-2 <?= (strpos(uri_string(), 'admin/laporan/pertahun') !== false) ? 'active' : '' ?>">
             <i class="bi bi-calendar3"></i>
-            <span>Laporan Pertahun</span>
+            <span>Lap. Pertahun</span>
+        </a>
+
+        <a href="<?= base_url('admin/laporan/bahan') ?>"
+            class="nav-item d-flex align-items-center gap-2 <?= (uri_string() === 'admin/laporan/bahan') ? 'active' : '' ?>">
+            <i class="bi bi-box-seam"></i>
+            <span>Lap. Stok Bahan</span>
+        </a>
+
+        <a href="<?= base_url('admin/laporan/bahan-terpakai') ?>"
+            class="nav-item d-flex align-items-center gap-2 <?= (strpos(uri_string(), 'admin/laporan/bahan-terpakai') !== false) ? 'active' : '' ?>">
+            <i class="bi bi-scissors"></i>
+            <span>Lap. Bahan Terpakai</span>
+        </a>
+
+        <a href="<?= base_url('admin/laporan/supplier') ?>"
+            class="nav-item d-flex align-items-center gap-2 <?= (strpos(uri_string(), 'admin/laporan/supplier') !== false) ? 'active' : '' ?>">
+            <i class="bi bi-truck"></i>
+            <span>Lap. Supplier</span>
+        </a>
+
+        <a href="<?= base_url('admin/laporan/konsumen') ?>"
+            class="nav-item d-flex align-items-center gap-2 <?= (strpos(uri_string(), 'admin/laporan/konsumen') !== false) ? 'active' : '' ?>">
+            <i class="bi bi-people"></i>
+            <span>Lap. Konsumen</span>
         </a>
 
     </nav>

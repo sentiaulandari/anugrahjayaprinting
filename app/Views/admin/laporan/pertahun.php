@@ -77,6 +77,7 @@
                         <th class="text-end">Pengeluaran</th>
                         <th class="text-end">Laba Bersih</th>
                         <th class="text-center">Pesanan</th>
+                        <th class="text-center">Detail</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -90,13 +91,23 @@
                     <?php for ($b = 1; $b <= 12; $b++): ?>
                     <?php $laba = $pendapatanPerBulan[$b] - $pengeluaranPerBulan[$b]; ?>
                     <tr>
-                        <td class="fw-semibold"><?= $namaBulan[$b] ?></td>
+                        <td class="fw-semibold">
+                            <a href="<?= base_url('admin/laporan/pertahun/detail?tahun=' . $tahun . '&bulan=' . $b) ?>" class="text-decoration-none">
+                                <?= $namaBulan[$b] ?>
+                            </a>
+                        </td>
                         <td class="text-end" style="color:#28a745;">Rp <?= number_format($pendapatanPerBulan[$b], 0, ',', '.') ?></td>
                         <td class="text-end" style="color:#dc3545;">Rp <?= number_format($pengeluaranPerBulan[$b], 0, ',', '.') ?></td>
                         <td class="text-end fw-semibold" style="color:<?= $laba >= 0 ? '#28a745' : '#dc3545' ?>;">
                             Rp <?= number_format($laba, 0, ',', '.') ?>
                         </td>
                         <td class="text-center"><?= $pesananPerBulan[$b] ?></td>
+                        <td class="text-center">
+                            <a href="<?= base_url('admin/laporan/pertahun/detail?tahun=' . $tahun . '&bulan=' . $b) ?>"
+                               class="btn btn-xs btn-outline-primary" style="font-size:11px;padding:2px 8px;">
+                                <i class="bi bi-eye me-1"></i>Detail
+                            </a>
+                        </td>
                     </tr>
                     <?php endfor; ?>
                 </tbody>
@@ -109,6 +120,7 @@
                             Rp <?= number_format($totalPendapatan - $totalPengeluaran, 0, ',', '.') ?>
                         </td>
                         <td class="text-center fw-bold"><?= $totalPesanan ?></td>
+                        <td></td>
                     </tr>
                 </tfoot>
             </table>

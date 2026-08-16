@@ -38,4 +38,31 @@ class DetailTransaksiCetakModel extends Model
     {
         return $this->where('no_transaksi', $noTransaksi)->delete();
     }
+
+    /**
+     * Laporan bahan terpakai dari transaksi cetak per periode
+     */
+    public function getBahanTerpakaiByPeriode(string $dari, string $sampai): array
+    {
+        return $this->db->query("
+            SELECT
+                b.id_bahan,
+                b.nama_bahan,
+                b.satuan,
+                SUM(
+                    CASE
+                        WHEN l.tipe_harga = 'per_meter' THEN CEIL(dtc.panjang * dtc.lebar * dtc.qty)
+                        ELSE dtc.qty
+                    END
+                ) AS total_terpakai,
+                COUNT(DISTINCT dtc.no_transaksi) AS total_transaksi
+            FROM detail_transaksi_cetak dtc
+            JOIN transaksi_cetak tc ON tc.no_transaksi = dtc.no_transaksi
+            JOIN layanan l ON l.kode_layanan = dtc.kode_layanan
+            JOIN bahan b ON b.id_bahan = l.id_bahan
+            WHERE tc.tgl_transaksi >= ? AND tc.tgl_transaksi <= ?
+            GROUP BY b.id_bahan, b.nama_bahan, b.satuan
+            ORDER BY total_terpakai DESC
+        ", [$dari, $sampai])->getResultArray();
+    }
 }

@@ -44,14 +44,20 @@
                         </div>
                         <div class="col-md-12">
                             <label class="form-label small fw-semibold">Pelanggan <span class="text-danger">*</span></label>
-                            <select name="id_pelanggan" class="form-select" required>
-                                <option value="">-- Pilih Pelanggan --</option>
-                                <?php foreach ($pelanggan as $p): ?>
-                                    <option value="<?= $p['id_pelanggan'] ?>" <?= old('id_pelanggan') == $p['id_pelanggan'] ? 'selected' : '' ?>>
-                                        <?= $p['nama_pelanggan'] ?> <?= $p['no_hp'] ? '(' . $p['no_hp'] . ')' : '' ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
+                            <input type="hidden" name="id_pelanggan" id="inputIdPelanggan" value="<?= old('id_pelanggan') ?>" required>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                <input type="text" id="displayPelanggan" class="form-control"
+                                    placeholder="Ketik nama, no HP, atau email untuk mencari..." readonly
+                                    value="" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#modalCariPelanggan">
+                                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalCariPelanggan">
+                                    <i class="bi bi-search me-1"></i>Cari
+                                </button>
+                                <button type="button" class="btn btn-outline-danger" id="btnClearPelanggan" title="Hapus pilihan" style="display:none;">
+                                    <i class="bi bi-x-lg"></i>
+                                </button>
+                            </div>
+                            <div class="form-text">Klik tombol Cari atau ketik untuk mencari pelanggan</div>
                         </div>
                         <div class="col-12">
                             <label class="form-label small fw-semibold">Catatan</label>
@@ -73,8 +79,9 @@
                     <div id="itemContainer">
                         <div class="item-row border rounded p-3 mb-2 bg-light" data-tipe="per_pcs">
                             <div class="row g-2 align-items-end">
-                                <div class="col-md-3">
-                                    <label class="form-label small fw-semibold">Layanan</label>
+                                <!-- Baris 1: Layanan + Qty + Harga + Subtotal + Hapus -->
+                                <div class="col-md-4">
+                                    <label class="form-label small fw-semibold">Layanan <span class="text-danger">*</span></label>
                                     <select name="kode_layanan[]" class="form-select form-select-sm layanan-select" required>
                                         <option value="">-- Pilih --</option>
                                         <?php foreach ($layanan as $l): ?>
@@ -93,37 +100,40 @@
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
-                                <div class="col-md-2 input-meter" style="display:none;">
-                                    <label class="form-label small fw-semibold">P (m)</label>
-                                    <input type="number" name="panjang[]" class="form-control form-control-sm panjang-input" step="0.01" min="0" placeholder="0">
+                                <div class="col-6 col-md-2 input-meter" style="display:none;">
+                                    <label class="form-label small fw-semibold">P × L (m)</label>
+                                    <div class="input-group input-group-sm">
+                                        <input type="number" name="panjang[]" class="form-control form-control-sm panjang-input" step="0.01" min="0" placeholder="P">
+                                        <span class="input-group-text px-1">×</span>
+                                        <input type="number" name="lebar[]" class="form-control form-control-sm lebar-input" step="0.01" min="0" placeholder="L">
+                                    </div>
                                 </div>
-                                <div class="col-md-2 input-meter" style="display:none;">
-                                    <label class="form-label small fw-semibold">L (m)</label>
-                                    <input type="number" name="lebar[]" class="form-control form-control-sm lebar-input" step="0.01" min="0" placeholder="0">
-                                </div>
-                                <div class="col-md-2 input-qty">
+                                <div class="col-6 col-md-1">
                                     <label class="form-label small fw-semibold">Qty</label>
-                                    <input type="number" name="qty[]" class="form-control form-control-sm qty-input" value="1" min="1" required>
-                                    <small class="text-muted qty-label">pcs</small>
+                                    <div class="input-group input-group-sm">
+                                        <input type="number" name="qty[]" class="form-control form-control-sm qty-input" value="1" min="1" required>
+                                    </div>
+                                    <small class="text-muted qty-label" style="font-size:10px;">pcs</small>
                                 </div>
-                                <div class="col-md-2">
-                                    <label class="form-label small fw-semibold">Harga</label>
+                                <div class="col-6 col-md-2">
+                                    <label class="form-label small fw-semibold">Harga Satuan</label>
                                     <input type="text" class="form-control form-control-sm harga-display bg-white" readonly value="Rp 0">
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-6 col-md-2">
                                     <label class="form-label small fw-semibold">Subtotal</label>
                                     <input type="text" class="form-control form-control-sm subtotal-display bg-white fw-semibold text-primary" readonly value="Rp 0">
                                 </div>
-                                <div class="col-md-1">
-                                    <button type="button" class="btn btn-sm btn-outline-danger btn-hapus-item w-100 mt-4">
+                                <div class="col-md-1 d-flex align-items-end">
+                                    <button type="button" class="btn btn-sm btn-outline-danger btn-hapus-item w-100">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </div>
+                                <!-- Baris 2: Upload Desain + Keterangan -->
                                 <div class="col-md-6">
-                                    <label class="form-label small fw-semibold">Upload Desain (Opsional)</label>
+                                    <label class="form-label small fw-semibold">Upload Desain <span class="text-muted">(Opsional)</span></label>
                                     <input type="file" name="file_desain[]" class="form-control form-control-sm file-desain-input"
                                         accept=".jpg,.jpeg,.png,.pdf,.ai,.cdr,.psd" onchange="validasiFile(this)">
-                                    <div class="form-text">Format: JPG, PNG, PDF, AI, CDR, PSD (Maks 10MB)</div>
+                                    <div class="form-text" style="font-size:10px;">JPG, PNG, PDF, AI, CDR, PSD — maks 10MB</div>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label small fw-semibold">Keterangan</label>
@@ -318,8 +328,8 @@
         template.querySelector('.subtotal-display').value = 'Rp 0';
         template.querySelector('.harga-display').value    = 'Rp 0';
 
-        var meterInputs = template.querySelectorAll('.input-meter');
-        meterInputs.forEach(function(el) { el.style.display = 'none'; });
+        // Sembunyikan input meter saat clone
+        template.querySelectorAll('.input-meter').forEach(function(el) { el.style.display = 'none'; });
         template.querySelector('.qty-label').textContent = 'pcs';
 
         document.getElementById('itemContainer').appendChild(template);
@@ -346,10 +356,117 @@
         }
     }
 
-    document.getElementById('formPesanan').addEventListener('submit', function() {
+    document.getElementById('formPesanan').addEventListener('submit', function(e) {
+        // Validasi pelanggan dipilih
+        const idPelanggan = document.getElementById('inputIdPelanggan').value;
+        if (!idPelanggan) {
+            e.preventDefault();
+            alert('Harap pilih pelanggan terlebih dahulu!');
+            document.getElementById('modalCariPelanggan') && new bootstrap.Modal(document.getElementById('modalCariPelanggan')).show();
+            return;
+        }
         const btn = document.getElementById('btnSubmit');
         btn.disabled = true;
         btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Menyimpan...';
     });
+
+    // Modal cari pelanggan
+    var modalCariPelangganEl = document.getElementById('modalCariPelanggan');
+    var modalSearchInput     = document.getElementById('modalSearchPelanggan');
+    var modalHasil           = document.getElementById('modalHasilPelanggan');
+    var displayPelanggan     = document.getElementById('displayPelanggan');
+    var inputIdPelanggan     = document.getElementById('inputIdPelanggan');
+    var btnClearPelanggan    = document.getElementById('btnClearPelanggan');
+    var modalTimer;
+
+    function renderTabelPelanggan(data) {
+        if (!data.length) {
+            return '<div class="text-center text-muted py-4">Pelanggan tidak ditemukan</div>';
+        }
+        var html = '<div class="table-responsive"><table class="table table-hover align-middle mb-0">';
+        html += '<thead class="table-light"><tr><th>No</th><th>Nama</th><th>No. HP</th><th>Email</th><th width="80">Aksi</th></tr></thead><tbody>';
+        data.forEach(function(p, i) {
+            html += '<tr>';
+            html += '<td>' + (i + 1) + '</td>';
+            html += '<td class="fw-semibold">' + (p.nama_pelanggan || '-') + '</td>';
+            html += '<td>' + (p.no_hp || '-') + '</td>';
+            html += '<td>' + (p.email || '-') + '</td>';
+            html += '<td><button type="button" class="btn btn-sm btn-primary btn-pilih-pelanggan" '
+                    + 'data-id="' + p.id_pelanggan + '" '
+                    + 'data-nama="' + (p.nama_pelanggan || '') + '" '
+                    + 'data-hp="' + (p.no_hp || '') + '">'
+                    + '<i class="bi bi-check-lg"></i></button></td>';
+            html += '</tr>';
+        });
+        html += '</tbody></table></div>';
+        return html;
+    }
+
+    function pilihPelanggan(id, nama, hp) {
+        inputIdPelanggan.value  = id;
+        displayPelanggan.value  = nama + (hp ? ' (' + hp + ')' : '');
+        btnClearPelanggan.style.display = '';
+        bootstrap.Modal.getInstance(document.getElementById('modalCariPelanggan')).hide();
+    }
+
+    btnClearPelanggan.addEventListener('click', function() {
+        inputIdPelanggan.value  = '';
+        displayPelanggan.value  = '';
+        btnClearPelanggan.style.display = 'none';
+    });
+
+    modalHasil.addEventListener('click', function(e) {
+        var btn = e.target.closest('.btn-pilih-pelanggan');
+        if (btn) pilihPelanggan(btn.dataset.id, btn.dataset.nama, btn.dataset.hp);
+    });
+
+    modalSearchInput.addEventListener('input', function() {
+        var q = this.value.trim();
+        clearTimeout(modalTimer);
+        if (q.length < 2) {
+            modalHasil.innerHTML = '<div class="text-center text-muted py-4">Ketik minimal 2 karakter untuk mencari</div>';
+            return;
+        }
+        modalHasil.innerHTML = '<div class="text-center py-3"><span class="spinner-border spinner-border-sm me-1"></span>Mencari...</div>';
+        modalTimer = setTimeout(function() {
+            fetch('<?= base_url('admin/pelanggan/search') ?>?q=' + encodeURIComponent(q))
+                .then(function(r) { return r.json(); })
+                .then(function(data) { modalHasil.innerHTML = renderTabelPelanggan(data); });
+        }, 300);
+    });
+
+    document.getElementById('modalCariPelanggan').addEventListener('shown.bs.modal', function() {
+        modalSearchInput.focus();
+        // Load semua pelanggan saat pertama dibuka
+        modalHasil.innerHTML = '<div class="text-center py-3"><span class="spinner-border spinner-border-sm me-1"></span>Memuat data konsumen...</div>';
+        fetch('<?= base_url('admin/pelanggan/search') ?>?q= ')
+            .then(function(r) { return r.json(); })
+            .then(function(data) { modalHasil.innerHTML = renderTabelPelanggan(data); });
+    });
+    document.getElementById('modalCariPelanggan').addEventListener('hidden.bs.modal', function() {
+        modalSearchInput.value = '';
+    });
 </script>
+
+<!-- Modal Cari Pelanggan -->
+<div class="modal fade" id="modalCariPelanggan" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header py-2">
+                <h6 class="modal-title"><i class="bi bi-person-search me-1"></i>Cari Pelanggan</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                    <input type="text" id="modalSearchPelanggan" class="form-control" placeholder="Ketik nama, no HP, atau email...">
+                </div>
+                <div id="modalHasilPelanggan" style="max-height:400px;overflow-y:auto;">
+                    <div class="text-center text-muted py-4">Ketik minimal 2 karakter untuk mencari</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?= $this->endSection() ?>
