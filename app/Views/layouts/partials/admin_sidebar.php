@@ -1,6 +1,6 @@
 <?php $level = session('level'); ?>
 
-<div class="sidebar d-flex flex-column" id="sidebar">
+<div class="sidebar" id="sidebar">
 
     <div class="sidebar-brand d-flex align-items-center gap-3 py-4 px-3">
         <div class="brand-logo">
