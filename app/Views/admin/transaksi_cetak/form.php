@@ -183,17 +183,26 @@
                 <h6 class="modal-title"><i class="bi bi-search me-1"></i>Cari Konsumen</h6>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body">
-                <div class="input-group mb-3">
-                    <span class="input-group-text"><i class="bi bi-person-search"></i></span>
-                    <input type="text" id="modalInputSearch" class="form-control" placeholder="Ketik nama, no HP, atau email...">
+            <div class="modal-body p-0">
+                <div class="p-3 border-bottom bg-light">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="bi bi-person-search"></i></span>
+                        <input type="text" id="modalInputSearch" class="form-control" placeholder="Ketik nama, no HP, atau email...">
+                        <button type="button" class="btn btn-outline-secondary" id="btnResetSearch" title="Reset pencarian">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </div>
+                    <div class="small text-muted mt-1 ps-1" id="infoJumlahKonsumen"></div>
                 </div>
                 <div id="modalHasilKonsumen" style="max-height:400px;overflow-y:auto;">
-                    <div class="text-center text-muted py-4">Ketik untuk mencari konsumen</div>
+                    <div class="text-center py-4">
+                        <span class="spinner-border spinner-border-sm text-primary me-2"></span>Memuat data konsumen...
+                    </div>
                 </div>
             </div>
-            <div class="modal-footer py-2">
-                <button type="button" class="btn btn-sm btn-outline-danger" id="btnClearKonsumen" data-bs-dismiss="modal">
+            <div class="modal-footer py-2 justify-content-between">
+                <small class="text-muted">Klik <strong>Pilih</strong> untuk memilih konsumen</small>
+                <button type="button" class="btn btn-sm btn-outline-danger" id="btnClearKonsumen">
                     <i class="bi bi-x-lg me-1"></i>Hapus Pilihan
                 </button>
             </div>
@@ -276,29 +285,57 @@
     var hiddenNama        = document.getElementById('inputNamaKonsumen');
     var hiddenId          = document.getElementById('inputIdKonsumen');
     var inputNoHp         = document.getElementById('inputNoHp');
+    var infoJumlah        = document.getElementById('infoJumlahKonsumen');
     var modalTimer;
 
     function renderTabelKonsumen(data) {
-        var html = '<div class="table-responsive"><table class="table table-hover align-middle mb-0">';
-        html += '<thead class="table-light"><tr>';
-        html += '<th>No</th><th>Nama Konsumen</th><th>No. HP</th><th>Email</th><th>Alamat</th><th width="80">Aksi</th>';
+        if (data.length === 0) {
+            return '<div class="text-center text-muted py-4"><i class="bi bi-person-x fs-3 d-block mb-2"></i>Konsumen tidak ditemukan</div>';
+        }
+        infoJumlah.textContent = 'Menampilkan ' + data.length + ' konsumen';
+        var html = '<table class="table table-hover table-sm align-middle mb-0">';
+        html += '<thead class="table-light sticky-top"><tr>';
+        html += '<th class="ps-3" style="width:40px;">No</th>';
+        html += '<th>Nama Konsumen</th>';
+        html += '<th>No. HP</th>';
+        html += '<th class="d-none d-md-table-cell">Email</th>';
+        html += '<th style="width:80px;" class="text-center">Aksi</th>';
         html += '</tr></thead><tbody>';
         data.forEach(function(p, i) {
-            html += '<tr>';
-            html += '<td>' + (i + 1) + '</td>';
-            html += '<td class="fw-semibold">' + (p.nama_pelanggan || '-') + '</td>';
-            html += '<td>' + (p.no_hp || '-') + '</td>';
-            html += '<td>' + (p.email || '-') + '</td>';
-            html += '<td>' + (p.alamat || '-') + '</td>';
-            html += '<td><button type="button" class="btn btn-sm btn-primary btn-pilih-konsumen" ';
-            html += 'data-nama="' + (p.nama_pelanggan || '') + '" ';
-            html += 'data-id="' + p.id_pelanggan + '" ';
-            html += 'data-hp="' + (p.no_hp || '') + '">';
-            html += '<i class="bi bi-check-lg me-1"></i>Pilih</button></td>';
-            html += '</tr>';
+            var nama = p.nama_pelanggan || '-';
+            var hp   = p.no_hp || '-';
+            var email = p.email || '-';
+            var isSelected = hiddenId.value == p.id_pelanggan;
+            html += '<tr class="' + (isSelected ? 'table-primary' : '') + '">';
+            html += '<td class="ps-3 text-muted small">' + (i + 1) + '</td>';
+            html += '<td><span class="fw-semibold">' + nama + '</span></td>';
+            html += '<td class="small">' + hp + '</td>';
+            html += '<td class="small d-none d-md-table-cell text-muted">' + email + '</td>';
+            html += '<td class="text-center">';
+            if (isSelected) {
+                html += '<span class="badge bg-success"><i class="bi bi-check2 me-1"></i>Dipilih</span>';
+            } else {
+                html += '<button type="button" class="btn btn-sm btn-primary btn-pilih-konsumen px-2 py-1" ';
+                html += 'data-nama="' + nama + '" data-id="' + p.id_pelanggan + '" data-hp="' + (p.no_hp || '') + '">';
+                html += '<i class="bi bi-check-lg me-1"></i>Pilih</button>';
+            }
+            html += '</td></tr>';
         });
-        html += '</tbody></table></div>';
+        html += '</tbody></table>';
         return html;
+    }
+
+    function fetchKonsumen(q) {
+        modalHasil.innerHTML = '<div class="text-center py-3"><span class="spinner-border spinner-border-sm text-primary me-2"></span>Mencari...</div>';
+        infoJumlah.textContent = '';
+        fetch('<?= base_url('admin/pelanggan/search') ?>?q=' + encodeURIComponent(q))
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                modalHasil.innerHTML = renderTabelKonsumen(data);
+            })
+            .catch(function() {
+                modalHasil.innerHTML = '<div class="text-center text-danger py-3"><i class="bi bi-exclamation-triangle me-1"></i>Gagal memuat data</div>';
+            });
     }
 
     function pilihKonsumen(nama, id, hp) {
@@ -309,18 +346,37 @@
         var modal = bootstrap.Modal.getInstance(document.getElementById('modalCariKonsumen'));
         modal.hide();
         modalSearchInput.value = '';
-        modalHasil.innerHTML = '<div class="text-center text-muted py-4">Ketik untuk mencari konsumen</div>';
     }
 
-    document.getElementById('btnClearKonsumen').addEventListener('click', function() {
-        displayText.value = '';
-        hiddenNama.value  = '';
-        hiddenId.value    = '';
-        inputNoHp.value   = '';
+    // Load data saat modal dibuka
+    document.getElementById('modalCariKonsumen').addEventListener('show.bs.modal', function() {
         modalSearchInput.value = '';
-        modalHasil.innerHTML = '<div class="text-center text-muted py-4">Ketik untuk mencari konsumen</div>';
+        infoJumlah.textContent = '';
+        fetchKonsumen('');
+    });
+    // Fokus ke input setelah modal terbuka
+    document.getElementById('modalCariKonsumen').addEventListener('shown.bs.modal', function() {
+        modalSearchInput.focus();
     });
 
+    // Pencarian dengan debounce
+    modalSearchInput.addEventListener('input', function() {
+        var q = this.value.trim();
+        clearTimeout(modalTimer);
+        modalTimer = setTimeout(function() {
+            fetchKonsumen(q);
+        }, 300);
+    });
+
+    // Tombol X reset input dan reload semua
+    document.getElementById('btnResetSearch').addEventListener('click', function() {
+        modalSearchInput.value = '';
+        infoJumlah.textContent = '';
+        fetchKonsumen('');
+        modalSearchInput.focus();
+    });
+
+    // Event delegation klik Pilih
     modalHasil.addEventListener('click', function(e) {
         var btn = e.target.closest('.btn-pilih-konsumen');
         if (btn) {
@@ -328,33 +384,16 @@
         }
     });
 
-    modalSearchInput.addEventListener('input', function() {
-        var q = this.value.trim();
-        clearTimeout(modalTimer);
-        if (q.length < 2) {
-            modalHasil.innerHTML = '<div class="text-center text-muted py-4">Ketik untuk mencari konsumen</div>';
-            return;
-        }
-        modalTimer = setTimeout(function() {
-            modalHasil.innerHTML = '<div class="text-center py-3"><span class="spinner-border spinner-border-sm me-1"></span>Mencari...</div>';
-            fetch('<?= base_url('admin/pelanggan/search') ?>?q=' + encodeURIComponent(q))
-                .then(function(r) { return r.json(); })
-                .then(function(data) {
-                    if (data.length === 0) {
-                        modalHasil.innerHTML = '<div class="text-center text-muted py-3">Konsumen tidak ditemukan</div>';
-                        return;
-                    }
-                    modalHasil.innerHTML = renderTabelKonsumen(data);
-                });
-        }, 300);
+    // Tombol Hapus Pilihan
+    document.getElementById('btnClearKonsumen').addEventListener('click', function() {
+        displayText.value = '';
+        hiddenNama.value  = '';
+        hiddenId.value    = '';
+        inputNoHp.value   = '';
+        // refresh tabel agar badge "Dipilih" hilang
+        fetchKonsumen(modalSearchInput.value.trim());
+    });
     });
 
-    document.getElementById('modalCariKonsumen').addEventListener('shown.bs.modal', function() {
-        modalSearchInput.focus();
-    });
-
-    document.getElementById('modalCariKonsumen').addEventListener('hidden.bs.modal', function() {
-        modalSearchInput.value = '';
-    });
 </script>
 <?= $this->endSection() ?>
