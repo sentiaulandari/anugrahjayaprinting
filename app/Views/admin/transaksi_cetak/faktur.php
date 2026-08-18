@@ -117,7 +117,7 @@
         };
         // Fallback: jika browser tidak support onafterprint, redirect setelah 1.5 detik
         // hanya aktif kalau dari store (ada query ?baru=1)
-        <?php if ($this->request->getGet('baru')): ?>
+        <?php if (service('request')->getGet('baru')): ?>
         setTimeout(function() {
             if (!window._printed) {
                 window.location.href = '<?= base_url('admin/transaksi-cetak') ?>';
