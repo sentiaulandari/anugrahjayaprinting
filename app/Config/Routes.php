@@ -118,6 +118,7 @@ $routes->group('pelanggan', ['filter' => 'pelangganFilter'], function ($routes) 
 
     $routes->get('status',               'Pelanggan\StatusController::index');
     $routes->get('status/detail/(:any)', 'Pelanggan\StatusController::detail/$1');
+    $routes->get('status/cetak/(:any)',  'Pelanggan\StatusController::cetakFaktur/$1');
 });
 
 $routes->set404Override(function() {

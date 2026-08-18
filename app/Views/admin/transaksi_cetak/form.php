@@ -287,6 +287,7 @@
     var inputNoHp         = document.getElementById('inputNoHp');
     var infoJumlah        = document.getElementById('infoJumlahKonsumen');
     var modalTimer;
+    var fetchController = null; // AbortController aktif
 
     function renderTabelKonsumen(data) {
         if (data.length === 0) {
@@ -326,15 +327,30 @@
     }
 
     function fetchKonsumen(q) {
+        // Batalkan fetch sebelumnya jika masih berjalan
+        if (fetchController) fetchController.abort();
+        fetchController = new AbortController();
+
         modalHasil.innerHTML = '<div class="text-center py-3"><span class="spinner-border spinner-border-sm text-primary me-2"></span>Mencari...</div>';
         infoJumlah.textContent = '';
-        fetch('<?= base_url('admin/pelanggan/search') ?>?q=' + encodeURIComponent(q))
-            .then(function(r) { return r.json(); })
+
+        fetch('<?= base_url('admin/pelanggan/search') ?>?q=' + encodeURIComponent(q), { signal: fetchController.signal })
+            .then(function(r) {
+                if (!r.ok) throw new Error('HTTP ' + r.status);
+                return r.json();
+            })
             .then(function(data) {
+                if (!Array.isArray(data)) throw new Error('Bukan array');
+                fetchController = null;
                 modalHasil.innerHTML = renderTabelKonsumen(data);
             })
-            .catch(function() {
-                modalHasil.innerHTML = '<div class="text-center text-danger py-3"><i class="bi bi-exclamation-triangle me-1"></i>Gagal memuat data</div>';
+            .catch(function(err) {
+                if (err.name === 'AbortError') return; // fetch dibatalkan, abaikan
+                fetchController = null;
+                modalHasil.innerHTML = '<div class="text-center text-danger py-3">'
+                    + '<i class="bi bi-exclamation-triangle me-2"></i>'
+                    + 'Gagal memuat data konsumen. Coba refresh halaman.</div>';
+                console.error('fetchKonsumen error:', err);
             });
     }
 
@@ -390,9 +406,7 @@
         hiddenNama.value  = '';
         hiddenId.value    = '';
         inputNoHp.value   = '';
-        // refresh tabel agar badge "Dipilih" hilang
         fetchKonsumen(modalSearchInput.value.trim());
-    });
     });
 
 </script>

@@ -3,9 +3,17 @@
 
 <div class="d-flex align-items-center justify-content-between mb-4">
     <h4 class="page-title mb-0">Detail Status Pesanan</h4>
-    <a href="<?= base_url('pelanggan/status') ?>" class="btn btn-sm btn-outline-secondary">
-        <i class="bi bi-arrow-left me-1"></i>Kembali
-    </a>
+    <div class="d-flex gap-2">
+        <?php if ($pesanan['status_bayar'] === 'sudah bayar' || $pesanan['status_pesanan'] === 'selesai'): ?>
+        <a href="<?= base_url('pelanggan/status/cetak/' . $pesanan['no_pesanan']) ?>" target="_blank"
+           class="btn btn-sm btn-success">
+            <i class="bi bi-printer me-1"></i>Cetak Faktur
+        </a>
+        <?php endif; ?>
+        <a href="<?= base_url('pelanggan/status') ?>" class="btn btn-sm btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i>Kembali
+        </a>
+    </div>
 </div>
 
 <?= view('layouts/partials/alert') ?>
@@ -132,7 +140,13 @@
 
         <?php if ($pesanan['status_bayar'] === 'sudah bayar' || $pesanan['status_pesanan'] === 'selesai'): ?>
         <div class="card mt-3 border-success">
-            <div class="card-header bg-success text-white"><i class="bi bi-receipt-cutoff me-2"></i>Faktur Pembayaran</div>
+            <div class="card-header bg-success text-white d-flex align-items-center justify-content-between">
+                <span><i class="bi bi-receipt-cutoff me-2"></i>Faktur Pembayaran</span>
+                <a href="<?= base_url('pelanggan/status/cetak/' . $pesanan['no_pesanan']) ?>" target="_blank"
+                   class="btn btn-sm btn-light">
+                    <i class="bi bi-printer me-1"></i>Cetak / Download
+                </a>
+            </div>
             <div class="card-body">
                 <div class="text-center mb-3">
                     <h5 class="fw-bold mb-0">Anugrah Jaya Digital Printing</h5>

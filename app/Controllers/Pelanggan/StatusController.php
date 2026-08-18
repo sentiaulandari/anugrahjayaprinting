@@ -50,4 +50,28 @@ class StatusController extends BaseController
 
         return view('pelanggan/status/detail', $data);
     }
+
+    public function cetakFaktur(string $no): string
+    {
+        $idPelanggan = session()->get('id_pelanggan');
+        $pesanan     = $this->pesananModel->getDetailPesanan($no);
+
+        if (!$pesanan || $pesanan['id_pelanggan'] != $idPelanggan) {
+            return redirect()->to('/pelanggan/status')->with('error', 'Pesanan tidak ditemukan.');
+        }
+
+        if ($pesanan['status_bayar'] !== 'sudah bayar' && $pesanan['status_pesanan'] !== 'selesai') {
+            return redirect()->to('/pelanggan/status/detail/' . $no)
+                             ->with('error', 'Faktur hanya tersedia setelah pembayaran dikonfirmasi.');
+        }
+
+        $data = [
+            'title'      => 'Faktur Pesanan ' . $no,
+            'pesanan'    => $pesanan,
+            'detail'     => $this->detailModel->getByNoPesanan($no),
+            'pembayaran' => $this->pembayaranModel->getByNoPesanan($no),
+        ];
+
+        return view('pelanggan/status/faktur', $data);
+    }
 }
