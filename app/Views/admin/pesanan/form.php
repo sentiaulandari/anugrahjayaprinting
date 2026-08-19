@@ -78,10 +78,10 @@
                 <div class="card-body">
                     <div id="itemContainer">
                         <div class="item-row border rounded p-3 mb-2 bg-light" data-tipe="per_pcs">
-                            <div class="row g-2 align-items-end">
-                                <!-- Baris 1: Layanan + Qty + Harga + Subtotal + Hapus -->
-                                <div class="col-md-4">
-                                    <label class="form-label small fw-semibold">Layanan <span class="text-danger">*</span></label>
+                            <!-- Baris 1: Layanan + Qty + Harga + Subtotal + Hapus -->
+                            <div class="row g-2 align-items-end mb-2">
+                                <div class="col-12 col-md-4">
+                                    <label class="form-label small fw-semibold mb-1">Layanan <span class="text-danger">*</span></label>
                                     <select name="kode_layanan[]" class="form-select form-select-sm layanan-select" required>
                                         <option value="">-- Pilih --</option>
                                         <?php foreach ($layanan as $l): ?>
@@ -100,43 +100,43 @@
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
-                                <div class="col-6 col-md-2 input-meter" style="display:none;">
-                                    <label class="form-label small fw-semibold">P × L (m)</label>
+                                <div class="col-12 col-md-3 input-meter" style="display:none;">
+                                    <label class="form-label small fw-semibold mb-1">P × L (m)</label>
                                     <div class="input-group input-group-sm">
-                                        <input type="number" name="panjang[]" class="form-control form-control-sm panjang-input" step="0.01" min="0" placeholder="P">
+                                        <input type="number" name="panjang[]" class="form-control form-control-sm panjang-input" step="0.01" min="0" placeholder="Panjang">
                                         <span class="input-group-text px-1">×</span>
-                                        <input type="number" name="lebar[]" class="form-control form-control-sm lebar-input" step="0.01" min="0" placeholder="L">
+                                        <input type="number" name="lebar[]" class="form-control form-control-sm lebar-input" step="0.01" min="0" placeholder="Lebar">
                                     </div>
                                 </div>
-                                <div class="col-6 col-md-1">
-                                    <label class="form-label small fw-semibold">Qty</label>
-                                    <div class="input-group input-group-sm">
-                                        <input type="number" name="qty[]" class="form-control form-control-sm qty-input" value="1" min="1" required>
-                                    </div>
+                                <div class="col-4 col-md-1">
+                                    <label class="form-label small fw-semibold mb-1">Qty</label>
+                                    <input type="number" name="qty[]" class="form-control form-control-sm qty-input" value="1" min="1" required>
                                     <small class="text-muted qty-label" style="font-size:10px;">pcs</small>
                                 </div>
-                                <div class="col-6 col-md-2">
-                                    <label class="form-label small fw-semibold">Harga Satuan</label>
+                                <div class="col-4 col-md-2">
+                                    <label class="form-label small fw-semibold mb-1">Harga Satuan</label>
                                     <input type="text" class="form-control form-control-sm harga-display bg-white" readonly value="Rp 0">
                                 </div>
-                                <div class="col-6 col-md-2">
-                                    <label class="form-label small fw-semibold">Subtotal</label>
+                                <div class="col-4 col-md-2">
+                                    <label class="form-label small fw-semibold mb-1">Subtotal</label>
                                     <input type="text" class="form-control form-control-sm subtotal-display bg-white fw-semibold text-primary" readonly value="Rp 0">
                                 </div>
-                                <div class="col-md-1 d-flex align-items-end">
-                                    <button type="button" class="btn btn-sm btn-outline-danger btn-hapus-item w-100">
+                                <div class="col-12 col-md-auto d-flex align-items-end">
+                                    <button type="button" class="btn btn-sm btn-outline-danger btn-hapus-item" style="min-width:36px;">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </div>
-                                <!-- Baris 2: Upload Desain + Keterangan -->
-                                <div class="col-md-6">
-                                    <label class="form-label small fw-semibold">Upload Desain <span class="text-muted">(Opsional)</span></label>
+                            </div>
+                            <!-- Baris 2: Upload Desain + Keterangan -->
+                            <div class="row g-2">
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label small fw-semibold mb-1">Upload Desain <span class="text-muted fw-normal">(Opsional)</span></label>
                                     <input type="file" name="file_desain[]" class="form-control form-control-sm file-desain-input"
                                         accept=".jpg,.jpeg,.png,.pdf,.ai,.cdr,.psd" onchange="validasiFile(this)">
                                     <div class="form-text" style="font-size:10px;">JPG, PNG, PDF, AI, CDR, PSD — maks 10MB</div>
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="form-label small fw-semibold">Keterangan</label>
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label small fw-semibold mb-1">Keterangan</label>
                                     <input type="text" name="keterangan_detail[]" class="form-control form-control-sm"
                                         placeholder="Keterangan item (opsional)">
                                 </div>

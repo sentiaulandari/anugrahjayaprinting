@@ -97,14 +97,21 @@ class PesananController extends BaseController
         $keterangans = $this->request->getPost('keterangan_detail');
         $total       = 0;
 
-        $filesDesain = $this->request->getFiles('file_desain');
-        // getFiles() untuk input name="file_desain[]" mengembalikan ['file_desain' => [...]]
+        $filesDesain    = $this->request->getFiles('file_desain');
         $filesDesainArr = $filesDesain['file_desain'] ?? [];
 
-        $uploadPath = rtrim(FCPATH, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'desain';
-        if (!is_dir($uploadPath)) {
-            mkdir($uploadPath, 0777, true);
+        // Build absolute upload path dan pastikan folder ada
+        $uploadBase = rtrim(FCPATH, '/\\');
+        $uploadPath = $uploadBase . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'desain';
+
+        if (!is_dir($uploadBase . DIRECTORY_SEPARATOR . 'uploads')) {
+            @mkdir($uploadBase . DIRECTORY_SEPARATOR . 'uploads', 0775, true);
         }
+        if (!is_dir($uploadPath)) {
+            @mkdir($uploadPath, 0775, true);
+        }
+
+        $canUpload = is_dir($uploadPath) && is_writable($uploadPath);
 
         foreach ($kodeLayanan as $i => $kode) {
             $layanan = $this->layananModel->find($kode);

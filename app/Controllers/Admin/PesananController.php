@@ -83,11 +83,21 @@ class PesananController extends BaseController
         $total       = 0;
 
         $filesDesain = $this->request->getFiles('file_desain');
-        $uploadPath  = rtrim(FCPATH, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'desain';
 
-        if (!is_dir($uploadPath)) {
-            mkdir($uploadPath, 0777, true);
+        // Build absolute upload path dan pastikan folder ada dengan permission yang benar
+        $uploadBase = rtrim(FCPATH, '/\\');
+        $uploadPath = $uploadBase . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'desain';
+
+        // Buat folder bertahap jika belum ada
+        if (!is_dir($uploadBase . DIRECTORY_SEPARATOR . 'uploads')) {
+            @mkdir($uploadBase . DIRECTORY_SEPARATOR . 'uploads', 0775, true);
         }
+        if (!is_dir($uploadPath)) {
+            @mkdir($uploadPath, 0775, true);
+        }
+
+        // Verifikasi folder bisa ditulis
+        $canUpload = is_dir($uploadPath) && is_writable($uploadPath);
 
         foreach ($kodeLayanan as $i => $kode) {
             $layanan = $this->layananModel->find($kode);
@@ -135,9 +145,12 @@ class PesananController extends BaseController
 
             $fileDesainPath = null;
             if (isset($filesDesain[$i]) && $filesDesain[$i]->isValid() && !$filesDesain[$i]->hasMoved()) {
-                $fileName = $noPesanan . '_' . $i . '_' . $filesDesain[$i]->getClientName();
-                $filesDesain[$i]->move($uploadPath, $fileName);
-                $fileDesainPath = 'uploads/desain/' . $fileName;
+                if ($canUpload) {
+                    $fileName = $noPesanan . '_' . $i . '_' . $filesDesain[$i]->getRandomName();
+                    $filesDesain[$i]->move($uploadPath, $fileName);
+                    $fileDesainPath = 'uploads/desain/' . $fileName;
+                }
+                // jika tidak bisa upload, pesanan tetap disimpan tanpa file
             }
 
             $this->detailModel->insert([
