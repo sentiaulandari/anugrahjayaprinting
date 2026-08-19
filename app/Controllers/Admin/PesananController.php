@@ -83,7 +83,7 @@ class PesananController extends BaseController
         $total       = 0;
 
         $filesDesain = $this->request->getFiles('file_desain');
-        $uploadPath  = WRITEPATH . '../public/uploads/desain';
+        $uploadPath  = rtrim(FCPATH, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'desain';
 
         if (!is_dir($uploadPath)) {
             mkdir($uploadPath, 0777, true);

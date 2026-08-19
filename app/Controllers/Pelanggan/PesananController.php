@@ -101,7 +101,7 @@ class PesananController extends BaseController
         // getFiles() untuk input name="file_desain[]" mengembalikan ['file_desain' => [...]]
         $filesDesainArr = $filesDesain['file_desain'] ?? [];
 
-        $uploadPath = WRITEPATH . '../public/uploads/desain';
+        $uploadPath = rtrim(FCPATH, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'desain';
         if (!is_dir($uploadPath)) {
             mkdir($uploadPath, 0777, true);
         }
