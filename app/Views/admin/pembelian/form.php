@@ -60,47 +60,54 @@
                         <i class="bi bi-plus-lg me-1"></i>Tambah Item
                     </button>
                 </div>
-                <div class="card-body">
-                    <div id="itemContainer">
-                        <div class="item-row border rounded p-3 mb-2 bg-light">
-                            <div class="row g-2 align-items-end">
-                                <div class="col-md-4">
-                                    <label class="form-label small fw-semibold">Bahan / Material <span class="text-danger">*</span></label>
-                                    <select name="id_bahan[]" class="form-select form-select-sm bahan-select" required>
-                                        <option value="">-- Pilih Bahan --</option>
-                                        <?php foreach ($bahan as $b): ?>
-                                            <option value="<?= $b['id_bahan'] ?>"
-                                                data-stok="<?= $b['stok'] ?>"
-                                                data-satuan="<?= $b['satuan'] ?>"
-                                                data-harga="<?= $b['harga'] ?? 0 ?>">
-                                                <?= esc($b['nama_bahan']) ?> (Stok: <?= $b['stok'] ?> <?= esc($b['satuan']) ?>)
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
-                                    <label class="form-label small fw-semibold">Jumlah <span class="text-danger">*</span></label>
-                                    <input type="number" name="jumlah[]" class="form-control form-control-sm jumlah-input" min="1" value="1" required>
-                                    <small class="text-muted stok-info">Stok: -</small>
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label small fw-semibold">Harga/Satuan (Rp) <span class="text-danger">*</span></label>
-                                    <input type="number" name="harga_satuan_beli[]" class="form-control form-control-sm harga-input" min="0" step="100" value="0" required>
-                                </div>
-                                <div class="col-md-2">
-                                    <label class="form-label small fw-semibold">Subtotal</label>
-                                    <input type="text" class="form-control form-control-sm subtotal-display bg-white fw-semibold text-primary" readonly value="Rp 0">
-                                </div>
-                                <div class="col-md-1">
-                                    <button type="button" class="btn btn-sm btn-outline-danger btn-hapus-item w-100 mt-4">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-borderless align-middle mb-0" id="itemTable">
+                            <thead class="table-light border-bottom">
+                                <tr>
+                                    <th class="ps-3" style="width:35%">Bahan / Material <span class="text-danger">*</span></th>
+                                    <th style="width:15%">Jumlah <span class="text-danger">*</span></th>
+                                    <th style="width:22%">Harga/Satuan (Rp) <span class="text-danger">*</span></th>
+                                    <th style="width:20%">Subtotal</th>
+                                    <th style="width:8%" class="text-center pe-3">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="itemContainer">
+                                <tr class="item-row border-bottom">
+                                    <td class="ps-3">
+                                        <select name="id_bahan[]" class="form-select form-select-sm bahan-select" required>
+                                            <option value="">-- Pilih Bahan --</option>
+                                            <?php foreach ($bahan as $b): ?>
+                                                <option value="<?= $b['id_bahan'] ?>"
+                                                    data-stok="<?= $b['stok'] ?>"
+                                                    data-satuan="<?= $b['satuan'] ?>"
+                                                    data-harga="<?= $b['harga'] ?? 0 ?>">
+                                                    <?= esc($b['nama_bahan']) ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <div class="mt-1"><small class="text-muted stok-info">Stok: -</small></div>
+                                    </td>
+                                    <td>
+                                        <input type="number" name="jumlah[]" class="form-control form-control-sm jumlah-input" min="1" value="1" required>
+                                    </td>
+                                    <td>
+                                        <input type="number" name="harga_satuan_beli[]" class="form-control form-control-sm harga-input" min="0" step="100" value="0" required>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control form-control-sm subtotal-display bg-light fw-semibold text-primary" readonly value="Rp 0">
+                                    </td>
+                                    <td class="text-center pe-3">
+                                        <button type="button" class="btn btn-sm btn-outline-danger btn-hapus-item">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
 
-                    <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                    <div class="d-flex justify-content-between align-items-center px-3 py-2 border-top bg-light rounded-bottom">
                         <span class="small text-muted" id="jumlahItem">1 item</span>
                         <div>
                             <span class="fw-semibold">Grand Total: </span>
@@ -200,15 +207,13 @@
             if (i.type === 'number') {
                 i.value = i.classList.contains('jumlah-input') ? 1 : '0';
             } else {
-                i.value = '';
+                i.value = i.classList.contains('subtotal-display') ? 'Rp 0' : '';
             }
         });
-        var selects = template.querySelectorAll('select');
-        selects.forEach(function(s) {
+        template.querySelectorAll('select').forEach(function(s) {
             s.selectedIndex = 0;
         });
         template.querySelector('.stok-info').textContent = 'Stok: -';
-        template.querySelector('.subtotal-display').value = 'Rp 0';
         document.getElementById('itemContainer').appendChild(template);
         hitungTotal();
     });
