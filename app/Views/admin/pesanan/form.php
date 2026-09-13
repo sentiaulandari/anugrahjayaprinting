@@ -43,21 +43,21 @@
                                 value="<?= old('tgl_selesai') ?>" required>
                         </div>
                         <div class="col-md-12">
-                            <label class="form-label small fw-semibold">Pelanggan <span class="text-danger">*</span></label>
-                            <input type="hidden" name="id_pelanggan" id="inputIdPelanggan" value="<?= old('id_pelanggan') ?>" required>
+                            <label class="form-label small fw-semibold">Konsumen <span class="text-danger">*</span></label>
+                            <input type="hidden" name="id_pelanggan" id="inputIdPelanggan" value="<?= old('id_pelanggan') ?>">
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-person"></i></span>
                                 <input type="text" id="displayPelanggan" class="form-control"
-                                    placeholder="Ketik nama, no HP, atau email untuk mencari..." readonly
-                                    value="" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#modalCariPelanggan">
-                                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalCariPelanggan">
+                                    placeholder="Belum dipilih" readonly
+                                    value="" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#modalCariKonsumen">
+                                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalCariKonsumen">
                                     <i class="bi bi-search me-1"></i>Cari
                                 </button>
                                 <button type="button" class="btn btn-outline-danger" id="btnClearPelanggan" title="Hapus pilihan" style="display:none;">
                                     <i class="bi bi-x-lg"></i>
                                 </button>
                             </div>
-                            <div class="form-text">Klik tombol Cari atau ketik untuk mencari pelanggan</div>
+                            <div class="form-text">Klik tombol Cari untuk mencari konsumen</div>
                         </div>
                         <div class="col-12">
                             <label class="form-label small fw-semibold">Catatan</label>
@@ -357,12 +357,12 @@
     }
 
     document.getElementById('formPesanan').addEventListener('submit', function(e) {
-        // Validasi pelanggan dipilih
+        // Validasi konsumen dipilih
         const idPelanggan = document.getElementById('inputIdPelanggan').value;
         if (!idPelanggan) {
             e.preventDefault();
-            alert('Harap pilih pelanggan terlebih dahulu!');
-            document.getElementById('modalCariPelanggan') && new bootstrap.Modal(document.getElementById('modalCariPelanggan')).show();
+            alert('Harap pilih konsumen terlebih dahulu!');
+            new bootstrap.Modal(document.getElementById('modalCariKonsumen')).show();
             return;
         }
         const btn = document.getElementById('btnSubmit');
@@ -370,103 +370,121 @@
         btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Menyimpan...';
     });
 
-    // Modal cari pelanggan
-    var modalCariPelangganEl = document.getElementById('modalCariPelanggan');
-    var modalSearchInput     = document.getElementById('modalSearchPelanggan');
-    var modalHasil           = document.getElementById('modalHasilPelanggan');
-    var displayPelanggan     = document.getElementById('displayPelanggan');
-    var inputIdPelanggan     = document.getElementById('inputIdPelanggan');
-    var btnClearPelanggan    = document.getElementById('btnClearPelanggan');
+    // =============================================
+    // Modal Cari Konsumen — sama persis dgn transaksi cetak
+    // =============================================
+    var modalInputSearch  = document.getElementById('modalInputSearchKonsumen');
+    var modalHasil        = document.getElementById('modalHasilKonsumen');
+    var displayText       = document.getElementById('displayPelanggan');
+    var hiddenId          = document.getElementById('inputIdPelanggan');
+    var btnClear          = document.getElementById('btnClearPelanggan');
     var modalTimer;
 
-    function renderTabelPelanggan(data) {
+    function renderTabelKonsumen(data) {
         if (!data.length) {
-            return '<div class="text-center text-muted py-4">Pelanggan tidak ditemukan</div>';
+            return '<div class="text-center text-muted py-4"><i class="bi bi-people fs-3 d-block mb-2 opacity-25"></i>Konsumen tidak ditemukan</div>';
         }
         var html = '<div class="table-responsive"><table class="table table-hover align-middle mb-0">';
-        html += '<thead class="table-light"><tr><th>No</th><th>Nama</th><th>No. HP</th><th>Email</th><th width="80">Aksi</th></tr></thead><tbody>';
+        html += '<thead class="table-light"><tr>';
+        html += '<th>No</th><th>Nama Konsumen</th><th>No. HP</th><th>Email</th><th>Alamat</th><th width="80">Aksi</th>';
+        html += '</tr></thead><tbody>';
         data.forEach(function(p, i) {
             html += '<tr>';
             html += '<td>' + (i + 1) + '</td>';
             html += '<td class="fw-semibold">' + (p.nama_pelanggan || '-') + '</td>';
             html += '<td>' + (p.no_hp || '-') + '</td>';
             html += '<td>' + (p.email || '-') + '</td>';
-            html += '<td><button type="button" class="btn btn-sm btn-primary btn-pilih-pelanggan" '
-                    + 'data-id="' + p.id_pelanggan + '" '
-                    + 'data-nama="' + (p.nama_pelanggan || '') + '" '
-                    + 'data-hp="' + (p.no_hp || '') + '">'
-                    + '<i class="bi bi-check-lg"></i></button></td>';
+            html += '<td class="small text-muted">' + (p.alamat || '-') + '</td>';
+            html += '<td><button type="button" class="btn btn-sm btn-primary btn-pilih-konsumen" '
+                  + 'data-id="' + p.id_pelanggan + '" '
+                  + 'data-nama="' + (p.nama_pelanggan || '').replace(/"/g, '&quot;') + '" '
+                  + 'data-hp="' + (p.no_hp || '') + '">'
+                  + '<i class="bi bi-check-lg me-1"></i>Pilih</button></td>';
             html += '</tr>';
         });
         html += '</tbody></table></div>';
         return html;
     }
 
-    function pilihPelanggan(id, nama, hp) {
-        inputIdPelanggan.value  = id;
-        displayPelanggan.value  = nama + (hp ? ' (' + hp + ')' : '');
-        btnClearPelanggan.style.display = '';
-        bootstrap.Modal.getInstance(document.getElementById('modalCariPelanggan')).hide();
+    function pilihKonsumen(id, nama, hp) {
+        hiddenId.value   = id;
+        displayText.value = nama + (hp ? ' (' + hp + ')' : '');
+        btnClear.style.display = '';
+        bootstrap.Modal.getInstance(document.getElementById('modalCariKonsumen')).hide();
     }
 
-    btnClearPelanggan.addEventListener('click', function() {
-        inputIdPelanggan.value  = '';
-        displayPelanggan.value  = '';
-        btnClearPelanggan.style.display = 'none';
+    btnClear.addEventListener('click', function() {
+        hiddenId.value    = '';
+        displayText.value = '';
+        btnClear.style.display = 'none';
     });
 
     modalHasil.addEventListener('click', function(e) {
-        var btn = e.target.closest('.btn-pilih-pelanggan');
-        if (btn) pilihPelanggan(btn.dataset.id, btn.dataset.nama, btn.dataset.hp);
+        var btn = e.target.closest('.btn-pilih-konsumen');
+        if (btn) pilihKonsumen(btn.dataset.id, btn.dataset.nama, btn.dataset.hp);
     });
 
-    modalSearchInput.addEventListener('input', function() {
+    modalInputSearch.addEventListener('input', function() {
         var q = this.value.trim();
         clearTimeout(modalTimer);
-        if (q.length < 2) {
-            modalHasil.innerHTML = '<div class="text-center text-muted py-4">Ketik minimal 2 karakter untuk mencari</div>';
-            return;
-        }
-        modalHasil.innerHTML = '<div class="text-center py-3"><span class="spinner-border spinner-border-sm me-1"></span>Mencari...</div>';
+        // Cari real-time, tanpa minimum karakter
         modalTimer = setTimeout(function() {
-            fetch('<?= base_url('admin/pelanggan/search') ?>?q=' + encodeURIComponent(q))
+            modalHasil.innerHTML = '<div class="text-center py-3"><span class="spinner-border spinner-border-sm me-1"></span>Mencari...</div>';
+            fetch('<?= base_url('admin/pelanggan/search') ?>?q=' + encodeURIComponent(q || ' '))
                 .then(function(r) { return r.json(); })
-                .then(function(data) { modalHasil.innerHTML = renderTabelPelanggan(data); });
-        }, 300);
+                .then(function(data) { modalHasil.innerHTML = renderTabelKonsumen(data); });
+        }, 250);
     });
 
-    document.getElementById('modalCariPelanggan').addEventListener('shown.bs.modal', function() {
-        modalSearchInput.focus();
-        // Load semua pelanggan saat pertama dibuka
+    document.getElementById('modalCariKonsumen').addEventListener('shown.bs.modal', function() {
+        modalInputSearch.focus();
+        // Langsung load semua konsumen saat modal dibuka
         modalHasil.innerHTML = '<div class="text-center py-3"><span class="spinner-border spinner-border-sm me-1"></span>Memuat data konsumen...</div>';
-        fetch('<?= base_url('admin/pelanggan/search') ?>?q= ')
+        fetch('<?= base_url('admin/pelanggan/search') ?>?q=')
             .then(function(r) { return r.json(); })
-            .then(function(data) { modalHasil.innerHTML = renderTabelPelanggan(data); });
+            .then(function(data) { modalHasil.innerHTML = renderTabelKonsumen(data); });
     });
-    document.getElementById('modalCariPelanggan').addEventListener('hidden.bs.modal', function() {
-        modalSearchInput.value = '';
+
+    document.getElementById('modalCariKonsumen').addEventListener('hidden.bs.modal', function() {
+        modalInputSearch.value = '';
     });
 </script>
 
-<!-- Modal Cari Pelanggan -->
-<div class="modal fade" id="modalCariPelanggan" tabindex="-1">
+<!-- Modal Cari Konsumen -->
+<div class="modal fade" id="modalCariKonsumen" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header py-2">
-                <h6 class="modal-title"><i class="bi bi-person-search me-1"></i>Cari Pelanggan</h6>
+                <h6 class="modal-title"><i class="bi bi-search me-1"></i>Cari Konsumen</h6>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <div class="input-group mb-3">
-                    <span class="input-group-text"><i class="bi bi-search"></i></span>
-                    <input type="text" id="modalSearchPelanggan" class="form-control" placeholder="Ketik nama, no HP, atau email...">
+                    <span class="input-group-text"><i class="bi bi-person-search"></i></span>
+                    <input type="text" id="modalInputSearchKonsumen" class="form-control"
+                           placeholder="Ketik nama, no HP, atau email...">
                 </div>
-                <div id="modalHasilPelanggan" style="max-height:400px;overflow-y:auto;">
-                    <div class="text-center text-muted py-4">Ketik minimal 2 karakter untuk mencari</div>
+                <div id="modalHasilKonsumen" style="max-height:400px;overflow-y:auto;">
+                    <div class="text-center text-muted py-4">Memuat...</div>
                 </div>
+            </div>
+            <div class="modal-footer py-2">
+                <button type="button" class="btn btn-sm btn-outline-danger" id="btnHapusPilihan">
+                    <i class="bi bi-x-lg me-1"></i>Hapus Pilihan
+                </button>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    // Tombol hapus pilihan di dalam modal
+    document.getElementById('btnHapusPilihan').addEventListener('click', function() {
+        document.getElementById('inputIdPelanggan').value = '';
+        document.getElementById('displayPelanggan').value = '';
+        document.getElementById('btnClearPelanggan').style.display = 'none';
+        bootstrap.Modal.getInstance(document.getElementById('modalCariKonsumen')).hide();
+    });
+</script>
 
 <?= $this->endSection() ?>

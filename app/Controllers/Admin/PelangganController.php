@@ -71,9 +71,11 @@ class PelangganController extends BaseController
                 ->findAll();
         } else {
             $pelanggan = $this->pelangganModel
-                ->like('nama_pelanggan', $keyword)
-                ->orLike('no_hp', $keyword)
-                ->orLike('email', $keyword)
+                ->groupStart()
+                    ->like('nama_pelanggan', $keyword)
+                    ->orLike('no_hp', $keyword)
+                    ->orLike('email', $keyword)
+                ->groupEnd()
                 ->orderBy('nama_pelanggan', 'ASC')
                 ->limit(20)
                 ->findAll();
