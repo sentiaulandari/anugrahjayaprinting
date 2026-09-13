@@ -61,13 +61,25 @@ class PelangganController extends BaseController
 
     public function search()
     {
+        // Pastikan tidak ada output buffer dari page cache
+        if (ob_get_level()) {
+            ob_end_clean();
+        }
+
+        // Validasi session untuk request AJAX
+        if (!session()->get('logged_in')) {
+            return $this->response
+                ->setStatusCode(401)
+                ->setContentType('application/json')
+                ->setJSON(['error' => 'Sesi habis, silakan login ulang.']);
+        }
+
         $keyword = trim($this->request->getGet('q') ?? '');
 
         if (strlen($keyword) < 2) {
-            // Kembalikan semua pelanggan (dibatasi 50) jika query kosong
+            // Kembalikan semua pelanggan (tanpa batas) jika query kosong
             $pelanggan = $this->pelangganModel
                 ->orderBy('nama_pelanggan', 'ASC')
-                ->limit(50)
                 ->findAll();
         } else {
             $pelanggan = $this->pelangganModel
@@ -77,11 +89,12 @@ class PelangganController extends BaseController
                     ->orLike('email', $keyword)
                 ->groupEnd()
                 ->orderBy('nama_pelanggan', 'ASC')
-                ->limit(20)
                 ->findAll();
         }
 
-        return $this->response->setJSON($pelanggan);
+        return $this->response
+            ->setContentType('application/json')
+            ->setJSON($pelanggan);
     }
 
     public function show(int $id): string
